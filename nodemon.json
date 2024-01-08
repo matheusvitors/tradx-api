@@ -1,0 +1,13 @@
+{
+    "execMap": {
+        "ts": "tsx"
+    },
+	"watch": [
+		"src",
+		".env"
+	],
+	"ignore": [
+		"src/**/*.spec.ts",
+		"src/**/*.test.ts"
+	]
+}
