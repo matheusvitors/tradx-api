@@ -1,0 +1,14 @@
+
+GET http://localhost:8000/ativos
+
+###
+
+POST http://localhost:8000/ativos
+content-type: application/json
+
+{
+    "nome": "teste",
+    "acronimo": "TSTE1"
+}
+
+
