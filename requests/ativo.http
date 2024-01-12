@@ -3,6 +3,10 @@ GET http://localhost:8000/ativos
 
 ###
 
+GET http://localhost:8000/ativos/ywgqksofcll4z1z3kqxb2y66
+
+###
+
 POST http://localhost:8000/ativos
 content-type: application/json
 

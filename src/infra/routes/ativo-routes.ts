@@ -1,4 +1,4 @@
-import { createAtivoController, listAtivosController } from '@/application/controllers/ativo';
+import { createAtivoController, getAtivoController, listAtivosController } from '@/application/controllers/ativo';
 import { route } from '@/infra/adapters/route';
 import { ativosPrismaRepository } from '@/infra/database/prisma/ativos-prisma-repository';
 import { Router, Request, Response} from 'express'
@@ -12,7 +12,7 @@ router.get('/ativos', async (request: Request, response: Response) => {
 })
 
 router.get('/ativos/:id', async (request: Request, response: Response) => {
-	const responseData = await listAtivosController(repository);
+	const responseData = await getAtivoController({repository, id: request.params.id});
 	return route({ response, responseData});
 })
 

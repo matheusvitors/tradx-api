@@ -13,8 +13,20 @@ export const ativosPrismaRepository: Repository<Ativo> = {
 
 		return ativos;
 	},
-	get: function (id: string): Promise<any> {
-		throw new Error("Function not implemented.");
+	get: async (id: string): Promise<Ativo | null> => {
+		const data = await databaseClient.ativo.findUnique({ where: {id}});
+
+		if(data) {
+			const ativo: Ativo = {
+				id: data.id,
+				nome: data.nome,
+				acronimo: data.acronimo
+			}
+			return ativo;
+		}
+
+		return null;
+
 	},
 	find: function (field: string | number | symbol, value: any): Promise<any> {
 		throw new Error("Function not implemented.");
