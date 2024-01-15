@@ -2,6 +2,10 @@ import { ValidationError } from "@/application/errors";
 import { Ativo } from "@/core/models";
 
 export const validateAtivo = (ativo: Ativo) => {
+	if(!ativo.id) {
+		throw new ValidationError('Id inexistente.')
+	}
+
 	if(ativo.nome.length < 2) {
 		throw new ValidationError('Nome do ativo deve conter pelo menos 2 caracteres.');
 	}

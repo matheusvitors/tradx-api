@@ -1,3 +1,5 @@
 export * from './create-ativo-controller'
+export * from './edit-ativo-controller'
 export * from './get-ativo-controller'
 export * from './list-ativos-controller'
+export * from './remove-ativo-controller'

@@ -35,12 +35,12 @@ export const ativosPrismaRepository: Repository<Ativo> = {
 		throw new Error("Function not implemented.");
 	},
 	create: async (data: Ativo): Promise<Ativo> => {
-		return  await databaseClient.ativo.create({ data });
+		return await databaseClient.ativo.create({ data });
 	},
-	edit: function (data: Ativo): Promise<any> {
-		throw new Error("Function not implemented.");
+	edit: async (data: Ativo): Promise<Ativo> => {
+		return await databaseClient.ativo.update({where: {id: data.id}, data});
 	},
-	remove: function (id: string): Promise<void> {
-		throw new Error("Function not implemented.");
+	remove: async (id: string): Promise<void> => {
+		await databaseClient.ativo.delete({where: {id}})
 	}
 }

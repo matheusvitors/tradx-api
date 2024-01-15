@@ -2,17 +2,25 @@
 GET http://localhost:8000/ativos
 
 ###
-
 GET http://localhost:8000/ativos/ywgqksofcll4z1z3kqxb2y66
 
 ###
-
 POST http://localhost:8000/ativos
 content-type: application/json
 
 {
     "nome": "teste",
     "acronimo": "TSTE1"
+}
+
+###
+PUT http://localhost:8000/ativos
+content-type: application/json
+
+{
+	"id": "yecfbqf2hw1glgem64w7b8ov",
+    "nome": "teste",
+    "acronimo": "XSTE2"
 }
 
 
