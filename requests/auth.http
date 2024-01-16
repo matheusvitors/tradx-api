@@ -1,0 +1,13 @@
+@hostname = http://localhost:8000
+
+GET {{hostname}}
+
+###
+
+POST {{hostname}}/login
+Content-Type: application/json
+
+{
+	"nickname": "dev",
+	"password": "123"
+}

@@ -1,11 +1,17 @@
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImF1dGgiOnRydWV9LCJpYXQiOjE3MDU0MjE0OTQsImV4cCI6MTcwNTQ5MzQ5NH0.K9oLpnT9uY0q152PZ4JUzZFcOXWARLouSzQr1Vn57aM
+
 
 GET http://localhost:8000/ativos
+Authorization: Bearer {{token}}
 
 ###
 GET http://localhost:8000/ativos/ywgqksofcll4z1z3kqxb2y66
+Authorization: Bearer {{token}}
+
 
 ###
 POST http://localhost:8000/ativos
+Authorization: Bearer {{token}}
 content-type: application/json
 
 {
@@ -15,6 +21,7 @@ content-type: application/json
 
 ###
 PUT http://localhost:8000/ativos
+Authorization: Bearer {{token}}
 content-type: application/json
 
 {
