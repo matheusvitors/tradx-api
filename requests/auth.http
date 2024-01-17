@@ -8,6 +8,6 @@ POST {{hostname}}/login
 Content-Type: application/json
 
 {
-	"nickname": "dev",
+	"username": "dev",
 	"password": "123"
 }

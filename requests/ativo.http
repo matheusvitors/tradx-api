@@ -1,4 +1,4 @@
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImF1dGgiOnRydWV9LCJpYXQiOjE3MDU0MjE0OTQsImV4cCI6MTcwNTQ5MzQ5NH0.K9oLpnT9uY0q152PZ4JUzZFcOXWARLouSzQr1Vn57aM
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImF1dGgiOnRydWV9LCJpYXQiOjE3MDU1MjY2ODMsImV4cCI6MTcwNTYxMzA4M30.ONQHgWiIwh6NJtju0TYDIRMloOHWhWxMs2booDjq_Q0
 
 
 GET http://localhost:8000/ativos
@@ -16,7 +16,8 @@ content-type: application/json
 
 {
     "nome": "teste",
-    "acronimo": "TSTE1"
+    "acronimo": "TSTE1",
+	"tipo": "indice"
 }
 
 ###
@@ -27,7 +28,8 @@ content-type: application/json
 {
 	"id": "yecfbqf2hw1glgem64w7b8ov",
     "nome": "teste",
-    "acronimo": "XSTE2"
+    "acronimo": "XSTE2",
+	"tipo": "indice"
 }
 
 

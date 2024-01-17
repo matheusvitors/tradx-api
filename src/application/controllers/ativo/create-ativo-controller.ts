@@ -10,13 +10,15 @@ interface CreateAtivoControllerParams {
 	input: {
 		nome: string;
 		acronimo: string;
+		tipo: string;
 	}
 }
 
 export const createAtivoController = async ({ repository, input }: CreateAtivoControllerParams): Promise<ResponseData> => {
 
 	try {
-		const ativo: Ativo = { id: newID(), nome: input.nome, acronimo: input.acronimo };
+
+		const ativo: Partial<Ativo> = { id: newID(), nome: input.nome, acronimo: input.acronimo, tipo: input.tipo === 'acao' ? 'acao' : 'indice' };
 		validateAtivo(ativo);
 
 		await repository.create(ativo);
