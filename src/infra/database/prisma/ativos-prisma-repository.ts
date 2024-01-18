@@ -8,7 +8,8 @@ export const ativosPrismaRepository: Repository<Ativo> = {
 		const ativos: Ativo[] = data.map(ativo => { return {
 			id: ativo.id,
 			nome: ativo.nome,
-			acronimo: ativo.acronimo
+			acronimo: ativo.acronimo,
+			tipo: ativo.tipo === 'acao' ? 'acao' : 'indice'
 		}})
 
 		return ativos;
@@ -20,7 +21,8 @@ export const ativosPrismaRepository: Repository<Ativo> = {
 			const ativo: Ativo = {
 				id: data.id,
 				nome: data.nome,
-				acronimo: data.acronimo
+				acronimo: data.acronimo,
+				tipo: data.tipo === 'acao' ? 'acao' : 'indice'
 			}
 			return ativo;
 		}
@@ -28,17 +30,42 @@ export const ativosPrismaRepository: Repository<Ativo> = {
 		return null;
 
 	},
+
 	find: function (field: string | number | symbol, value: any): Promise<any> {
 		throw new Error("Function not implemented.");
 	},
+
 	filter: function (field: string | number | symbol, value: any): Promise<Ativo[] | null> {
 		throw new Error("Function not implemented.");
 	},
+
 	create: async (data: Ativo): Promise<Ativo> => {
-		return await databaseClient.ativo.create({ data });
+		const result = await databaseClient.ativo.create({ data });
+
+		const ativo: Ativo = {
+			id: result.id,
+			nome: result.nome,
+			acronimo: result.acronimo,
+			tipo: result.tipo === 'acao' ? 'acao' : 'indice'
+		}
+		return ativo;
+
 	},
-	edit: async (data: Ativo): Promise<Ativo> => {
-		return await databaseClient.ativo.update({where: {id: data.id}, data});
+	edit: async (data: Ativo): Promise<Ativo | null> => {
+		const result = await databaseClient.ativo.update({where: {id: data.id}, data});
+
+		if(result) {
+			const ativo: Ativo = {
+				id: result.id,
+				nome: result.nome,
+				acronimo: result.acronimo,
+				tipo: result.tipo === 'acao' ? 'acao' : 'indice'
+			}
+			return ativo;
+		}
+
+		return null;
+
 	},
 	remove: async (id: string): Promise<void> => {
 		await databaseClient.ativo.delete({where: {id}})
