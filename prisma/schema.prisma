@@ -27,9 +27,9 @@ model Operacao {
     precoEntrada    Int
     stopLoss        Int
     alvo            Int
-    precoSaida      Int
+    precoSaida      Int?
     dataEntrada     DateTime
-    dataSaida       DateTime
+    dataSaida       DateTime?
     margem          Int
     operacaoPerdida Boolean
     operacaoErrada  Boolean

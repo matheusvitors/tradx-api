@@ -1,10 +1,8 @@
-import { Ativo } from "@/core/models/ativo";
-
-export interface Operacao {
+export interface OperacaoDTO {
 	id: string;
-	ativo: Ativo;
+	ativoId: string;
 	quantidade: number;
-	tipo: 'compra' | 'venda';
+	tipo: string;
 	precoEntrada: number;
 	stopLoss: number;
 	alvo: number;

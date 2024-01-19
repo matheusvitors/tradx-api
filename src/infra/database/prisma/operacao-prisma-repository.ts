@@ -1,14 +1,32 @@
+import { OperacaoDTO } from "@/application/dto/operacao-dto";
 import { Repository } from "@/core/interfaces";
 import { Operacao } from "@/core/models";
 import { databaseClient } from "@/infra/database/client";
+import { toOperacao } from "@/utils/transforms";
 
 export const operacaoPrismaRepository: Repository<Operacao> = {
 	list: async (): Promise<Operacao[]> => {
-		throw new Error("Function not implemented.");
+		try {
+			const data = await databaseClient.operacao.findMany({include: {ativo: true}});
+			const operacoes: Operacao[] = data.map(operacao => {
+				return toOperacao(operacao);
+			})
+
+			return operacoes;
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
 	},
 
 	get: async (id: string): Promise<Operacao | null> => {
-		throw new Error("Function not implemented.");
+		const data = await databaseClient.operacao.findUnique({ where: {id}});
+		if(data) {
+			const operacao: Operacao = toOperacao(data);
+			return operacao;
+		}
+
+		return null;
 	},
 
 	find: async (field: keyof Operacao, value: any): Promise<Operacao | null> => {
@@ -19,12 +37,27 @@ export const operacaoPrismaRepository: Repository<Operacao> = {
 		throw new Error("Function not implemented.");
 	},
 
-	create: async (data: Operacao): Promise<Operacao> => {
-		throw new Error("Function not implemented.");
-	},
+	create: async (data: OperacaoDTO): Promise<Operacao> => {
+		try {
+			const result = await databaseClient.operacao.create({ data });
+			const operacao: Operacao = toOperacao(result);
+			return operacao;
 
-	edit: async (data: Operacao): Promise<Operacao | null> => {
-		throw new Error("Function not implemented.");
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+},
+
+	edit: async (data: OperacaoDTO): Promise<Operacao | null> => {
+		const result = await databaseClient.operacao.update({where: {id: data.id}, data});
+
+		if(result) {
+			const operacao: Operacao = toOperacao(result);
+			return operacao;
+			}
+
+		return null;
 	},
 
 	remove: async (id: string): Promise<void> => {

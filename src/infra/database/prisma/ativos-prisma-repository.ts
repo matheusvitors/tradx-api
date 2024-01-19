@@ -1,16 +1,12 @@
 import { Repository } from "@/core/interfaces";
 import { Ativo } from "@/core/models";
 import { databaseClient } from "@/infra/database/client";
+import { toAtivo } from "@/utils/transforms";
 
 export const ativosPrismaRepository: Repository<Ativo> = {
 	list: async (): Promise<Ativo[]> => {
 		const data = await databaseClient.ativo.findMany();
-		const ativos: Ativo[] = data.map(ativo => { return {
-			id: ativo.id,
-			nome: ativo.nome,
-			acronimo: ativo.acronimo,
-			tipo: ativo.tipo === 'acao' ? 'acao' : 'indice'
-		}})
+		const ativos: Ativo[] = data.map(ativo => { return toAtivo(ativo)})
 
 		return ativos;
 	},
@@ -18,17 +14,11 @@ export const ativosPrismaRepository: Repository<Ativo> = {
 		const data = await databaseClient.ativo.findUnique({ where: {id}});
 
 		if(data) {
-			const ativo: Ativo = {
-				id: data.id,
-				nome: data.nome,
-				acronimo: data.acronimo,
-				tipo: data.tipo === 'acao' ? 'acao' : 'indice'
-			}
+			const ativo: Ativo = toAtivo(data);
 			return ativo;
 		}
 
 		return null;
-
 	},
 
 	find: function (field: string | number | symbol, value: any): Promise<any> {
@@ -41,13 +31,7 @@ export const ativosPrismaRepository: Repository<Ativo> = {
 
 	create: async (data: Ativo): Promise<Ativo> => {
 		const result = await databaseClient.ativo.create({ data });
-
-		const ativo: Ativo = {
-			id: result.id,
-			nome: result.nome,
-			acronimo: result.acronimo,
-			tipo: result.tipo === 'acao' ? 'acao' : 'indice'
-		}
+		const ativo: Ativo = toAtivo(result);
 		return ativo;
 
 	},
@@ -55,12 +39,7 @@ export const ativosPrismaRepository: Repository<Ativo> = {
 		const result = await databaseClient.ativo.update({where: {id: data.id}, data});
 
 		if(result) {
-			const ativo: Ativo = {
-				id: result.id,
-				nome: result.nome,
-				acronimo: result.acronimo,
-				tipo: result.tipo === 'acao' ? 'acao' : 'indice'
-			}
+			const ativo: Ativo = toAtivo(result);
 			return ativo;
 		}
 

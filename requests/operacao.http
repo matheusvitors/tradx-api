@@ -1,0 +1,47 @@
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImF1dGgiOnRydWV9LCJpYXQiOjE3MDU2ODU4ODYsImV4cCI6MTcwNTc1Nzg4Nn0.NujxvGeeE62xBLdAlpq5vSu7SUpb21Kv8xVOKQiP9wE
+@path = operacoes
+
+GET http://localhost:8000/{{path}}
+Authorization: Bearer {{token}}
+
+###
+GET http://localhost:8000/ativos/ywgqksofcll4z1z3kqxb2y66
+Authorization: Bearer {{token}}
+
+
+###
+POST http://localhost:8000/{{path}}
+Authorization: Bearer {{token}}
+content-type: application/json
+
+{
+	"ativoId": "",
+	"quantidade": 1,
+	"tipo": "compra",
+	"precoEntrada": 1000,
+	"stopLoss": 900,
+	"alvo": 1500,
+	"precoSaida": 1500,
+	"dataEntrada": "2024-01-19 15:25:00",
+	"dataSaida": "2024-01-19 16:25:00",
+	"margem": 100,
+	"operacaoPerdida": false,
+	"operacaoErrada": false
+}
+
+###
+PUT http://localhost:8000/ativos
+Authorization: Bearer {{token}}
+content-type: application/json
+
+{
+	"id": "yecfbqf2hw1glgem64w7b8ov",
+    "nome": "teste",
+    "acronimo": "XSTE2",
+	"tipo": "indice"
+}
+
+
+
+
+

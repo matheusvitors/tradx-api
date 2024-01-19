@@ -1,7 +1,7 @@
+import { Router, Request, Response} from 'express'
 import { createAtivoController, editAtivoController, getAtivoController, listAtivosController, removeAtivoController } from '@/application/controllers/ativo';
 import { route } from '@/infra/adapters/route';
 import { ativosPrismaRepository } from '@/infra/database/prisma/ativos-prisma-repository';
-import { Router, Request, Response} from 'express'
 
 const router = Router();
 const repository = ativosPrismaRepository;
@@ -17,7 +17,11 @@ router.get('/ativos/:id', async (request: Request, response: Response) => {
 })
 
 router.post('/ativos', async (request: Request, response: Response) => {
-	const responseData = await createAtivoController({repository, input: {nome: request.body.nome, acronimo: request.body.acronimo}});
+	const responseData = await createAtivoController({repository, input: {
+		nome: request.body.nome,
+		acronimo: request.body.acronimo,
+		tipo: request.body.tipo,
+	}});
 	return route({ response, responseData });
 })
 
@@ -25,7 +29,8 @@ router.put('/ativos', async (request: Request, response: Response) => {
 	const responseData = await editAtivoController({repository, input: {
 		id: request.body.id,
 		nome: request.body.nome,
-		acronimo: request.body.acronimo
+		acronimo: request.body.acronimo,
+		tipo: request.body.tipo,
 	}});
 	return route({ response, responseData });
 })
