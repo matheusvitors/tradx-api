@@ -1,11 +1,11 @@
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImF1dGgiOnRydWV9LCJpYXQiOjE3MDU2ODU4ODYsImV4cCI6MTcwNTc1Nzg4Nn0.NujxvGeeE62xBLdAlpq5vSu7SUpb21Kv8xVOKQiP9wE
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImF1dGgiOnRydWV9LCJpYXQiOjE3MDU4NjA2NTYsImV4cCI6MTcwNTk0NzA1Nn0.IsRwrZ05wo_zAPOT9mZ_XjszHFeZ0ef5_htRCH5GlYQ
 @path = operacoes
 
 GET http://localhost:8000/{{path}}
 Authorization: Bearer {{token}}
 
 ###
-GET http://localhost:8000/ativos/ywgqksofcll4z1z3kqxb2y66
+GET http://localhost:8000/{{path}}/ideo5c6ahm0actaquo5hgr3w
 Authorization: Bearer {{token}}
 
 
@@ -15,7 +15,7 @@ Authorization: Bearer {{token}}
 content-type: application/json
 
 {
-	"ativoId": "",
+	"ativoId": "jyl4nscqp6393veu6wtcn73j",
 	"quantidade": 1,
 	"tipo": "compra",
 	"precoEntrada": 1000,

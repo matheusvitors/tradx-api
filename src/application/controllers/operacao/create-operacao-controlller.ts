@@ -33,8 +33,8 @@ export const createOperacaoController = async ({ repository, input }: CreateOper
 		console.log(operacao);
 		validateOperacao(operacao);
 
-		await repository.create(operacao);
-		return success(operacao);
+		const createdOperacao = await repository.create(operacao);
+		return success(createdOperacao);
 
 	} catch (error) {
 		if(error instanceof ValidationError) {

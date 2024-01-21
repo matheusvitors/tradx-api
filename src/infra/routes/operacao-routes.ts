@@ -1,7 +1,7 @@
 import { Router, Request, Response} from 'express'
 import { operacaoPrismaRepository } from '@/infra/database/prisma';
 import { route } from '@/infra/adapters/route';
-import { createOperacaoController, listOperacaoController } from '@/application/controllers/operacao';
+import { createOperacaoController, getOperacaoController, listOperacaoController } from '@/application/controllers/operacao';
 
 const router = Router();
 const repository = operacaoPrismaRepository;
@@ -13,7 +13,7 @@ router.get(`${path}`, async (request: Request, response: Response) => {
 })
 
 router.get(`${path}/:id`, async (request: Request, response: Response) => {
-	const responseData = await listOperacaoController(repository);
+	const responseData = await getOperacaoController({repository, id: request.params.id});
 	return route({ response, responseData });
 })
 

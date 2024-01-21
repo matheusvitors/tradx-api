@@ -1,11 +1,11 @@
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImF1dGgiOnRydWV9LCJpYXQiOjE3MDU2MTQxMTcsImV4cCI6MTcwNTcwMDUxN30.DadoQ2E2bOOT6jb0YkLgISEcjEm2gVKZqIwIwGKUwDs
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImF1dGgiOnRydWV9LCJpYXQiOjE3MDU4NjA2NTYsImV4cCI6MTcwNTk0NzA1Nn0.IsRwrZ05wo_zAPOT9mZ_XjszHFeZ0ef5_htRCH5GlYQ
 
 
 GET http://localhost:8000/ativos
 Authorization: Bearer {{token}}
 
 ###
-GET http://localhost:8000/ativos/ywgqksofcll4z1z3kqxb2y66
+GET http://localhost:8000/ativos/jyl4nscqp6393veu6wtcn73j
 Authorization: Bearer {{token}}
 
 
