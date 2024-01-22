@@ -1,4 +1,4 @@
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImF1dGgiOnRydWV9LCJpYXQiOjE3MDU4NjA2NTYsImV4cCI6MTcwNTk0NzA1Nn0.IsRwrZ05wo_zAPOT9mZ_XjszHFeZ0ef5_htRCH5GlYQ
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImF1dGgiOnRydWV9LCJpYXQiOjE3MDU5NTI1NDksImV4cCI6MTcwNjAyNDU0OX0.1NIiPpLVVL0ZM7cr7K_zA63nljgM9Lxgkm7kyK8ZK4A
 @path = operacoes
 
 GET http://localhost:8000/{{path}}
@@ -15,7 +15,7 @@ Authorization: Bearer {{token}}
 content-type: application/json
 
 {
-	"ativoId": "jyl4nscqp6393veu6wtcn73j",
+	"ativoId": "yecfbqf2hw1glgem64w7b8ov",
 	"quantidade": 1,
 	"tipo": "compra",
 	"precoEntrada": 1000,
@@ -30,16 +30,26 @@ content-type: application/json
 }
 
 ###
-PUT http://localhost:8000/ativos
+PUT http://localhost:8000/{{path}}
 Authorization: Bearer {{token}}
 content-type: application/json
 
 {
-	"id": "yecfbqf2hw1glgem64w7b8ov",
-    "nome": "teste",
-    "acronimo": "XSTE2",
-	"tipo": "indice"
+	"id": "vyppxjbt2v4l72li2jqiwvdp",
+	"ativoId": "yecfbqf2hw1glgem64w7b8ov",
+	"quantidade": 1,
+	"tipo": "compra",
+	"precoEntrada": 1000,
+	"stopLoss": 900,
+	"alvo": 1500,
+	"precoSaida": 1400,
+	"dataEntrada": "2024-01-19 9:25:00",
+	"dataSaida": "2024-01-21 11:10:00",
+	"margem": 100,
+	"operacaoPerdida": false,
+	"operacaoErrada": false
 }
+
 
 
 

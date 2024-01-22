@@ -55,12 +55,15 @@ export const operacaoPrismaRepository: Repository<Operacao> = {
 },
 
 	edit: async (data: OperacaoDTO): Promise<Operacao | null> => {
-		const result = await databaseClient.operacao.update({where: {id: data.id}, data});
+		const {id, ...restData} = data;
+		const result = await databaseClient.operacao.update({where: {id}, data: restData});
 
 		if(result) {
-			const operacao: Operacao = toOperacao(result);
+			let {ativoId, ...cleanResult } = result;
+			const ativo = await ativosPrismaRepository.get(ativoId);
+			const operacao: Operacao = toOperacao({...cleanResult, ativo: toAtivo(ativo)});
 			return operacao;
-			}
+		}
 
 		return null;
 	},
