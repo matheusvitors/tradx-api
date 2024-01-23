@@ -7,7 +7,9 @@
 		"start": "node dist/server.js",
 		"build": "tsup src",
 		"dev": "dotenv -e .env nodemon src/server.ts",
-		"upgrade": "ncu -u && npm i"
+		"upgrade": "ncu -u && npm i",
+		"test": "vitest run",
+		"test:watch": "vitest watch"
 	},
 	"keywords": [],
 	"author": "",
@@ -35,6 +37,7 @@
 		"tsconfig-paths": "^4.2.0",
 		"tsup": "^8.0.1",
 		"tsx": "^4.7.0",
-		"typescript": "^5.3.3"
+		"typescript": "^5.3.3",
+		"vitest": "^1.2.1"
 	}
 }

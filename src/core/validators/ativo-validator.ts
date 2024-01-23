@@ -1,5 +1,5 @@
 import { ValidationError } from "@/application/errors";
-import { Ativo } from "@/core/models";
+import { Ativo, ativoTypes } from "@/core/models";
 
 export const validateAtivo = (ativo: Partial<Ativo>) => {
 	if(!ativo.id) {
@@ -13,4 +13,10 @@ export const validateAtivo = (ativo: Partial<Ativo>) => {
 	if(!ativo.acronimo || ativo.acronimo.length < 3) {
 		throw new ValidationError('O acronimo deve conter pelo menos 3 caracteres.');
 	}
+
+	if(!ativo.tipo || !ativoTypes.includes(ativo.tipo)) {
+		throw new ValidationError('O ativo deverá ter o tipo índice ou ação.');
+	}
+
+
 }
