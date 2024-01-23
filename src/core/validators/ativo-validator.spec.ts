@@ -1,7 +1,7 @@
+import { it, expect, describe } from 'vitest';
 import { ValidationError } from '@/application/errors';
 import { Ativo } from '@/core/models';
 import { validateAtivo } from '@/core/validators/ativo-validator';
-import { it, expect, describe } from 'vitest';
 
 describe('Ativo Validator', () => {
 	it('should validate a ativo', () => {
