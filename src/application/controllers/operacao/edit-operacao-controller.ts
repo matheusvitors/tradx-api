@@ -20,7 +20,6 @@ export const editOperacaoController = async ({ repository, input }: EditOperacao
 		if(!operacao) {
 			return notFound();
 		}
-		console.log('operacao', operacao);
 
 		const editedOperacao = await repository.edit(input);
 		return success({ operacao: editedOperacao});

@@ -1,7 +1,7 @@
 import { Router, Request, Response} from 'express'
 import { operacaoPrismaRepository } from '@/infra/database/prisma';
 import { route } from '@/infra/adapters/route';
-import { createOperacaoController, editOperacaoController, getOperacaoController, listOperacaoController } from '@/application/controllers/operacao';
+import { createOperacaoController, editOperacaoController, getOperacaoController, listOperacaoController, removeOperacaoController } from '@/application/controllers/operacao';
 
 const router = Router();
 const repository = operacaoPrismaRepository;
@@ -51,6 +51,12 @@ router.put(`${path}`, async (request: Request, response: Response) => {
 		operacaoPerdida: request.body.operacaoPerdida,
 		operacaoErrada: request.body.operacaoErrada
 	}});
+	return route({ response, responseData });
+})
+
+
+router.delete(`${path}/:id`, async (request: Request, response: Response) => {
+	const responseData = await removeOperacaoController({repository, id: request.params.id});
 	return route({ response, responseData });
 })
 

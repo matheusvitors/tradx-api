@@ -30,7 +30,6 @@ export const createOperacaoController = async ({ repository, input }: CreateOper
 			operacaoErrada: input.operacaoErrada
 		};
 
-		console.log(operacao);
 		validateOperacao(operacao);
 
 		const createdOperacao = await repository.create(operacao);

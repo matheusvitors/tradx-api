@@ -1,4 +1,4 @@
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImF1dGgiOnRydWV9LCJpYXQiOjE3MDU5NTI1NDksImV4cCI6MTcwNjAyNDU0OX0.1NIiPpLVVL0ZM7cr7K_zA63nljgM9Lxgkm7kyK8ZK4A
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImF1dGgiOnRydWV9LCJpYXQiOjE3MDYwMTUyMDAsImV4cCI6MTcwNjA4NzIwMH0.iF341yAYe21mLE6Y4Cqip3c9uP3fONOR7zj2kn-h4CI
 @path = operacoes
 
 GET http://localhost:8000/{{path}}
@@ -49,6 +49,10 @@ content-type: application/json
 	"operacaoPerdida": false,
 	"operacaoErrada": false
 }
+###
+
+DELETE http://localhost:8000/{{path}}/ecw2y2qb7glgtfpves057y1d
+Authorization: Bearer {{token}}
 
 
 
