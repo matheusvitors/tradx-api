@@ -8,7 +8,7 @@
 		"build": "tsup src",
 		"dev": "dotenv -e .env nodemon src/server.ts",
 		"upgrade": "ncu -u && npm i",
-		"test": "vitest run",
+		"test": "vitest run --coverage",
 		"test:watch": "vitest watch",
 		"test:single": "vitest related ./src/core/validators/operacao-validator.spec.ts"
 	},
@@ -31,6 +31,7 @@
 		"@types/express": "^4.17.21",
 		"@types/jsonwebtoken": "^9.0.5",
 		"@types/node": "^20.11.5",
+		"@vitest/coverage-v8": "^1.2.1",
 		"dotenv-cli": "^7.3.0",
 		"nodemon": "^3.0.3",
 		"prisma": "^5.8.1",

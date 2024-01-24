@@ -126,9 +126,9 @@ describe('Operacao Validator', () => {
 			tipo: 'compra',
 			precoEntrada: 10,
 			stopLoss: 5,
-			alvo: -20,
+			alvo: 20,
 			dataEntrada: new Date('23/01/2024, 15:45:00'),
-			margem: 10,
+			margem: -10,
 			operacaoPerdida: false,
 			operacaoErrada: false
 		};
@@ -140,7 +140,6 @@ describe('Operacao Validator', () => {
 		expect(() => validateOperacao(input5)).toThrow(ValidationError);
 	});
 
-
 	it('should not validate if dataSaida is before dataEntrada', () => {
 		const input: OperacaoDTO = {
 			id: 'abc',
@@ -150,8 +149,27 @@ describe('Operacao Validator', () => {
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: new Date('23/01/2024, 15:45:00'),
-			dataSaida: new Date('22/01/2024, 15:45:00'),
+			dataEntrada: new Date('2024-01-23 15:45:00'),
+			dataSaida: new Date('2024-01-22 15:45:00'),
+			margem: 10,
+			operacaoPerdida: false,
+			operacaoErrada: false
+		};
+
+		expect(() => validateOperacao(input)).toThrow(ValidationError);
+	});
+
+	it('should not validate if tipo is wrong', () => {
+		const input: OperacaoDTO = {
+			id: 'abc',
+			ativoId: '123',
+			quantidade: 10,
+			tipo: 'nada',
+			precoEntrada: 10,
+			stopLoss: 5,
+			alvo: 20,
+			dataEntrada: new Date('2024-01-23 15:45:00'),
+			dataSaida: new Date('2024-01-24 15:45:00'),
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false
