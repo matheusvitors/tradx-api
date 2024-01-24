@@ -10,6 +10,24 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
+model Usuario {
+    id       String  @id @unique
+    nome     String
+    username String  @unique
+    password String
+    email    String  @unique
+    Conta    Conta[]
+}
+
+model Conta {
+    id        String     @id @unique
+    nome      String
+    tipo      String
+    usuario   Usuario    @relation(fields: [usuarioId], references: [id])
+    usuarioId String
+    Operacao  Operacao[]
+}
+
 model Ativo {
     id       String     @id @unique
     nome     String
@@ -19,9 +37,11 @@ model Ativo {
 }
 
 model Operacao {
-    id              String   @id @unique
-    ativo           Ativo    @relation(fields: [ativoId], references: [id])
+    id              String    @id @unique
+    ativo           Ativo     @relation(fields: [ativoId], references: [id])
     ativoId         String
+    conta           Conta     @relation(fields: [contaId], references: [id])
+    contaId         String
     quantidade      Int
     tipo            String
     precoEntrada    Int

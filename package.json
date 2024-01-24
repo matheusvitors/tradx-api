@@ -10,7 +10,7 @@
 		"upgrade": "ncu -u && npm i",
 		"test": "vitest run --coverage",
 		"test:watch": "vitest watch",
-		"test:single": "vitest related ./src/core/validators/operacao-validator.spec.ts"
+		"test:single": "vitest related ./src/core/validators/usuario-validator.spec.ts"
 	},
 	"keywords": [],
 	"author": "",

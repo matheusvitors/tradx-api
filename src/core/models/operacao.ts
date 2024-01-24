@@ -1,8 +1,9 @@
-import { Ativo } from "@/core/models/ativo";
+import { Ativo, Conta } from "@/core/models";
 
 export interface Operacao {
 	id: string;
 	ativo: Ativo;
+	conta: Conta;
 	quantidade: number;
 	tipo: 'compra' | 'venda';
 	precoEntrada: number;

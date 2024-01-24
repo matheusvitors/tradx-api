@@ -6,5 +6,4 @@ export interface Ativo {
 }
 
 export const ativoTypes = ['indice', 'acao'] as const;
-
 type AtivoType = (typeof ativoTypes)[number];
