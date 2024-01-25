@@ -1,8 +1,7 @@
 import { Request, Response, Router } from "express";
 import { route } from "@/infra/adapters/route";
 import { serverError, success, unauthorized } from "@/infra/adapters/response-wrapper";
-import { ResponseData } from "@/core/interfaces";
-import { JWT_EXPIRE, PASSWORD, NICKNAME } from "@/infra/config/constants";
+import { PASSWORD, NICKNAME } from "@/infra/config/constants";
 import { jwt } from "@/infra/adapters/jwt";
 
 
