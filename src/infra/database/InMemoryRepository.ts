@@ -30,12 +30,12 @@ export class InMemoryRepository<T extends Entity> implements Repository<T> {
 		return this.data.filter((entity) => entity[field] === value) || null;
 	}
 
-	async create(entity: T): Promise<T> {
+	async create(entity: any): Promise<T> {
 		this.data.push(entity);
 		return entity;
 	}
 
-	async edit(entity: T): Promise<T | null> {
+	async edit(entity: any): Promise<T | null> {
 		const index = this.data.findIndex((e) => e.id === entity.id);
 		if (index !== -1) {
 			this.data[index] = entity;

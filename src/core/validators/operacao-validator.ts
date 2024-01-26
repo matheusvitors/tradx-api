@@ -1,10 +1,10 @@
 import { OperacaoDTO } from "@/application/dto";
 import { ValidationError } from "@/application/errors";
-import { Operacao } from "@/core/models";
+import { Operacao, operacaoTypes } from "@/core/models";
 
 export const validateOperacao = (operacao: Operacao | OperacaoDTO) => {
 
-	const availableTipos = ['compra', 'venda'];
+	const availableTipos: Array<string> = operacaoTypes.map(tipo => tipo);
 
 	if(!availableTipos.includes(operacao.tipo)) {
 		throw new ValidationError("O tipo deve ser compra ou venda.");

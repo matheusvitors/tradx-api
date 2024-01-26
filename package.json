@@ -10,7 +10,7 @@
 		"upgrade": "ncu -u && npm i",
 		"test": "vitest --coverage --ui",
 		"test:watch": "vitest watch --ui",
-		"test:single": "vitest related ./src/application/controllers/get-usuario-controller.spec.ts"
+		"test:single": "vitest related ./src/application/controllers/get-conta-controller.spec.ts"
 	},
 	"keywords": [],
 	"author": "",

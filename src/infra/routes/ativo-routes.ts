@@ -1,7 +1,7 @@
 import { Router, Request, Response} from 'express'
 import { createAtivoController, editAtivoController, getAtivoController, listAtivosController, removeAtivoController } from '@/application/controllers/ativo';
 import { route } from '@/infra/adapters/route';
-import { ativosPrismaRepository } from '@/infra/database/prisma/ativos-prisma-repository';
+import { ativosPrismaRepository } from '@/infra/database/prisma/ativo-prisma-repository';
 
 const router = Router();
 const repository = ativosPrismaRepository;

@@ -18,6 +18,8 @@ export const createAtivoController = async ({ repository, input }: CreateAtivoCo
 
 	try {
 
+		//TODO: verificar se os campos uniques ja existem
+
 		const ativo: Ativo = { id: newID(), nome: input.nome, acronimo: input.acronimo, tipo: input.tipo === 'acao' ? 'acao' : 'indice' };
 		validateAtivo(ativo);
 

@@ -2,7 +2,7 @@ import { OperacaoDTO } from "@/application/dto/operacao-dto";
 import { Repository } from "@/core/interfaces";
 import { Operacao } from "@/core/models";
 import { databaseClient } from "@/infra/database/client";
-import { ativosPrismaRepository } from "@/infra/database/prisma/ativos-prisma-repository";
+import { ativosPrismaRepository } from "@/infra/database/prisma/ativo-prisma-repository";
 import { toAtivo, toOperacao } from "@/utils/transforms";
 
 export const operacaoPrismaRepository: Repository<Operacao> = {
@@ -21,13 +21,18 @@ export const operacaoPrismaRepository: Repository<Operacao> = {
 	},
 
 	get: async (id: string): Promise<Operacao | null> => {
-		const data = await databaseClient.operacao.findUnique({ where: {id}, include: {ativo: true}});
-		if(data) {
-			const operacao: Operacao = toOperacao(data);
-			return operacao;
-		}
+		try {
+			const data = await databaseClient.operacao.findUnique({ where: {id}, include: {ativo: true}});
+			if(data) {
+				const operacao: Operacao = toOperacao(data);
+				return operacao;
+			}
 
-		return null;
+			return null;
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
 	},
 
 	find: async (field: keyof Operacao, value: any): Promise<Operacao | null> => {

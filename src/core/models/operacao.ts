@@ -5,7 +5,7 @@ export interface Operacao {
 	ativo: Ativo;
 	conta: Conta;
 	quantidade: number;
-	tipo: 'compra' | 'venda';
+	tipo: OperacaoType;
 	precoEntrada: number;
 	stopLoss: number;
 	alvo: number;
@@ -18,3 +18,7 @@ export interface Operacao {
 	motivo?: string;
 	comentarios?: string;
 }
+
+export const operacaoTypes = ['compra', 'venda'] as const;
+type OperacaoType = (typeof operacaoTypes)[number];
+
