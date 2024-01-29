@@ -6,7 +6,7 @@ import { describe, expect, it } from "vitest";
 describe('Create Conta Controller', () => {
 	const repository = new InMemoryRepository<Conta>();
 
-	it('should get conta', async () => {
+	it('should create a conta', async () => {
 		const input = {
 			nome: 'teste',
 			tipo: "simulador",

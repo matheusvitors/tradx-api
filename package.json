@@ -8,8 +8,8 @@
 		"build": "tsup src",
 		"dev": "dotenv -e .env nodemon src/server.ts",
 		"upgrade": "ncu -u && npm i",
-		"test": "vitest --coverage --ui",
-		"test:watch": "vitest watch --ui",
+		"test": "vitest run --coverage",
+		"test:watch": "vitest --ui",
 		"test:single": "vitest related ./src/application/controllers/get-conta-controller.spec.ts"
 	},
 	"keywords": [],

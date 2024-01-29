@@ -7,17 +7,13 @@ import { serverError, success, unprocessableEntity } from "@/infra/adapters/resp
 
 interface CreateAtivoControllerParams {
 	repository: Repository<Ativo>;
-	input: {
-		nome: string;
-		acronimo: string;
-		tipo: string;
-	}
+	input: Omit<Ativo, 'id'>
 }
 
-export const createAtivoController = async ({ repository, input }: CreateAtivoControllerParams): Promise<ResponseData> => {
+export const createAtivoController = async (params: CreateAtivoControllerParams): Promise<ResponseData> => {
 
 	try {
-
+		const { input, repository } = params;
 		//TODO: verificar se os campos uniques ja existem
 
 		const ativo: Ativo = { id: newID(), nome: input.nome, acronimo: input.acronimo, tipo: input.tipo === 'acao' ? 'acao' : 'indice' };

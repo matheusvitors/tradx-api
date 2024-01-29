@@ -8,9 +8,9 @@ interface GetAtivoControllerParams {
 	id: string;
 }
 
-export const getAtivoController = async ({ id, repository }: GetAtivoControllerParams): Promise<ResponseData> => {
+export const getAtivoController = async (params: GetAtivoControllerParams): Promise<ResponseData> => {
 	try {
-		const ativo = await get<Ativo>({id, repository});
+		const ativo = await get<Ativo>(params);
 
 		if(!ativo) {
 			return notFound();
