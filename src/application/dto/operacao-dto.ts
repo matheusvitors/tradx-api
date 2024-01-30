@@ -1,6 +1,7 @@
 export interface OperacaoDTO {
 	id: string;
 	ativoId: string;
+	contaId: string;
 	quantidade: number;
 	tipo: string;
 	precoEntrada: number;

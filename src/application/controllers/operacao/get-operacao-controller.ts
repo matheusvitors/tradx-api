@@ -8,9 +8,9 @@ interface GetOperacaoControllerParams {
 	id: string;
 }
 
-export const getOperacaoController = async ({ id, repository }: GetOperacaoControllerParams): Promise<ResponseData> => {
+export const getOperacaoController = async (params: GetOperacaoControllerParams): Promise<ResponseData> => {
 	try {
-		const operacao = await get<Operacao>({id, repository});
+		const operacao = await get<Operacao>(params);
 
 		if(!operacao) {
 			return notFound();

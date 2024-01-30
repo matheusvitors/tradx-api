@@ -19,6 +19,8 @@ export class InMemoryRepository<T extends Entity> implements Repository<T> {
 	}
 
 	async get(id: string): Promise<T | null> {
+		console.log('id', id);
+
 		return this.data.find((entity) => entity.id === id) || null;
 	}
 
