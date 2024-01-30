@@ -10,9 +10,10 @@ interface EditAtivoControllerParams {
 	input: Ativo;
 }
 
-export const editAtivoController = async ({ repository, input }: EditAtivoControllerParams): Promise<ResponseData> => {
+export const editAtivoController = async (params: EditAtivoControllerParams): Promise<ResponseData> => {
 
 	try {
+		const {input, repository } = params
 		validateAtivo(input);
 
 		const ativo = await get<Ativo>({repository, id:input.id});
