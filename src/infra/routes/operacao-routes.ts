@@ -20,6 +20,7 @@ router.get(`${path}/:id`, async (request: Request, response: Response) => {
 router.post(`${path}`, async (request: Request, response: Response) => {
 	const responseData = await createOperacaoController({repository, input: {
 		ativoId: request.body.ativoId,
+		contaId: request.body.contaId,
 		quantidade: request.body.quantidade,
 		tipo: request.body.tipo,
 		precoEntrada: request.body.precoEntrada,
@@ -39,6 +40,7 @@ router.put(`${path}`, async (request: Request, response: Response) => {
 	const responseData = await editOperacaoController({repository, input: {
 		id: request.body.id,
 		ativoId: request.body.ativoId,
+		contaId: request.body.contaId,
 		quantidade: request.body.quantidade,
 		tipo: request.body.tipo,
 		precoEntrada: request.body.precoEntrada,
