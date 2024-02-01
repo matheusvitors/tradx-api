@@ -11,9 +11,10 @@ interface EditOperacaoControllerParams {
 	input: OperacaoDTO;
 }
 
-export const editOperacaoController = async ({ repository, input }: EditOperacaoControllerParams): Promise<ResponseData> => {
+export const editOperacaoController = async (params: EditOperacaoControllerParams): Promise<ResponseData> => {
 
 	try {
+		const { repository, input } = params;
 		validateOperacao(input);
 
 		const operacao = await get<Operacao>({repository, id:input.id});

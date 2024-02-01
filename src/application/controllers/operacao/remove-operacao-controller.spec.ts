@@ -7,47 +7,28 @@ describe('Remove Operacao Controller', () => {
 	const repository = new InMemoryRepository<Operacao>();
 
 	beforeAll(() => {
-		const input: Operacao = {
-			id: "abc",
-			ativo: {
-				id: "123",
-				nome: "Teste",
-				acronimo: "TSTE1",
-				tipo: "indice",
-			},
-			conta: {
-				id: "efg",
-				nome: "teste",
-				tipo: "simulador",
-				usuario: {
-					id: "hij",
-					nome: "Teste",
-					username: "teste",
-					password: "123",
-					email: "teste@teste.com",
-				},
-			},
-			quantidade: 1,
-			tipo: "compra",
-			precoEntrada: 10,
-			stopLoss: 5,
-			alvo: 20,
-			dataEntrada: new Date(),
-			margem: 10,
-			operacaoPerdida: false,
-			operacaoErrada: false,
-		};
-		repository.create(input);
-	});
+		repository.create({
+			id: 'abc',
+			nome: 'teste',
+			tipo: "simulador",
+			usuario: {
+				id: 'xyz',
+				nome: 'Teste',
+				username: 'teste',
+				password: '123',
+				email: 'teste@teste.com'
+			}
 
+		})
+	})
 
-	it('should remove operacao', async () => {
+	it('should remove Operacao', async () => {
 		const response = await removeOperacaoController({id: 'abc', repository});
 		expect(response.status).toEqual(200);
 		expect(repository.data.length).toEqual(0);
 	});
 
-	it('should return 404 if operacao not found', async () => {
+	it('should return 404 if Operacao not found', async () => {
 		const response = await getOperacaoController({id: 'eee', repository});
 		expect(response.status).toEqual(404)
 	});

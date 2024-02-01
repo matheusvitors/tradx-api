@@ -8,17 +8,16 @@ describe('Create Operacao Controller', () => {
 	const repository = new InMemoryRepository<Operacao>();
 
 	it('should create a operacao', async () => {
-		const input: OperacaoDTO = {
-			id: "",
-			ativoId: "",
-			contaId: "",
-			quantidade: 0,
-			tipo: "",
-			precoEntrada: 0,
-			stopLoss: 0,
-			alvo: 0,
-			dataEntrada: undefined,
-			margem: 0,
+		const input: Omit<OperacaoDTO, 'id'> = {
+			ativoId: "aaa",
+			contaId: "ccc",
+			quantidade: 1,
+			tipo: "compra",
+			precoEntrada: 10,
+			stopLoss: 5,
+			alvo: 20,
+			dataEntrada: new Date(),
+			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false
 		}
@@ -28,11 +27,18 @@ describe('Create Operacao Controller', () => {
 	});
 
 	it('should return 422 when pass invalid data', async () => {
-		const input = {
-			id: 'abc',
-			nome: 't',
-			tipo: "simulador",
-			usuarioId: 'xyz',
+		const input: Omit<OperacaoDTO, 'id'> = {
+			ativoId: "aaa",
+			contaId: "ccc",
+			quantidade: 1,
+			tipo: "teste",
+			precoEntrada: 10,
+			stopLoss: 5,
+			alvo: 20,
+			dataEntrada: new Date(),
+			margem: 10,
+			operacaoPerdida: false,
+			operacaoErrada: false
 		}
 
 		const response = await createOperacaoController({repository, input});

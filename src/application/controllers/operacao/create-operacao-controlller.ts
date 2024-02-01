@@ -8,15 +8,16 @@ import { success, unprocessableEntity, serverError } from "@/infra/adapters/resp
 
 interface CreateOperacaoControllerParams {
 	repository: Repository<Operacao>;
-	input: Omit<OperacaoDTO, 'id'>
+	input: Omit<OperacaoDTO, 'id'>;
 }
 
-export const createOperacaoController = async ({ repository, input }: CreateOperacaoControllerParams): Promise<ResponseData> => {
+export const createOperacaoController = async (params: CreateOperacaoControllerParams): Promise<ResponseData> => {
 	try {
-
+		const { repository, input } = params;
 		const operacao: OperacaoDTO = {
 			id: newID(),
 			ativoId: input.ativoId,
+			contaId: input.contaId,
 			quantidade: input.quantidade,
 			tipo: input.tipo,
 			precoEntrada: input.precoEntrada,
@@ -24,10 +25,10 @@ export const createOperacaoController = async ({ repository, input }: CreateOper
 			alvo: input.alvo,
 			precoSaida: input.precoSaida,
 			dataEntrada: new Date(input.dataEntrada),
-			dataSaida: input.dataSaida ? new Date(input.dataSaida): undefined,
+			dataSaida: input.dataSaida ? new Date(input.dataSaida) : undefined,
 			margem: input.margem,
 			operacaoPerdida: input.operacaoPerdida,
-			operacaoErrada: input.operacaoErrada
+			operacaoErrada: input.operacaoErrada,
 		};
 
 		validateOperacao(operacao);
