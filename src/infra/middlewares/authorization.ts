@@ -1,7 +1,6 @@
 import { jwt } from "@/infra/adapters/jwt";
 import { NextFunction, Request, Response } from "express";
 
-
 export const authorization = async (request: Request, response: Response, next: NextFunction) => {
 
 	try {
@@ -36,6 +35,7 @@ export const authorization = async (request: Request, response: Response, next: 
 			error.name === 'JsonWebTokenError' ||
 			error.name === 'NotBeforeError') {
 			status = 401;
+
 		}
 
 		return response.status(status).json({

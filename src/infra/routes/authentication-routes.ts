@@ -1,26 +1,18 @@
 import { Request, Response, Router } from "express";
 import { route } from "@/infra/adapters/route";
-import { serverError, success, unauthorized } from "@/infra/adapters/response-wrapper";
-import { PASSWORD, NICKNAME } from "@/infra/config/constants";
-import { jwt } from "@/infra/adapters/jwt";
-
+import { authenticationController } from "@/application/controllers/authentication/authentication-controller";
+import { usuarioPrismaRepository } from "@/infra/database/prisma";
 
 const router = Router();
+const repository = usuarioPrismaRepository;
 
 router.post('/login', async (request: Request, response: Response) => {
-	const { username, password } = request.body;
-
-	try {
-		if(NICKNAME !== username || PASSWORD !== password) {
-			return route({ response, responseData: unauthorized() });
-		}
-
-		const token = jwt.encode({payload: {auth: true}});
-
-		return route({ response, responseData: success({token}) });
-	} catch (error) {
-		return route({ response, responseData: serverError(error) });
-	}
+	const responseData = await authenticationController({
+		repository,
+		username: request.body.username,
+		password: request.body.password,
+	});
+	return route({ response, responseData });
 
 })
 

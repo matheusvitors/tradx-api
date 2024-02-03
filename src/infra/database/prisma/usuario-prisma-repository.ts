@@ -10,7 +10,8 @@ export const usuarioPrismaRepository: Repository<Usuario> = {
 		return await databaseClient.usuario.findUnique({ where: {id}});
 	},
 	find: async (field: keyof Usuario, value: any): Promise<Usuario | null> => {
-		throw new Error("Function not implemented.");
+		//TODO: fazer do jeito certo o find do user
+		return await databaseClient.usuario.findUnique({where: {username: value}});
 	},
 	filter: async (field: keyof Usuario, value: any): Promise<Usuario[] | null> => {
 		throw new Error("Function not implemented.");

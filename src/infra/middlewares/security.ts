@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from "express"
 import { RateLimiterMemory } from "rate-limiter-flexible";
 
 const limiter = new RateLimiterMemory({
-	points: NODE_ENV === 'tests' ? 1000 : 5,
+	points: process.env.NODE_ENV === 'tests' ? 1000 : 10,
 	duration: 5
 })
 
