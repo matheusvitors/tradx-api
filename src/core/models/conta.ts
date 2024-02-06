@@ -1,4 +1,4 @@
-import { Usuario } from "@prisma/client";
+import { Usuario } from "@/core/models";
 
 export interface Conta {
 	id: string;
