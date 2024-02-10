@@ -17,7 +17,6 @@ export const createContaController = async (params: CreateContaControllerParams)
 
 		const { input, repository } = params;
 
-		console.log(input);
 		const data: ContaDTO = {
 			id: newID(),
 			nome: input.nome,
