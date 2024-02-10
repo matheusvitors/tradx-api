@@ -9,22 +9,22 @@ import { success, unprocessableEntity, serverError, notFound } from "@/infra/ada
 
 interface EditContaControllerParams {
 	repository: Repository<Conta>;
-	data: ContaDTO;
+	input: ContaDTO;
 }
 
 export const editContaController = async (params: EditContaControllerParams) => {
 	try {
-		const { data, repository } = params;
+		const { input, repository } = params;
 
-		const savedConta = await get<Conta>({repository, id: data.id});
+		const savedConta = await get<Conta>({repository, id: input.id});
 
 		if(!savedConta){
 			return notFound();
 		}
 
-		validateConta(data);
+		validateConta(input);
 
-		const conta = await edit<Conta>({repository, data});
+		const conta = await repository.edit(input);
 
 		return success({conta});
 	} catch (error: any) {

@@ -1,5 +1,5 @@
 import { defineConfig } from "vitest/config";
-import { resolve } from "path";
+import path from "path";
 
 export default defineConfig({
 	root: ".",
@@ -10,5 +10,8 @@ export default defineConfig({
 		clearMocks: true,
 		globals: true,
 		setupFiles: ["dotenv/config"], //this line,
+	},
+	resolve: {
+		alias: [{ find: '@', replacement: path.resolve(__dirname, './src') }],
 	},
 });
