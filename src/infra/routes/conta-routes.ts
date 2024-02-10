@@ -19,6 +19,8 @@ router.get(`${path}/:id`, async (request: Request, response: Response) => {
 });
 
 router.post(`${path}`, async (request: Request, response: Response) => {
+	console.log(request.headers['authorization']?.split(' ')[1]);
+
 	const responseData = await createContaController({repository, input: {
 		nome: request.body.nome,
 		tipo: request.body.tipo,

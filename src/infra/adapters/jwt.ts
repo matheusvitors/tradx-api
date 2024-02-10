@@ -27,6 +27,8 @@ export const jwt = {
 		if (SECRET) {
 			const data = Jwt.verify(jwt, SECRET);
 			if(typeof data === 'string') {
+				console.log('parse', JSON.parse(data));
+
 				return JSON.parse(data);
 			}
 			return data;

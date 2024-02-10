@@ -15,6 +15,6 @@ export const validateConta = (input: ContaDTO) => {
 	}
 
 	if(input.usuarioId === undefined) {
-		throw new ValidationError('O tipo deve ser real ou simulador');
+		throw new ValidationError('O id do usuário está vazio.');
 	}
 }

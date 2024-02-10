@@ -22,9 +22,10 @@ describe("Authentication Controller", () => {
 	it("should authenticate the user", async () => {
 
 		const result = await authenticationController({ repository, username: "teste", password: "123" });
+		const resultId = jwt.verify(result.body.content.token).payload.id;
 
 		expect(result.status).toEqual(200);
-		expect(() => jwt.verify(result.body.content.token)).not.toThrow();
+		expect(resultId).toEqual('abc');
 	});
 
 	it("should return 401 if password is wrong", async () => {

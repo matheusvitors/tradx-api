@@ -14,8 +14,10 @@ interface CreateContaControllerParams {
 
 export const createContaController = async (params: CreateContaControllerParams) => {
 	try {
+
 		const { input, repository } = params;
 
+		console.log(input);
 		const data: ContaDTO = {
 			id: newID(),
 			nome: input.nome,

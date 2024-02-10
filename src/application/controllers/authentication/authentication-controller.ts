@@ -24,7 +24,7 @@ export const authenticationController = async (params: AuthenticationControllerP
 			return unauthorized('Senha incorreta.')
 		}
 
-		const token = jwt.encode({payload: {auth: true}});
+		const token = jwt.encode({payload: {auth: true, id: usuario.id}});
 		return success({token});
 	} catch (error) {
 		console.error(error);
