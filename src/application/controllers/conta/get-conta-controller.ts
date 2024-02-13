@@ -15,7 +15,7 @@ export const getContaController = async (params: GetContaControllerParams) => {
 			return notFound();
 		}
 
-		return success({conta});
+		return success(conta);
 	} catch (error) {
 		return serverError(error);
 	}
