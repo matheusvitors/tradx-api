@@ -27,7 +27,7 @@ router.post(`${path}`, async (request: Request, response: Response) => {
 	return route({ response, responseData });
 });
 
-router.put('/ativos', async (request: Request, response: Response) => {
+router.put(`${path}`, async (request: Request, response: Response) => {
 	const responseData = await editContaController({repository, input: {
 		id: request.body.id,
 		nome: request.body.nome,
@@ -37,7 +37,7 @@ router.put('/ativos', async (request: Request, response: Response) => {
 	return route({ response, responseData });
 })
 
-router.delete('/ativos/:id', async (request: Request, response: Response) => {
+router.delete(`${path}/:id`, async (request: Request, response: Response) => {
 	const responseData = await removeContaController({repository, id: request.params.id});
 	return route({ response, responseData });
 })
