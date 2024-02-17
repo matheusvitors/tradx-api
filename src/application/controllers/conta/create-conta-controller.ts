@@ -9,7 +9,7 @@ import { serverError, success, unprocessableEntity } from "@/infra/adapters/resp
 
 interface CreateContaControllerParams {
 	repository: Repository<Conta>;
-	input: Omit<ContaDTO, 'id'>;
+	input: Omit<ContaDTO, 'id' | 'saldo'>;
 }
 
 export const createContaController = async (params: CreateContaControllerParams) => {
@@ -21,12 +21,14 @@ export const createContaController = async (params: CreateContaControllerParams)
 			id: newID(),
 			nome: input.nome,
 			tipo: input.tipo,
-			usuarioId: input.usuarioId
+			usuarioId: input.usuarioId,
+			saldoInicial: input.saldoInicial || 0.00,
+			saldo: input.saldoInicial || 0.00
 		}
 
 		validateConta(data);
 
-		const conta = await create<Conta>({repository, data});
+		const conta = await repository.create(data)
 
 		return success({conta});
 	} catch (error: any) {

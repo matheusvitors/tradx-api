@@ -20,12 +20,14 @@ model Usuario {
 }
 
 model Conta {
-    id        String     @id @unique
-    nome      String
-    tipo      String
-    usuario   Usuario    @relation(fields: [usuarioId], references: [id])
-    usuarioId String
-    Operacao  Operacao[]
+    id           String     @id @unique
+    nome         String
+    tipo         String
+    usuario      Usuario    @relation(fields: [usuarioId], references: [id])
+    usuarioId    String
+    saldo        Float      @default(0.00)
+    saldoInicial Float      @default(0.00)
+    Operacao     Operacao[]
 }
 
 model Ativo {

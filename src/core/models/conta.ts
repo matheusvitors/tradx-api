@@ -5,6 +5,8 @@ export interface Conta {
 	nome: string;
 	tipo: ContaType;
 	usuario: Usuario;
+	saldo: number;
+	saldoInicial: number;
 }
 
 export const contaTypes = ['real', 'simulador'] as const;

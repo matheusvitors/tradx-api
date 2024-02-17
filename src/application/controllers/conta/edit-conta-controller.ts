@@ -16,7 +16,7 @@ export const editContaController = async (params: EditContaControllerParams) => 
 	try {
 		const { input, repository } = params;
 
-		const savedConta = await get<Conta>({repository, id: input.id});
+		const savedConta = await repository.get(input.id);
 
 		if(!savedConta){
 			return notFound();
@@ -24,7 +24,12 @@ export const editContaController = async (params: EditContaControllerParams) => 
 
 		validateConta(input);
 
-		const conta = await repository.edit(input);
+		const editedConta: ContaDTO = {
+			...input,
+			saldo: (savedConta.saldo - savedConta.saldoInicial) + input.saldoInicial
+		}
+
+		const conta = await repository.edit(editedConta);
 
 		return success({conta});
 	} catch (error: any) {

@@ -1,6 +1,6 @@
 import { ContaDTO } from "@/application/dto";
 import { ValidationError } from "@/application/errors";
-import { Conta, contaTypes } from "@/core/models";
+import { contaTypes } from "@/core/models";
 
 export const validateConta = (input: ContaDTO) => {
 

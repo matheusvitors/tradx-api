@@ -13,6 +13,8 @@ describe('Edit Conta Controller', () => {
 			nome: 'teste',
 			tipo: "simulador",
 			usuarioId: 'xyz',
+			saldoInicial: 0.00,
+			saldo: 0.00
 		})
 	})
 
@@ -21,12 +23,14 @@ describe('Edit Conta Controller', () => {
 			id: 'abc',
 			nome: 'joao',
 			tipo: "real",
+			saldoInicial: 25.10,
 			usuarioId: 'xyz',
 		}
 
 		const response = await editContaController({input, repository});
 		expect(response.status).toEqual(200);
 		expect(repository.data[0].nome).toEqual('joao');
+		expect(repository.data[0].saldo).toEqual(25.10);
 	});
 
 	it('should return 404 if user not found', async () => {
@@ -34,6 +38,7 @@ describe('Edit Conta Controller', () => {
 			id: '123',
 			nome: 'j',
 			tipo: "real",
+			saldoInicial: 25.10,
 			usuarioId: 'xyz',
 		}
 
@@ -46,6 +51,7 @@ describe('Edit Conta Controller', () => {
 			id: 'abc',
 			nome: 'j',
 			tipo: "real",
+			saldoInicial: 25.10,
 			usuarioId: 'xyz',
 		}
 

@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE `conta` ADD COLUMN `saldo` DOUBLE NOT NULL DEFAULT 0.00,
+    ADD COLUMN `saldoInicial` DOUBLE NOT NULL DEFAULT 0.00;

@@ -10,11 +10,13 @@ describe('Create Conta Controller', () => {
 		const input = {
 			nome: 'teste',
 			tipo: "simulador",
+			saldoInicial: 10.35,
 			usuarioId: 'xyz',
 		}
 
 		const response = await createContaController({input, repository});
 		expect(response.status).toEqual(200);
+		expect(repository.data[0].saldo).toEqual(10.35);
 	});
 
 	it('should return 422 when pass invalid data', async () => {
@@ -22,6 +24,7 @@ describe('Create Conta Controller', () => {
 			id: 'abc',
 			nome: 't',
 			tipo: "simulador",
+			saldoInicial: 10.00,
 			usuarioId: 'xyz',
 		}
 

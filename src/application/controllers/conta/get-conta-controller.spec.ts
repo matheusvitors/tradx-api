@@ -11,6 +11,8 @@ describe('Get Conta Controller', () => {
 			id: 'abc',
 			nome: 'teste',
 			tipo: "simulador",
+			saldo: 30.15,
+			saldoInicial: 2.50,
 			usuario: {
 				id: 'xyz',
 				nome: 'Teste',
@@ -24,7 +26,9 @@ describe('Get Conta Controller', () => {
 
 	it('should get conta', async () => {
 		const response = await getContaController({id: 'abc', repository});
-		expect(response.status).toEqual(200)
+		expect(response.status).toEqual(200);
+		expect(repository.data[0].saldo).toEqual(30.15);
+
 	});
 
 	it('should return 404 if conta not found', async () => {

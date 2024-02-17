@@ -8,6 +8,7 @@ describe('Usuario Validator', () => {
 			id: 'abc',
 			nome: 'teste',
 			tipo: 'simulador',
+			saldoInicial: 0,
 			usuarioId: 'efg'
 		}
 
@@ -19,6 +20,7 @@ describe('Usuario Validator', () => {
 			id: 'abc',
 			nome: 't',
 			tipo: 'simulador',
+			saldoInicial: 0,
 			usuarioId: 'efg'
 		}
 
@@ -30,6 +32,7 @@ describe('Usuario Validator', () => {
 			id: 'abc',
 			nome: 'teste',
 			tipo: 'outro',
+			saldoInicial: 0,
 			usuarioId: 'efg'
 		}
 
@@ -41,6 +44,7 @@ describe('Usuario Validator', () => {
 			id: 'abc',
 			nome: 'teste',
 			tipo: 'outro',
+			saldoInicial: 0,
 		}
 
 		// @ts-ignore
