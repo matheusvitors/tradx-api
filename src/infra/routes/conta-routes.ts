@@ -22,6 +22,7 @@ router.post(`${path}`, async (request: Request, response: Response) => {
 	const responseData = await createContaController({repository, input: {
 		nome: request.body.nome,
 		tipo: request.body.tipo,
+		saldoInicial: parseFloat(request.body.saldoInicial),
 		usuarioId: extractUserId(request.headers['authorization']?.split(' ')[1])
 	}});
 	return route({ response, responseData });
@@ -32,6 +33,7 @@ router.put(`${path}`, async (request: Request, response: Response) => {
 		id: request.body.id,
 		nome: request.body.nome,
 		tipo: request.body.tipo,
+		saldoInicial: parseFloat(request.body.saldoInicial),
 		usuarioId: extractUserId(request.headers['authorization']?.split(' ')[1])
 	}});
 	return route({ response, responseData });
