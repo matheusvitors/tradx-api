@@ -26,7 +26,7 @@ export const editContaController = async (params: EditContaControllerParams) => 
 
 		const editedConta: ContaDTO = {
 			...input,
-			saldo: (savedConta.saldo - savedConta.saldoInicial) + input.saldoInicial
+			saldo: savedConta.saldoInicial !== input.saldoInicial ? (savedConta.saldo - savedConta.saldoInicial) + input.saldoInicial : savedConta.saldo
 		}
 
 		const conta = await repository.edit(editedConta);
