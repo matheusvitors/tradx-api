@@ -33,8 +33,8 @@ export const ativosPrismaRepository: Repository<Ativo> = {
 		const result = await databaseClient.ativo.create({ data });
 		const ativo: Ativo = toAtivo(result);
 		return ativo;
-
 	},
+
 	edit: async (data: Ativo): Promise<Ativo | null> => {
 		const result = await databaseClient.ativo.update({where: {id: data.id}, data});
 
