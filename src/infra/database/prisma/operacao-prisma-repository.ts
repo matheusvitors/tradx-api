@@ -1,5 +1,5 @@
 import { OperacaoDTO } from "@/application/dto/operacao-dto";
-import { Repository } from "@/core/interfaces";
+import { Repository } from "@/application/interfaces";
 import { Operacao } from "@/core/models";
 import { databaseClient } from "@/infra/database/client";
 import { ativosPrismaRepository } from "@/infra/database/prisma/ativo-prisma-repository";

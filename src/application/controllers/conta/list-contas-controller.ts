@@ -1,4 +1,4 @@
-import { Repository, ResponseData } from "@/core/interfaces";
+import { Repository, ResponseData } from "@/application/interfaces";
 import { Conta } from "@/core/models";
 import { list } from "@/core/usecases/persist";
 import { serverError, success } from "@/infra/adapters/response-wrapper";

@@ -1,4 +1,4 @@
-import { Repository } from "@/core/interfaces";
+import { Repository } from "@/application/interfaces";
 import { Conta } from "@/core/models";
 import { databaseClient } from "@/infra/database/client";
 import { toConta } from "@/utils/transforms";

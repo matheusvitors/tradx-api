@@ -1,6 +1,6 @@
 import { OperacaoDTO } from "@/application/dto";
 import { ValidationError } from "@/application/errors";
-import { Repository, ResponseData } from "@/core/interfaces";
+import { Repository, ResponseData } from "@/application/interfaces";
 import { Operacao } from "@/core/models";
 import { edit, get } from "@/core/usecases/persist";
 import { validateOperacao } from "@/core/validators";

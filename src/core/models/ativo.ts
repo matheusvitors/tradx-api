@@ -3,6 +3,7 @@ export interface Ativo {
 	nome: string;
 	acronimo: string;
 	tipo: AtivoType;
+	dataVencimento?: Date;
 }
 
 export const ativoTypes = ['indice', 'acao'] as const;

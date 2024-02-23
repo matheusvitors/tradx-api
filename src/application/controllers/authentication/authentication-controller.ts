@@ -1,4 +1,4 @@
-import { Repository, ResponseData } from "@/core/interfaces";
+import { Repository, ResponseData } from "@/application/interfaces";
 import { Usuario } from "@/core/models";
 import { verifyHash } from "@/infra/adapters/encryption";
 import { jwt } from "@/infra/adapters/jwt";

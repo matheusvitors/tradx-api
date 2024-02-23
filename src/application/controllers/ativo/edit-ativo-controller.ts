@@ -1,5 +1,5 @@
 import { ValidationError } from "@/application/errors";
-import { Repository, ResponseData } from "@/core/interfaces";
+import { Repository, ResponseData } from "@/application/interfaces";
 import { Ativo } from "@/core/models";
 import { edit, get } from "@/core/usecases/persist";
 import { validateAtivo } from "@/core/validators";

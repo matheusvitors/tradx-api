@@ -10,22 +10,25 @@ describe('Create Ativo Controller', () => {
 		const input: Omit<Ativo, 'id'> = {
 			nome: 'teste',
 			acronimo: "TSTE1",
-			tipo: "indice"
+			tipo: "indice",
+			dataVencimento: new Date("01/01/2025")
 		}
 
 		const response = await createAtivoController({input, repository});
 		expect(response.status).toEqual(200);
+		expect(repository.data[0].dataVencimento).toEqual(new Date("01/01/2025"));
 	});
 
 	it('should return 422 when pass invalid data', async () => {
 		const input: Omit<Ativo, 'id'> = {
 			nome: 'T',
 			acronimo: "TSTE1",
-			tipo: "indice"
+			tipo: "indice",
+			dataVencimento: new Date("01/01/2025")
 		}
 
 		const response = await createAtivoController({repository, input});
-		expect(response.status).toEqual(422)
+		expect(response.status).toEqual(422);
 	});
 
 	it('should return 500 if have error server', async () => {

@@ -1,5 +1,5 @@
 import { Response } from "express";
-import { ResponseData } from "@/core/interfaces/";
+import { ResponseData } from "@/application/interfaces";
 
 interface RouteParams {
     response: Response;

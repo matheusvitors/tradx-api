@@ -1,4 +1,4 @@
-import { Repository } from "@/core/interfaces";
+import { Repository } from "@/application/interfaces";
 
 interface FilterParams<T> {
 	repository: Repository<T>;

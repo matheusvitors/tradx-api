@@ -31,11 +31,12 @@ model Conta {
 }
 
 model Ativo {
-    id       String     @id @unique
-    nome     String
-    acronimo String     @unique
-    tipo     String
-    Operacao Operacao[]
+    id             String     @id @unique
+    nome           String
+    acronimo       String     @unique
+    tipo           String
+    dataVencimento DateTime?
+    Operacao       Operacao[]
 }
 
 model Operacao {

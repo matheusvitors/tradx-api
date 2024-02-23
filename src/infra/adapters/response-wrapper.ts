@@ -1,4 +1,4 @@
-import { ResponseData } from "@/core/interfaces";
+import { ResponseData } from "@/application/interfaces";
 
 export const success = (content?: any): ResponseData => {
 	return content ? { status: 200, body: {content} } : { status: 200 };

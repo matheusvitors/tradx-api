@@ -1,5 +1,5 @@
 import { ValidationError } from "@/application/errors";
-import { Repository, ResponseData } from "@/core/interfaces";
+import { Repository, ResponseData } from "@/application/interfaces";
 import { Ativo } from "@/core/models";
 import { validateAtivo } from "@/core/validators";
 import { newID } from "@/infra/adapters/newID";
@@ -14,9 +14,16 @@ export const createAtivoController = async (params: CreateAtivoControllerParams)
 
 	try {
 		const { input, repository } = params;
-		//TODO: verificar se os campos uniques ja existem
 
-		const ativo: Ativo = { id: newID(), nome: input.nome, acronimo: input.acronimo, tipo: input.tipo === 'acao' ? 'acao' : 'indice' };
+
+
+		const ativo: Ativo = {
+			id: newID(),
+			nome: input.nome,
+			acronimo: input.acronimo,
+			tipo: input.tipo === 'acao' ? 'acao' : 'indice',
+			dataVencimento: input.dataVencimento
+		};
 		validateAtivo(ativo);
 
 		await repository.create(ativo);

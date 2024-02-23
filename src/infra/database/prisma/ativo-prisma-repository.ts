@@ -1,7 +1,8 @@
-import { Repository } from "@/core/interfaces";
+import { Repository } from "@/application/interfaces";
 import { Ativo } from "@/core/models";
 import { databaseClient } from "@/infra/database/client";
 import { toAtivo } from "@/utils/transforms";
+import { Prisma } from "@prisma/client";
 
 export const ativosPrismaRepository: Repository<Ativo> = {
 	list: async (): Promise<Ativo[]> => {
@@ -21,8 +22,17 @@ export const ativosPrismaRepository: Repository<Ativo> = {
 		return null;
 	},
 
-	find: function (field: string | number | symbol, value: any): Promise<any> {
-		throw new Error("Function not implemented.");
+	find: async  (field: keyof Ativo, value: string): Promise<Ativo | null> => {
+
+		// const where: Prisma.AtivoWhereUniqueInput = { [field]: value };
+		const data = await databaseClient.ativo.findUnique({ where : {[field]: value} });
+
+		if(data) {
+			const ativo: Ativo = toAtivo(data);
+			return ativo;
+		}
+
+		return null;
 	},
 
 	filter: function (field: string | number | symbol, value: any): Promise<Ativo[] | null> {

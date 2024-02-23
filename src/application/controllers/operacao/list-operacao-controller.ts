@@ -1,4 +1,4 @@
-import { Repository, ResponseData } from "@/core/interfaces";
+import { Repository, ResponseData } from "@/application/interfaces";
 import { Operacao } from "@/core/models";
 import { list } from "@/core/usecases/persist";
 import { success, serverError } from "@/infra/adapters/response-wrapper";
