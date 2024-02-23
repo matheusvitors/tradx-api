@@ -2,7 +2,7 @@ import express from "express";
 import helmet from "helmet";
 import 'dotenv/config';
 import { routes } from "@/routes";
-import { PORT } from "@/infra/config/constants";
+import { PORT } from "@/infra/config/environment";
 import { middlewares } from "@/infra/middlewares";
 
 const app = express();

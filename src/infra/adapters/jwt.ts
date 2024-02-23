@@ -1,5 +1,5 @@
 import { JwtError } from "@/application/errors";
-import { JWT_EXPIRE, SECRET } from "@/infra/config/constants";
+import { JWT_EXPIRE, SECRET } from "@/infra/config/environment";
 import Jwt, { JwtPayload } from "jsonwebtoken";
 
 interface JwtEncodeParams {

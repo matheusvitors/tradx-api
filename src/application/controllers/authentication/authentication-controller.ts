@@ -1,5 +1,6 @@
 import { Repository, ResponseData } from "@/core/interfaces";
 import { Usuario } from "@/core/models";
+import { verifyHash } from "@/infra/adapters/encryption";
 import { jwt } from "@/infra/adapters/jwt";
 import { notFound, serverError, success, unauthorized } from "@/infra/adapters/response-wrapper";
 
@@ -20,7 +21,9 @@ export const authenticationController = async (params: AuthenticationControllerP
 			return notFound('Usuário não encontrado.');
 		}
 
-		if(usuario.password !== password) {
+		const isCorrectPassword = await verifyHash(password, usuario.password);
+
+		if(!isCorrectPassword) {
 			return unauthorized('Senha incorreta.')
 		}
 

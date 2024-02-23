@@ -13,7 +13,7 @@ describe("Authentication Controller", () => {
 			id: 'abc',
 			nome: 'Teste',
 			username: 'teste',
-			password: '123',
+			password: '$2a$12$gdJ0ADYecEO2gz19ut3nv.lNJwrlShEufimUSn27vomZlhmRR8Tte',
 			email: 'teste@teste.com'
 		})
 	})
@@ -21,7 +21,7 @@ describe("Authentication Controller", () => {
 
 	it("should authenticate the user", async () => {
 
-		const result = await authenticationController({ repository, username: "teste", password: "123" });
+		const result = await authenticationController({ repository, username: "teste", password: '123456' });
 		const resultId = jwt.verify(result.body.content.token).payload.id;
 
 		expect(result.status).toEqual(200);
@@ -36,7 +36,7 @@ describe("Authentication Controller", () => {
 	});
 
 	it("should return 404 if user not found", async () => {
-		const result = await authenticationController({ repository, username: "dev", password: "123" });
+		const result = await authenticationController({ repository, username: "dev", password: '123456' });
 
 		expect(result.status).toEqual(404);
 	});

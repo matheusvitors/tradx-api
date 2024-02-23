@@ -4,5 +4,4 @@ export const DATABASE_URL = process.env.DATABASE_URL;
 export const AUTHENTICATION = process.env.AUTHENTICATION;
 export const SECRET = process.env.SECRET;
 export const JWT_EXPIRE = process.env.JWT_EXPIRE;
-export const NICKNAME = process.env.NICKNAME;
-export const PASSWORD = process.env.PASSWORD;
+export const ROUNDS = process.env.ROUNDS;

@@ -1,7 +1,7 @@
 import { jwt } from "@/infra/adapters/jwt";
 import { app } from "@/server";
 import { JsonWebTokenError, NotBeforeError, TokenExpiredError, sign, verify } from "jsonwebtoken";
-import { SECRET } from "@/infra/config/constants";
+import { SECRET } from "@/infra/config/environment";
 import { vi, afterEach, expect, describe, it, beforeAll } from "vitest";
 import supertest from "supertest";
 
