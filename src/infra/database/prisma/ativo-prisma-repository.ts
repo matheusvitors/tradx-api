@@ -2,7 +2,6 @@ import { Repository } from "@/application/interfaces";
 import { Ativo } from "@/core/models";
 import { databaseClient } from "@/infra/database/client";
 import { toAtivo } from "@/utils/transforms";
-import { Prisma } from "@prisma/client";
 
 export const ativosPrismaRepository: Repository<Ativo> = {
 	list: async (): Promise<Ativo[]> => {
@@ -11,6 +10,7 @@ export const ativosPrismaRepository: Repository<Ativo> = {
 
 		return ativos;
 	},
+
 	get: async (id: string): Promise<Ativo | null> => {
 		const data = await databaseClient.ativo.findUnique({ where: {id}});
 
@@ -22,10 +22,8 @@ export const ativosPrismaRepository: Repository<Ativo> = {
 		return null;
 	},
 
-	find: async  (field: keyof Ativo, value: string): Promise<Ativo | null> => {
-
-		// const where: Prisma.AtivoWhereUniqueInput = { [field]: value };
-		const data = await databaseClient.ativo.findUnique({ where : {[field]: value} });
+	find: async (field: keyof Ativo, value: any): Promise<Ativo | null> => {
+		const data = await databaseClient.ativo.findFirst({ where: {[field]: value}});
 
 		if(data) {
 			const ativo: Ativo = toAtivo(data);
@@ -34,6 +32,31 @@ export const ativosPrismaRepository: Repository<Ativo> = {
 
 		return null;
 	},
+
+
+	// find: {
+	// 	byId: async (id: string): Promise<Ativo | null> => {
+	// 			const data = await databaseClient.ativo.findUnique({ where: {id} });
+
+	// 			if(data) {
+	// 				const ativo: Ativo = toAtivo(data);
+	// 				return ativo;
+	// 			}
+
+	// 			return null;
+	// 	},
+
+	// 	byAcronimo: async (acronimo: string): Promise<Ativo | null> => {
+	// 		const data = await databaseClient.ativo.findUnique({ where: {acronimo} });
+
+	// 		if(data) {
+	// 			const ativo: Ativo = toAtivo(data);
+	// 			return ativo;
+	// 		}
+
+	// 		return null;
+	// 	},
+	// },
 
 	filter: function (field: string | number | symbol, value: any): Promise<Ativo[] | null> {
 		throw new Error("Function not implemented.");
@@ -56,6 +79,7 @@ export const ativosPrismaRepository: Repository<Ativo> = {
 		return null;
 
 	},
+
 	remove: async (id: string): Promise<void> => {
 		await databaseClient.ativo.delete({where: {id}})
 	}

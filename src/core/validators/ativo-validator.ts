@@ -2,6 +2,8 @@ import { ValidationError } from "@/application/errors";
 import { Ativo, ativoTypes } from "@/core/models";
 
 export const validateAtivo = (ativo: Partial<Ativo>) => {
+	console.log('validate ', ativo);
+
 	if(!ativo.id) {
 		throw new ValidationError('Id inexistente.')
 	}
