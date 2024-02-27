@@ -29,18 +29,9 @@ export const createOperacaoController = async (params: CreateOperacaoControllerP
 			return notFound('Conta não encontrada.');
 		}
 
-		console.log(input.dataEntrada, ativo.dataVencimento);
-
-		//verificar se a data de entrada está dentro da expiração do ativo
 		if(ativo.dataVencimento && (input.dataEntrada > ativo.dataVencimento)) {
 			return unprocessableEntity('Data e horário de entrada fora da validade do ativo.')
 		}
-
-		//verificar se a data de saida está após a data de entrada
-		if(input.dataSaida && (input.dataEntrada < input.dataSaida)) {
-			return unprocessableEntity('Data e horário de entrada fora da validade do ativo.')
-		}
-
 
 		const operacao: OperacaoDTO = {
 			id: newID(),
@@ -65,7 +56,6 @@ export const createOperacaoController = async (params: CreateOperacaoControllerP
 		return success(createdOperacao);
 
 	} catch (error) {
-		console.log(error)
 		if(error instanceof ValidationError) {
 			return unprocessableEntity(error.message);
 		}

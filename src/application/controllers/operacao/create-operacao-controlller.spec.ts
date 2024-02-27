@@ -124,7 +124,7 @@ describe('Create Operacao Controller', () => {
 		expect(response.status).toEqual(422)
 	});
 
-	it('should return 422 when dataSaida is after dataEntrada', async () => {
+	it('should return 422 when dataSaida is before dataEntrada', async () => {
 		const input: Omit<OperacaoDTO, 'id'> = {
 			ativoId: "abc",
 			contaId: "123",
@@ -133,8 +133,8 @@ describe('Create Operacao Controller', () => {
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: new Date(),
-			dataSaida: new Date('03/01/2024'),
+			dataEntrada: new Date('2024-01-23 15:45:00'),
+			dataSaida: new Date('2024-01-22 15:45:00'),
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false

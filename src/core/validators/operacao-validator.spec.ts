@@ -10,6 +10,7 @@ describe('Operacao Validator', () => {
 		const input: OperacaoDTO = {
 			id: 'abc',
 			ativoId: '123',
+			contaId: 'abc',
 			quantidade: 1,
 			tipo: 'compra',
 			precoEntrada: 10,
@@ -30,6 +31,7 @@ describe('Operacao Validator', () => {
 		const input: OperacaoDTO = {
 			id: 'abc',
 			ativoId: '123',
+			contaId: 'abc',
 			quantidade: 1,
 			tipo: 'compra',
 			precoEntrada: 10,
@@ -48,6 +50,7 @@ describe('Operacao Validator', () => {
 		const input: OperacaoDTO = {
 			id: 'abc',
 			ativoId: '123',
+			contaId: 'abc',
 			quantidade: -10,
 			tipo: 'compra',
 			precoEntrada: 10,
@@ -66,6 +69,7 @@ describe('Operacao Validator', () => {
 		const input: OperacaoDTO = {
 			id: 'abc',
 			ativoId: '123',
+			contaId: 'abc',
 			quantidade: 10,
 			tipo: 'compra',
 			precoEntrada: 10,
@@ -81,6 +85,7 @@ describe('Operacao Validator', () => {
 		const input2: OperacaoDTO = {
 			id: 'abc',
 			ativoId: '123',
+			contaId: 'abc',
 			quantidade: 10,
 			tipo: 'compra',
 			precoEntrada: -10,
@@ -94,6 +99,7 @@ describe('Operacao Validator', () => {
 		const input3: OperacaoDTO = {
 			id: 'abc',
 			ativoId: '123',
+			contaId: 'abc',
 			quantidade: 10,
 			tipo: 'compra',
 			precoEntrada: 10,
@@ -108,6 +114,7 @@ describe('Operacao Validator', () => {
 		const input4: OperacaoDTO = {
 			id: 'abc',
 			ativoId: '123',
+			contaId: 'abc',
 			quantidade: 10,
 			tipo: 'compra',
 			precoEntrada: 10,
@@ -122,6 +129,7 @@ describe('Operacao Validator', () => {
 		const input5: OperacaoDTO = {
 			id: 'abc',
 			ativoId: '123',
+			contaId: 'abc',
 			quantidade: 10,
 			tipo: 'compra',
 			precoEntrada: 10,
@@ -144,6 +152,7 @@ describe('Operacao Validator', () => {
 		const input: OperacaoDTO = {
 			id: 'abc',
 			ativoId: '123',
+			contaId: 'abc',
 			quantidade: 10,
 			tipo: 'compra',
 			precoEntrada: 10,
@@ -163,6 +172,7 @@ describe('Operacao Validator', () => {
 		const input: OperacaoDTO = {
 			id: 'abc',
 			ativoId: '123',
+			contaId: 'abc',
 			quantidade: 10,
 			tipo: 'nada',
 			precoEntrada: 10,
