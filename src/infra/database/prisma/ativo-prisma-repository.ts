@@ -33,31 +33,6 @@ export const ativosPrismaRepository: Repository<Ativo> = {
 		return null;
 	},
 
-
-	// find: {
-	// 	byId: async (id: string): Promise<Ativo | null> => {
-	// 			const data = await databaseClient.ativo.findUnique({ where: {id} });
-
-	// 			if(data) {
-	// 				const ativo: Ativo = toAtivo(data);
-	// 				return ativo;
-	// 			}
-
-	// 			return null;
-	// 	},
-
-	// 	byAcronimo: async (acronimo: string): Promise<Ativo | null> => {
-	// 		const data = await databaseClient.ativo.findUnique({ where: {acronimo} });
-
-	// 		if(data) {
-	// 			const ativo: Ativo = toAtivo(data);
-	// 			return ativo;
-	// 		}
-
-	// 		return null;
-	// 	},
-	// },
-
 	filter: function (field: string | number | symbol, value: any): Promise<Ativo[] | null> {
 		throw new Error("Function not implemented.");
 	},

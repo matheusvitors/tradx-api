@@ -5,6 +5,7 @@ export const toAtivo = (input: any): Ativo => {
 		id: input.id,
 		nome: input.nome,
 		acronimo: input.acronimo,
-		tipo: input.tipo === 'acao' ? 'acao' : 'indice'
+		tipo: input.tipo === 'acao' ? 'acao' : 'indice',
+		dataVencimento: input.dataVencimento
 	}
 }

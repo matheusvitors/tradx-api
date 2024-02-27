@@ -7,15 +7,21 @@ describe('Create Ativo Controller', () => {
 	const repository = new InMemoryRepository<Ativo>();
 
 	beforeAll(() => {
-		const input: Ativo = {
+		repository.create({
 			id: "abc",
 			nome: "Teste",
 			acronimo: "TSTE1",
 			tipo: "indice",
 			dataVencimento: new Date("01/01/2025")
-		}
+		})
 
-		repository.create(input)
+		repository.create({
+			id: "def",
+			nome: "Teste 2",
+			acronimo: "TSTE2",
+			tipo: "indice",
+			dataVencimento: new Date("01/01/2025")
+		})
 	})
 
 	it('should edit ativo', async () => {
@@ -56,6 +62,19 @@ describe('Create Ativo Controller', () => {
 		const response = await editAtivoController({input, repository});
 		expect(response.status).toEqual(422);
 	});
+
+	it('should return 409 when pass duplicated acronimo', async () => {
+		const input: Ativo = {
+			id: "abc",
+			nome: 'Teste',
+			acronimo: "TSTE2",
+			tipo: "indice",
+		}
+
+		const response = await editAtivoController({repository, input});
+		expect(response.status).toEqual(409);
+	});
+
 
 	it('should return 500 if have error server', async () => {
 		//@ts-ignore
