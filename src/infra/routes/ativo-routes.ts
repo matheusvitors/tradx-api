@@ -21,6 +21,7 @@ router.post('/ativos', async (request: Request, response: Response) => {
 		nome: request.body.nome,
 		acronimo: request.body.acronimo,
 		tipo: request.body.tipo,
+		dataVencimento: request.body.dataVencimento
 	}});
 	return route({ response, responseData });
 })
@@ -31,6 +32,7 @@ router.put('/ativos', async (request: Request, response: Response) => {
 		nome: request.body.nome,
 		acronimo: request.body.acronimo,
 		tipo: request.body.tipo,
+		dataVencimento: request.body.dataVencimento
 	}});
 	return route({ response, responseData });
 })
