@@ -1,4 +1,4 @@
-import { Repository } from "@/application/interfaces";
+import { FilterParams, Repository } from "@/application/interfaces";
 
 interface Entity {
 	id: string;
@@ -26,8 +26,20 @@ export class InMemoryRepository<T extends Entity> implements Repository<T> {
 		return this.data.find((entity) => entity[field] === value) || null;
 	}
 
-	async filter(field: keyof T, value: any): Promise<T[] | null> {
-		return this.data.filter((entity) => entity[field] === value) || null;
+	async filter(params: FilterParams<T>[]): Promise<T[] | null> {
+		console.log(this.data);
+		console.log(params);
+
+
+		const result = this.data.filter(objeto => {
+			return params.every(condicao => {
+				return objeto[condicao.field] === condicao.value;
+			});
+		});
+
+		console.log(result);
+
+		return result.length > 0 ? result : null;
 	}
 
 	async create(entity: any): Promise<T> {

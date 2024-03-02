@@ -1,9 +1,10 @@
 import { OperacaoDTO } from "@/application/dto/operacao-dto";
-import { Repository } from "@/application/interfaces";
+import { FilterParams, Repository } from "@/application/interfaces";
 import { Operacao } from "@/core/models";
 import { databaseClient } from "@/infra/database/client";
 import { ativosPrismaRepository } from "@/infra/database/prisma/ativo-prisma-repository";
 import { toAtivo, toOperacao } from "@/utils/transforms";
+import { Prisma } from "@prisma/client";
 
 export const operacaoPrismaRepository: Repository<Operacao> = {
 	list: async (): Promise<Operacao[]> => {
@@ -39,8 +40,21 @@ export const operacaoPrismaRepository: Repository<Operacao> = {
 		throw new Error("Function not implemented.");
 	},
 
-	filter: async (field: keyof Operacao, value: any): Promise<Operacao[] | null> => {
-		throw new Error("Function not implemented.");
+	filter: async (params: FilterParams<OperacaoDTO>[]): Promise<Operacao[] | null> => {
+		const where: Prisma.OperacaoWhereInput  = params.reduce(
+			(obj, item) => Object.assign(obj, { [item.field]: item.value }), {});
+
+		try {
+			const data = await databaseClient.operacao.findMany({where,  include: {ativo: true}});
+			const operacoes: Operacao[] = data.map(operacao => {
+				return toOperacao(operacao);
+			})
+
+			return operacoes;
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
 	},
 
 	create: async (data: OperacaoDTO): Promise<Operacao> => {

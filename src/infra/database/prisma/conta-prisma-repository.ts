@@ -37,7 +37,7 @@ export const contaPrismaRepository: Repository<Conta> = {
 		throw new Error("Function not implemented.");
 	},
 
-	filter: async (field: keyof Conta, value: any): Promise<Conta[] | null> => {
+	filter: async (params: any): Promise<Conta[] | null> => {
 		throw new Error("Function not implemented.");
 	},
 

@@ -33,7 +33,7 @@ export const ativosPrismaRepository: Repository<Ativo> = {
 		return null;
 	},
 
-	filter: function (field: string | number | symbol, value: any): Promise<Ativo[] | null> {
+	filter: function (params: any): Promise<Ativo[] | null> {
 		throw new Error("Function not implemented.");
 	},
 

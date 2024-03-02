@@ -19,6 +19,8 @@ describe("Operacao List Controller", () => {
 				id: "abc",
 				nome: "teste",
 				tipo: "simulador",
+				saldo: 0,
+				saldoInicial: 0,
 				usuario: {
 					id: "abc",
 					nome: "Teste",
