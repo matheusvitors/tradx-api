@@ -1,4 +1,3 @@
-import { OperacaoDTO } from "@/application/dto";
 import { Repository, ResponseData } from "@/application/interfaces";
 import { Operacao } from "@/core/models";
 import { success, serverError, notFound } from "@/infra/adapters/response-wrapper";
