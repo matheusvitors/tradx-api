@@ -1,5 +1,4 @@
 import { listOperacaoByContaController } from "@/application/controllers/operacao/list-operacao-by-conta-controller";
-import { OperacaoDTO } from "@/application/dto";
 import { Operacao } from "@/core/models";
 import { InMemoryRepository } from "@/infra/database/InMemoryRepository";
 import { beforeAll, describe, expect, it } from "vitest";
