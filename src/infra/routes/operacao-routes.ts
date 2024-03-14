@@ -40,7 +40,6 @@ router.post(`${path}`, async (request: Request, response: Response) => {
 			precoSaida: request.body.precoSaida,
 			dataEntrada: request.body.dataEntrada,
 			dataSaida: request.body.dataSaida,
-			margem: request.body.margem,
 			operacaoPerdida: request.body.operacaoPerdida,
 			operacaoErrada: request.body.operacaoErrada
 	}});

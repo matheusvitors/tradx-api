@@ -14,6 +14,7 @@ interface CreateOperacaoControllerParams {
 }
 
 export const createOperacaoController = async (params: CreateOperacaoControllerParams): Promise<ResponseData> => {
+
 	try {
 		const { operacaoRepository , ativoRepository, contaRepository, input } = params;
 
@@ -45,7 +46,7 @@ export const createOperacaoController = async (params: CreateOperacaoControllerP
 			precoSaida: input.precoSaida,
 			dataEntrada: new Date(input.dataEntrada),
 			dataSaida: input.dataSaida ? new Date(input.dataSaida) : undefined,
-			margem: input.margem,
+			margem: 0,
 			operacaoPerdida: input.operacaoPerdida,
 			operacaoErrada: input.operacaoErrada,
 		};
