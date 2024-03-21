@@ -10,13 +10,15 @@ interface RemoveOperacaoControllerParams {
 
 export const removeOperacaoController = async (params: RemoveOperacaoControllerParams): Promise<ResponseData> => {
 	try {
-		const operacao = await get<Operacao>(params);
+		const { id, repository } = params;
+
+		const operacao = await repository.get(id);
 
 		if(!operacao) {
 			return notFound();
 		}
 
-		await remove<Operacao>(params);
+		await repository.remove(id);
 		return success();
 	} catch (error) {
 		return serverError(error)
