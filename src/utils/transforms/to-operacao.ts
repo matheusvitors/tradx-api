@@ -1,10 +1,11 @@
 import { Operacao } from "@/core/models"
-import { toAtivo } from "@/utils/transforms"
+import { toAtivo, toConta } from "@/utils/transforms"
 
 export const toOperacao = (input: any): Operacao => {
 	return {
 		id: input.id,
 		ativo: toAtivo(input.ativo),
+		conta: toConta(input.conta),
 		quantidade: input.quantidade,
 		tipo: input.tipo === 'compra' ? 'compra' : 'venda',
 		precoEntrada: input.precoEntrada,

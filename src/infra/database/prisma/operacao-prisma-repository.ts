@@ -3,13 +3,14 @@ import { FilterParams, Repository } from "@/application/interfaces";
 import { Operacao } from "@/core/models";
 import { databaseClient } from "@/infra/database/client";
 import { ativosPrismaRepository } from "@/infra/database/prisma/ativo-prisma-repository";
-import { toAtivo, toOperacao } from "@/utils/transforms";
+import { contaPrismaRepository } from "@/infra/database/prisma/conta-prisma-repository";
+import { toAtivo, toConta, toOperacao } from "@/utils/transforms";
 import { Prisma } from "@prisma/client";
 
 export const operacaoPrismaRepository: Repository<Operacao> = {
 	list: async (): Promise<Operacao[]> => {
 		try {
-			const data = await databaseClient.operacao.findMany({include: {ativo: true}});
+			const data = await databaseClient.operacao.findMany({include: {ativo: true, conta: true}});
 			const operacoes: Operacao[] = data.map(operacao => {
 				return toOperacao(operacao);
 			})
@@ -60,10 +61,11 @@ export const operacaoPrismaRepository: Repository<Operacao> = {
 	create: async (data: OperacaoDTO): Promise<Operacao> => {
 		try {
 			const result = await databaseClient.operacao.create({ data });
-			let {ativoId, ...cleanResult } = result;
+			let {ativoId, contaId, ...cleanResult } = result;
 			const ativo = await ativosPrismaRepository.get(ativoId);
+			const conta = await contaPrismaRepository.get(contaId);
 
-			const operacao: Operacao = toOperacao({...cleanResult, ativo: toAtivo(ativo)});
+			const operacao: Operacao = toOperacao({...cleanResult, ativo: toAtivo(ativo), conta: toConta(conta)});
 
 			return operacao;
 
