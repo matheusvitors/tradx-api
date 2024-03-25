@@ -24,7 +24,7 @@ export const operacaoPrismaRepository: Repository<Operacao> = {
 
 	get: async (id: string): Promise<Operacao | null> => {
 		try {
-			const data = await databaseClient.operacao.findUnique({ where: {id}, include: {ativo: true}});
+			const data = await databaseClient.operacao.findUnique({ where: {id}, include: {ativo: true, conta: true}});
 			if(data) {
 				const operacao: Operacao = toOperacao(data);
 				return operacao;
@@ -76,17 +76,26 @@ export const operacaoPrismaRepository: Repository<Operacao> = {
 },
 
 	edit: async (data: OperacaoDTO): Promise<Operacao | null> => {
-		const {id, ...restData} = data;
-		const result = await databaseClient.operacao.update({where: {id}, data: restData});
+		console.log(data);
 
-		if(result) {
-			let {ativoId, ...cleanResult } = result;
-			const ativo = await ativosPrismaRepository.get(ativoId);
-			const operacao: Operacao = toOperacao({...cleanResult, ativo: toAtivo(ativo)});
-			return operacao;
+		try {
+			const {id, ...restData} = data;
+			const result = await databaseClient.operacao.update({where: {id}, data: restData});
+
+			if(result) {
+				let {ativoId, contaId, ...cleanResult } = result;
+				const ativo = await ativosPrismaRepository.get(ativoId);
+				const conta = await contaPrismaRepository.get(contaId);
+
+				const operacao: Operacao = toOperacao({...cleanResult, ativo: toAtivo(ativo), conta: toConta(conta)});
+				return operacao;
+			}
+
+			return null;
+		} catch (error) {
+			throw error;
 		}
 
-		return null;
 	},
 
 	remove: async (id: string): Promise<void> => {

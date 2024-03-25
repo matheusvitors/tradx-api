@@ -62,7 +62,7 @@ router.put(`${path}`, async (request: Request, response: Response) => {
 			alvo: request.body.alvo,
 			precoSaida: request.body.precoSaida,
 			dataEntrada: new Date(request.body.dataEntrada),
-			dataSaida: new Date(request.body.dataSaida),
+			dataSaida: request.body.dataSaida ? new Date(request.body.dataSaida): undefined,
 			margem: request.body.margem,
 			operacaoPerdida: request.body.operacaoPerdida,
 			operacaoErrada: request.body.operacaoErrada
