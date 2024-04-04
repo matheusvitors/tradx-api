@@ -7,7 +7,7 @@ describe("Operacao List Controller", () => {
 	const repository = new InMemoryRepository<Operacao>();
 
 	beforeAll(() => {
-		const input: Operacao = {
+		repository.create({
 			id: "abc",
 			ativo: {
 				id: "abc",
@@ -34,12 +34,44 @@ describe("Operacao List Controller", () => {
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: new Date(),
+			dataEntrada: new Date('2024-12-02'),
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false,
-		};
-		repository.create(input);
+		});
+
+		repository.create({
+			id: "efg",
+			ativo: {
+				id: "123",
+				nome: "Teste",
+				acronimo: "TSTE1",
+				tipo: "indice",
+			},
+			conta: {
+				id: "456",
+				nome: "teste",
+				tipo: "simulador",
+				saldo: 0,
+				saldoInicial: 0,
+				usuario: {
+					id: "789",
+					nome: "Teste",
+					username: "teste",
+					password: "123",
+					email: "teste@teste.com",
+				},
+			},
+			quantidade: 1,
+			tipo: "compra",
+			precoEntrada: 20,
+			stopLoss: 15,
+			alvo: 30,
+			dataEntrada: new Date('2024-12-01'),
+			margem: 10,
+			operacaoPerdida: false,
+			operacaoErrada: false,
+		});
 	});
 
 	it("should list operacaos", async () => {

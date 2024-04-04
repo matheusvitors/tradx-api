@@ -10,7 +10,7 @@ interface ListOperacaoByContaControllerParams {
 export const listOperacaoByContaController = async (params: ListOperacaoByContaControllerParams): Promise<ResponseData> => {
 	try {
 		const { repository, contaId } = params;
-		const operacoes = await repository.filter([{ field: 'contaId', value: contaId}]);
+		const operacoes = await repository.filter([{ field: 'contaId', value: contaId }]);
 
 		if(!operacoes) {
 			return notFound();
