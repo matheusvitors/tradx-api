@@ -1,6 +1,5 @@
 import { Repository } from "@/application/interfaces"
 import { Conta } from "@/core/models"
-import { get } from "@/core/usecases/persist";
 import { notFound, serverError, success } from "@/infra/adapters/response-wrapper";
 
 interface GetContaControllerParams {
@@ -10,7 +9,8 @@ interface GetContaControllerParams {
 
 export const getContaController = async (params: GetContaControllerParams) => {
 	try {
-		const conta = await get<Conta>(params);
+		const { repository, id } = params;
+		const conta = await repository.get(id);
 		if(!conta) {
 			return notFound();
 		}

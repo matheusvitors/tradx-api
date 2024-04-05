@@ -5,7 +5,11 @@ import { toAtivo } from "@/utils/transforms";
 
 export const ativosPrismaRepository: Repository<Ativo> = {
 	list: async (): Promise<Ativo[]> => {
-		const data = await databaseClient.ativo.findMany();
+		const data = await databaseClient.ativo.findMany({
+			orderBy: [
+				{ acronimo: 'asc'},
+			]
+		});
 		const ativos: Ativo[] = data.map(ativo => { return toAtivo(ativo)})
 
 		return ativos;

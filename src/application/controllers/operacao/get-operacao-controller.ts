@@ -1,6 +1,5 @@
 import { Repository, ResponseData } from "@/application/interfaces";
 import { Operacao } from "@/core/models";
-import { get } from "@/core/usecases/persist";
 import { notFound, success, serverError } from "@/infra/adapters/response-wrapper";
 
 interface GetOperacaoControllerParams {
@@ -10,7 +9,8 @@ interface GetOperacaoControllerParams {
 
 export const getOperacaoController = async (params: GetOperacaoControllerParams): Promise<ResponseData> => {
 	try {
-		const operacao = await get<Operacao>(params);
+		const { repository, id } = params;
+		const operacao = await repository.get(id);
 
 		if(!operacao) {
 			return notFound();

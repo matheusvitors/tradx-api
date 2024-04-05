@@ -2,7 +2,6 @@ import { ContaDTO } from "@/application/dto";
 import { ValidationError } from "@/application/errors";
 import { Repository } from "@/application/interfaces"
 import { Conta } from "@/core/models"
-import { create } from "@/core/usecases/persist";
 import { validateConta } from "@/core/validators";
 import { newID } from "@/infra/adapters/newID";
 import { serverError, success, unprocessableEntity } from "@/infra/adapters/response-wrapper";

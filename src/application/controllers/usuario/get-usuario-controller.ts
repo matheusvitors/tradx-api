@@ -1,6 +1,5 @@
 import { Repository, ResponseData } from "@/application/interfaces";
 import { Usuario } from "@/core/models";
-import { get } from "@/core/usecases/persist";
 import { serverError, success } from "@/infra/adapters/response-wrapper";
 
 interface GetUsuarioControllerParams {
@@ -10,7 +9,8 @@ interface GetUsuarioControllerParams {
 
 export const getUsuarioController = async (params: GetUsuarioControllerParams): Promise<ResponseData> => {
 	try {
-		const usuario = await get<Usuario>(params);
+		const { repository, id } = params;
+		const usuario = await repository.get(id);
 		return success({usuario});
 	} catch (error) {
 		return serverError(error);

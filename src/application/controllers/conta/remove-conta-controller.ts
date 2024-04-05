@@ -1,6 +1,5 @@
 import { Repository } from "@/application/interfaces"
 import { Conta } from "@/core/models"
-import { get, remove } from "@/core/usecases/persist";
 import { notFound, serverError, success } from "@/infra/adapters/response-wrapper";
 
 interface RemoveContaControllerParams {
@@ -10,11 +9,12 @@ interface RemoveContaControllerParams {
 
 export const removeContaController = async (params: RemoveContaControllerParams) => {
 	try {
-		const conta = await get<Conta>(params);
+		const { repository, id } = params;
+		const conta = await repository.get(id)
 		if(!conta) {
 			return notFound();
 		}
-		await remove<Conta>(params);
+		await repository.remove(id);
 		return success();
 	} catch (error) {
 		return serverError(error);

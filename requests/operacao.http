@@ -1,4 +1,4 @@
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImF1dGgiOnRydWV9LCJpYXQiOjE3MDYwMTUyMDAsImV4cCI6MTcwNjA4NzIwMH0.iF341yAYe21mLE6Y4Cqip3c9uP3fONOR7zj2kn-h4CI
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImF1dGgiOnRydWUsImlkIjoiY2xzMjZ5MXduMDAwMDA4bDE4amQwOWtzdCJ9LCJpYXQiOjE3MTIzNDUyNjMsImV4cCI6MTcxMjQxNzI2M30._AWi0u03kX8trFvakT1IXbnVFrC2-y8jgmq3yOJRgdg
 @path = operacoes
 
 GET http://localhost:8000/{{path}}
@@ -6,6 +6,10 @@ Authorization: Bearer {{token}}
 
 ###
 GET http://localhost:8000/{{path}}/ideo5c6ahm0actaquo5hgr3w
+Authorization: Bearer {{token}}
+
+###
+GET http://localhost:8000/{{path}}/conta/zhmfc9txlgas43lgzu04n739
 Authorization: Bearer {{token}}
 
 

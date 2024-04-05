@@ -1,6 +1,5 @@
 import { Repository, ResponseData } from "@/application/interfaces";
 import { Ativo } from "@/core/models";
-import { get, remove } from "@/core/usecases/persist";
 import { notFound, success, serverError } from "@/infra/adapters/response-wrapper";
 
 interface RemoveAtivoControllerParams {
@@ -10,13 +9,13 @@ interface RemoveAtivoControllerParams {
 
 export const removeAtivoController = async ({ id, repository }: RemoveAtivoControllerParams): Promise<ResponseData> => {
 	try {
-		const ativo = await get<Ativo>({id, repository});
+		const ativo = await repository.get(id);
 
 		if(!ativo) {
 			return notFound();
 		}
 
-		await remove<Ativo>({ repository, id });
+		await repository.remove(id);
 		return success(ativo);
 	} catch (error) {
 		return serverError(error)

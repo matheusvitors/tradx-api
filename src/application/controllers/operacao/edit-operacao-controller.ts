@@ -2,7 +2,6 @@ import { OperacaoDTO } from "@/application/dto";
 import { ValidationError } from "@/application/errors";
 import { Repository, ResponseData } from "@/application/interfaces";
 import { Ativo, Conta, Operacao } from "@/core/models";
-import { edit, get } from "@/core/usecases/persist";
 import { validateOperacao } from "@/core/validators";
 import { notFound, success, unprocessableEntity, serverError } from "@/infra/adapters/response-wrapper";
 
@@ -28,6 +27,8 @@ export const editOperacaoController = async (params: EditOperacaoControllerParam
 		if(!conta) {
 			return notFound('Conta não encontrada.');
 		}
+
+		console.log(ativo.dataVencimento);
 
 		if(ativo.dataVencimento && (input.dataEntrada > ativo.dataVencimento)) {
 			return unprocessableEntity('Data e horário de entrada fora da validade do ativo.')

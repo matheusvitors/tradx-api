@@ -1,6 +1,5 @@
 import { Repository, ResponseData } from "@/application/interfaces";
 import { Ativo } from "@/core/models";
-import { get } from "@/core/usecases/persist";
 import { notFound, serverError, success } from "@/infra/adapters/response-wrapper";
 
 interface GetAtivoControllerParams {
@@ -10,7 +9,8 @@ interface GetAtivoControllerParams {
 
 export const getAtivoController = async (params: GetAtivoControllerParams): Promise<ResponseData> => {
 	try {
-		const ativo = await get<Ativo>(params);
+		const { repository, id } = params;
+		const ativo = await repository.get(id);
 
 		if(!ativo) {
 			return notFound();

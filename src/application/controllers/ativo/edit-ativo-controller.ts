@@ -1,7 +1,6 @@
 import { ValidationError } from "@/application/errors";
 import { Repository, ResponseData } from "@/application/interfaces";
 import { Ativo } from "@/core/models";
-import { edit, get } from "@/core/usecases/persist";
 import { validateAtivo } from "@/core/validators";
 import { success, unprocessableEntity, serverError, notFound, conflict } from "@/infra/adapters/response-wrapper";
 
@@ -16,7 +15,7 @@ export const editAtivoController = async (params: EditAtivoControllerParams): Pr
 		const {input, repository } = params
 		validateAtivo(input);
 
-		const ativo = await get<Ativo>({repository, id:input.id});
+		const ativo = await repository.get(input.id);
 
 		if(!ativo) {
 			return notFound();
@@ -30,7 +29,7 @@ export const editAtivoController = async (params: EditAtivoControllerParams): Pr
 			}
 		}
 
-		await edit<Ativo>({repository, data: input});
+		await repository.edit(input)
 		return success(input);
 
 	} catch (error) {
