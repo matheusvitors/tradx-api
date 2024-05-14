@@ -9,7 +9,8 @@ describe('Ativo Validator', () => {
 			id: 'abc',
 			nome: 'Teste',
 			acronimo: 'TSTE1',
-			tipo: 'indice'
+			tipo: 'indice',
+			multiplicador: 1,
 		}
 
 		expect(() => validateAtivo(input)).not.toThrow();
@@ -19,7 +20,8 @@ describe('Ativo Validator', () => {
 		const input: Omit<Ativo, 'id'> = {
 			nome: 'Teste',
 			acronimo: 'TSTE1',
-			tipo: 'indice'
+			tipo: 'indice',
+			multiplicador: 1,
 		}
 
 		expect(() => validateAtivo(input)).toThrow(ValidationError);
@@ -30,7 +32,8 @@ describe('Ativo Validator', () => {
 			id: 'abc',
 			nome: 'T',
 			acronimo: 'TSTE1',
-			tipo: 'indice'
+			tipo: 'indice',
+			multiplicador: 1,
 		}
 
 		expect(() => validateAtivo(input)).toThrow(ValidationError);
@@ -41,7 +44,8 @@ describe('Ativo Validator', () => {
 			id: 'abc',
 			nome: 'Teste',
 			acronimo: 'TS',
-			tipo: 'indice'
+			tipo: 'indice',
+			multiplicador: 1,
 		}
 
 		expect(() => validateAtivo(input)).toThrow(ValidationError);
@@ -55,6 +59,18 @@ describe('Ativo Validator', () => {
 			acronimo: 'TSTE1',
 			//@ts-ignore
 			tipo: 'other'
+		}
+
+		expect(() => validateAtivo(input)).toThrow(ValidationError);
+	});
+
+	it('should throw error if multiplicador is above 0', () => {
+		const input: Ativo = {
+			id: 'abc',
+			nome: 'Teste',
+			acronimo: 'TSTE1',
+			tipo: 'indice',
+			multiplicador: -1,
 		}
 
 		expect(() => validateAtivo(input)).toThrow(ValidationError);

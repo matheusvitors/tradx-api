@@ -1,6 +1,7 @@
 import { OperacaoDTO } from "@/application/dto";
 import { ValidationError } from "@/application/errors";
 import { Repository, ResponseData } from "@/application/interfaces";
+import { calculateSaldo } from "@/application/usecases/calculate-saldo";
 import { Ativo, Conta, Operacao } from "@/core/models";
 import { validateOperacao } from "@/core/validators";
 import { newID } from "@/infra/adapters/newID";
@@ -51,9 +52,19 @@ export const createOperacaoController = async (params: CreateOperacaoControllerP
 			operacaoErrada: input.operacaoErrada,
 		};
 
-		validateOperacao(operacao);
 
+		validateOperacao(operacao);
 		const createdOperacao = await operacaoRepository.create(operacao);
+
+		if(operacao.precoSaida){
+			const saldo = calculateSaldo({
+				tipo: operacao.tipo === 'compra' ? 'compra' : 'venda',
+				precoEntrada: operacao.precoEntrada,
+				precoSaida: operacao.precoSaida,
+				multiplicador: ativo.multiplicador
+			})
+			await contaRepository.edit({...conta, saldo})
+		}
 		return success(createdOperacao);
 
 	} catch (error) {

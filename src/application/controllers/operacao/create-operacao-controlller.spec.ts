@@ -15,6 +15,7 @@ describe('Create Operacao Controller', () => {
 			nome: "Teste",
 			acronimo: "TSTE1",
 			tipo: "indice",
+			multiplicador: 2,
 			dataVencimento: new Date("2025-01-01")
 		})
 
@@ -28,8 +29,7 @@ describe('Create Operacao Controller', () => {
 		})
 	})
 
-
-	it('should create a operacao', async () => {
+	it('should create a operacao without precoSaida', async () => {
 		const input: Omit<OperacaoDTO, 'id'> = {
 			ativoId: "abc",
 			contaId: "123",
@@ -46,6 +46,30 @@ describe('Create Operacao Controller', () => {
 
 		const response = await createOperacaoController({input, operacaoRepository, ativoRepository, contaRepository});
 		expect(response.status).toEqual(200);
+		expect(contaRepository.data[0].saldo).toEqual(0)
+	});
+
+	it('should create a operacao with precoSaida', async () => {
+		const input: Omit<OperacaoDTO, 'id'> = {
+			ativoId: "abc",
+			contaId: "123",
+			quantidade: 1,
+			tipo: "compra",
+			precoEntrada: 10,
+			stopLoss: 5,
+			alvo: 20,
+			precoSaida: 20,
+			dataEntrada: new Date(),
+			margem: 10,
+			operacaoPerdida: false,
+			operacaoErrada: false
+		}
+
+		const response = await createOperacaoController({input, operacaoRepository, ativoRepository, contaRepository});
+		console.log(contaRepository.data[0]);
+
+		expect(response.status).toEqual(200);
+		expect(contaRepository.data[0].saldo).toEqual(20)
 	});
 
 	it('should return 422 when pass invalid data', async () => {

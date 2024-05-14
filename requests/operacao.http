@@ -1,6 +1,5 @@
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImF1dGgiOnRydWUsImlkIjoiY2xzMjZ5MXduMDAwMDA4bDE4amQwOWtzdCJ9LCJpYXQiOjE3MTIzNDUyNjMsImV4cCI6MTcxMjQxNzI2M30._AWi0u03kX8trFvakT1IXbnVFrC2-y8jgmq3yOJRgdg
-@path = operacoes
-
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImF1dGgiOnRydWUsImlkIjoiY2xzMjZ5MXduMDAwMDA4bDE4amQwOWtzdCJ9LCJpYXQiOjE3MTI2OTA1MzYsImV4cCI6MTcxMjc2MjUzNn0.igSjCB7cSznxlFivexKmdNEgP0cSb7mIDox6SISy4u0
+@path=operacoes
 GET http://localhost:8000/{{path}}
 Authorization: Bearer {{token}}
 

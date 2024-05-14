@@ -20,5 +20,5 @@ export interface Operacao {
 }
 
 export const operacaoTypes = ['compra', 'venda'] as const;
-type OperacaoType = (typeof operacaoTypes)[number];
+export type OperacaoType = (typeof operacaoTypes)[number];
 

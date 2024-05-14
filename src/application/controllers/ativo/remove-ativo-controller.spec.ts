@@ -12,7 +12,8 @@ describe('Remove Ativo Controller', () => {
 			id: "abc",
 			nome: "Teste",
 			acronimo: "TSTE1",
-			tipo: "indice"
+			tipo: "indice",
+			multiplicador: 1,
 		}
 
 		repository.create(input)

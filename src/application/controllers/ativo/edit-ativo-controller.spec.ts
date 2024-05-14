@@ -30,6 +30,7 @@ describe('Create Ativo Controller', () => {
 			nome: "Teste",
 			acronimo: "TSTE1",
 			tipo: "acao",
+			multiplicador: 1,
 			dataVencimento: new Date("02/01/2025")
 		}
 
@@ -44,7 +45,8 @@ describe('Create Ativo Controller', () => {
 			id: "eee",
 			nome: "Teste",
 			acronimo: "TSTE1",
-			tipo: "acao"
+			tipo: "acao",
+			multiplicador: 1,
 		}
 
 		const response = await editAtivoController({input, repository});
@@ -56,7 +58,8 @@ describe('Create Ativo Controller', () => {
 			id: "abc",
 			nome: "t",
 			acronimo: "TSTE1",
-			tipo: "acao"
+			tipo: "acao",
+			multiplicador: 1,
 		}
 
 		const response = await editAtivoController({input, repository});
@@ -69,6 +72,7 @@ describe('Create Ativo Controller', () => {
 			nome: 'Teste',
 			acronimo: "TSTE2",
 			tipo: "indice",
+			multiplicador: 1,
 		}
 
 		const response = await editAtivoController({repository, input});

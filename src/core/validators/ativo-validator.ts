@@ -2,8 +2,6 @@ import { ValidationError } from "@/application/errors";
 import { Ativo, ativoTypes } from "@/core/models";
 
 export const validateAtivo = (ativo: Partial<Ativo>) => {
-	console.log('validate ', ativo);
-
 	if(!ativo.id) {
 		throw new ValidationError('Id inexistente.')
 	}
@@ -18,6 +16,10 @@ export const validateAtivo = (ativo: Partial<Ativo>) => {
 
 	if(!ativo.tipo || !ativoTypes.includes(ativo.tipo)) {
 		throw new ValidationError('O ativo deverá ter o tipo índice ou ação.');
+	}
+
+	if(!ativo.multiplicador || ativo.multiplicador < 0) {
+		throw new ValidationError('O multiplicador deve ser maior que zero.');
 	}
 
 

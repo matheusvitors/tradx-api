@@ -15,9 +15,7 @@ export const createAtivoController = async (params: CreateAtivoControllerParams)
 	try {
 		const { input, repository } = params;
 
-
 		const hasAcronimo = await repository.find('acronimo', input.acronimo);
-		console.log(hasAcronimo);
 
 		if(hasAcronimo){
 			return conflict('Acronimo não pode ter duplicação');
@@ -28,6 +26,7 @@ export const createAtivoController = async (params: CreateAtivoControllerParams)
 			nome: input.nome,
 			acronimo: input.acronimo,
 			tipo: input.tipo === 'acao' ? 'acao' : 'indice',
+			multiplicador: input.multiplicador || 1,
 			dataVencimento: input.dataVencimento
 		};
 
@@ -37,7 +36,7 @@ export const createAtivoController = async (params: CreateAtivoControllerParams)
 		return success(ativo);
 
 	} catch (error) {
-		console.log(error);
+		console.error(error);
 
 		if(error instanceof ValidationError) {
 			return unprocessableEntity(error.message);

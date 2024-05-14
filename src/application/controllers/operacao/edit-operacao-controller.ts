@@ -1,6 +1,7 @@
 import { OperacaoDTO } from "@/application/dto";
 import { ValidationError } from "@/application/errors";
 import { Repository, ResponseData } from "@/application/interfaces";
+import { calculateSaldo } from "@/application/usecases/calculate-saldo";
 import { Ativo, Conta, Operacao } from "@/core/models";
 import { validateOperacao } from "@/core/validators";
 import { notFound, success, unprocessableEntity, serverError } from "@/infra/adapters/response-wrapper";
@@ -28,8 +29,6 @@ export const editOperacaoController = async (params: EditOperacaoControllerParam
 			return notFound('Conta não encontrada.');
 		}
 
-		console.log(ativo.dataVencimento);
-
 		if(ativo.dataVencimento && (input.dataEntrada > ativo.dataVencimento)) {
 			return unprocessableEntity('Data e horário de entrada fora da validade do ativo.')
 		}
@@ -43,6 +42,19 @@ export const editOperacaoController = async (params: EditOperacaoControllerParam
 		}
 
 		const editedOperacao = await operacaoRepository.edit(input);
+
+		if(editedOperacao && editedOperacao.precoSaida){
+			const saldo = calculateSaldo({
+				tipo: editedOperacao.tipo === 'compra' ? 'compra' : 'venda',
+				precoEntrada: editedOperacao.precoEntrada,
+				precoSaida: editedOperacao.precoSaida,
+				multiplicador: ativo.multiplicador
+			})
+			console.log({...conta, saldo});
+
+			await contaRepository.edit({...conta, saldo})
+		}
+
 		return success({ operacao: editedOperacao});
 
 	} catch (error) {

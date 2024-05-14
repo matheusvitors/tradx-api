@@ -91,8 +91,6 @@ export const operacaoPrismaRepository: Repository<Operacao> = {
 },
 
 	edit: async (data: OperacaoDTO): Promise<Operacao | null> => {
-		console.log(data);
-
 		try {
 			const {id, ...restData} = data;
 			const result = await databaseClient.operacao.update({where: {id}, data: restData});
