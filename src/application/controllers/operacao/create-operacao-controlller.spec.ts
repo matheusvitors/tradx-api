@@ -24,8 +24,8 @@ describe('Create Operacao Controller', () => {
 			nome: 'teste',
 			tipo: "simulador",
 			usuarioId: 'xyz',
-			saldoInicial: 0.00,
-			saldo: 0.00
+			saldoInicial: 10.00,
+			saldo: 10.00
 		})
 	})
 
@@ -46,7 +46,7 @@ describe('Create Operacao Controller', () => {
 
 		const response = await createOperacaoController({input, operacaoRepository, ativoRepository, contaRepository});
 		expect(response.status).toEqual(200);
-		expect(contaRepository.data[0].saldo).toEqual(0)
+		expect(contaRepository.data[0].saldo).toEqual(10)
 	});
 
 	it('should create a operacao with precoSaida', async () => {
@@ -69,7 +69,7 @@ describe('Create Operacao Controller', () => {
 		console.log(contaRepository.data[0]);
 
 		expect(response.status).toEqual(200);
-		expect(contaRepository.data[0].saldo).toEqual(20)
+		expect(contaRepository.data[0].saldo).toEqual(30)
 	});
 
 	it('should return 422 when pass invalid data', async () => {

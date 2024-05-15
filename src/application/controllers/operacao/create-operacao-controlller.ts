@@ -59,6 +59,7 @@ export const createOperacaoController = async (params: CreateOperacaoControllerP
 		if(operacao.precoSaida){
 			const saldo = calculateSaldo({
 				tipo: operacao.tipo === 'compra' ? 'compra' : 'venda',
+				previousSaldo: conta.saldo,
 				precoEntrada: operacao.precoEntrada,
 				precoSaida: operacao.precoSaida,
 				multiplicador: ativo.multiplicador

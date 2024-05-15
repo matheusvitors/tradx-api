@@ -2,16 +2,15 @@ import { OperacaoType } from "@/core/models";
 
 interface CalculateSaldoParams {
 	tipo: OperacaoType;
+	previousSaldo: number;
 	precoEntrada: number;
 	precoSaida: number;
 	multiplicador: number;
 }
 
-export const calculateSaldo = ({ tipo, precoEntrada, precoSaida, multiplicador}: CalculateSaldoParams): number => {
-	let saldo = 0;
-	if(precoSaida) {
-		saldo = tipo === 'compra' ? precoSaida - precoEntrada : precoSaida - precoEntrada;
-		saldo = saldo * multiplicador;
-	}
-	return saldo;
+export const calculateSaldo = ({ tipo, previousSaldo, precoEntrada, precoSaida, multiplicador}: CalculateSaldoParams): number => {
+	let result = tipo === 'compra' ? precoSaida - precoEntrada : precoEntrada - precoSaida;
+	result = result * multiplicador;
+
+	return result + previousSaldo;
 }

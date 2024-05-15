@@ -15,6 +15,7 @@ describe('Create Operacao Controller', () => {
 			nome: "Teste",
 			acronimo: "TSTE1",
 			tipo: "indice",
+			multiplicador: 2,
 			dataVencimento: new Date("2025-01-01")
 		})
 
@@ -23,9 +24,8 @@ describe('Create Operacao Controller', () => {
 			nome: 'teste',
 			tipo: "simulador",
 			usuarioId: 'xyz',
-			multiplicador: 2,
-			saldoInicial: 0.00,
-			saldo: 0.00
+			saldoInicial: 10.00,
+			saldo: 10.00
 		})
 
 		const input: OperacaoDTO = {
@@ -64,7 +64,7 @@ describe('Create Operacao Controller', () => {
 		const response = await editOperacaoController({input, operacaoRepository, ativoRepository, contaRepository});
 		expect(response.status).toEqual(200);
 		expect(operacaoRepository.data[0]).toEqual(input);
-		expect(contaRepository.data[0].saldo).toEqual(0);
+		expect(contaRepository.data[0].saldo).toEqual(10);
 	});
 
 	it('should edit operacao with precoSaida', async () => {
@@ -73,7 +73,7 @@ describe('Create Operacao Controller', () => {
 			ativoId: 'abc',
 			contaId: '123',
 			quantidade: 1,
-			tipo: "venda",
+			tipo: "compra",
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
@@ -87,7 +87,7 @@ describe('Create Operacao Controller', () => {
 		const response = await editOperacaoController({input, operacaoRepository, ativoRepository, contaRepository});
 		expect(response.status).toEqual(200);
 		expect(operacaoRepository.data[0]).toEqual(input);
-		expect(contaRepository.data[0].saldo).toEqual(20);
+		expect(contaRepository.data[0].saldo).toEqual(30);
 	});
 
 	it('should return 404 if user not found', async () => {

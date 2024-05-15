@@ -14,7 +14,7 @@ describe('Edit Conta Controller', () => {
 			tipo: "simulador",
 			usuarioId: 'xyz',
 			saldoInicial: 0.00,
-			saldo: 0.00
+			saldo: 0.00,
 		})
 	})
 
