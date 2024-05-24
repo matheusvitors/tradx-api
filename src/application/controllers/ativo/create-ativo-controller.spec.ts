@@ -12,7 +12,7 @@ describe('Create Ativo Controller', () => {
 			nome: "Teste",
 			acronimo: "TSTE1",
 			tipo: "indice",
-			multiplicador: 1,
+			multiplicador: 2,
 			dataVencimento: new Date("01/01/2025")
 		}
 
@@ -23,13 +23,14 @@ describe('Create Ativo Controller', () => {
 			nome: 'teste',
 			acronimo: "TSTE3",
 			tipo: "indice",
-			multiplicador: 1,
-			dataVencimento: new Date("01/01/2025")
+			multiplicador: 0.2,
+			dataVencimento: new Date("01/01/2026")
 		}
 
 		const response = await createAtivoController({input, repository});
 		expect(response.status).toEqual(200);
-		expect(repository.data[0].dataVencimento).toEqual(new Date("01/01/2025"));
+		expect(repository.data[1].dataVencimento).toEqual(new Date("01/01/2026"));
+		expect(repository.data[1].multiplicador).toEqual(0.2);
 	});
 
 	it('should return 422 when pass invalid data', async () => {
@@ -37,7 +38,7 @@ describe('Create Ativo Controller', () => {
 			nome: 'T',
 			acronimo: "TSTE2",
 			tipo: "indice",
-			multiplicador: 1,
+			multiplicador: 3,
 			dataVencimento: new Date("01/01/2025")
 		}
 
@@ -50,7 +51,7 @@ describe('Create Ativo Controller', () => {
 			nome: 'Teste',
 			acronimo: "TSTE1",
 			tipo: "indice",
-			multiplicador: 1,
+			multiplicador: 3,
 		}
 
 		const response = await createAtivoController({repository, input});

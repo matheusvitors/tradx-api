@@ -14,6 +14,7 @@ export const createAtivoController = async (params: CreateAtivoControllerParams)
 
 	try {
 		const { input, repository } = params;
+		console.log(input);
 
 		const hasAcronimo = await repository.find('acronimo', input.acronimo);
 
