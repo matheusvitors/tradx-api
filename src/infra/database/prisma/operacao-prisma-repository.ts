@@ -73,14 +73,22 @@ export const operacaoPrismaRepository: Repository<Operacao> = {
 		}
 	},
 
-	create: async (data: OperacaoDTO): Promise<Operacao> => {
+	create: async (input: OperacaoDTO): Promise<Operacao> => {
+		console.log('dataEntrada', input.dataEntrada);
+
 		try {
-			const result = await databaseClient.operacao.create({ data });
-			let {ativoId, contaId, ...cleanResult } = result;
+			const { ativoId, contaId, ...rest  } = input;
+			const result = await databaseClient.operacao.create({
+				data: {
+					...rest,
+					conta: {connect: {id: contaId}},
+					ativo: {connect: { id: ativoId}}
+				}
+			});
 			const ativo = await ativosPrismaRepository.get(ativoId);
 			const conta = await contaPrismaRepository.get(contaId);
 
-			const operacao: Operacao = toOperacao({...cleanResult, ativo: toAtivo(ativo), conta: toConta(conta)});
+			const operacao: Operacao = toOperacao({...result, ativo: toAtivo(ativo), conta: toConta(conta)});
 
 			return operacao;
 
@@ -88,12 +96,19 @@ export const operacaoPrismaRepository: Repository<Operacao> = {
 			console.error(error);
 			throw error;
 		}
-},
+	},
 
-	edit: async (data: OperacaoDTO): Promise<Operacao | null> => {
+	edit: async (input: OperacaoDTO): Promise<Operacao | null> => {
 		try {
-			const {id, ...restData} = data;
-			const result = await databaseClient.operacao.update({where: {id}, data: restData});
+			const {id, ativoId, contaId, ...rest} = input;
+			const result = await databaseClient.operacao.update({
+				where: {id},
+				data: {
+					...rest,
+					conta: {connect: {id: contaId}},
+					ativo: {connect: { id: ativoId}}
+				}
+			});
 
 			if(result) {
 				let {ativoId, contaId, ...cleanResult } = result;
@@ -108,7 +123,6 @@ export const operacaoPrismaRepository: Repository<Operacao> = {
 		} catch (error) {
 			throw error;
 		}
-
 	},
 
 	remove: async (id: string): Promise<void> => {
