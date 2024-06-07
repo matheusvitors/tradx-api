@@ -66,7 +66,6 @@ describe('Create Operacao Controller', () => {
 		}
 
 		const response = await createOperacaoController({input, operacaoRepository, ativoRepository, contaRepository});
-		console.log(contaRepository.data[0]);
 
 		expect(response.status).toEqual(200);
 		expect(contaRepository.data[0].saldo).toEqual(30)

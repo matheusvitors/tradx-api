@@ -1,3 +1,4 @@
+import { ContaDTO } from "@/application/dto";
 import { Repository } from "@/application/interfaces";
 import { Conta } from "@/core/models";
 import { databaseClient } from "@/infra/database/client";
@@ -41,9 +42,18 @@ export const contaPrismaRepository: Repository<Conta> = {
 		throw new Error("Function not implemented.");
 	},
 
-	create: async (data: any): Promise<Conta> => {
+	create: async (input: ContaDTO): Promise<Conta> => {
 		try {
-			const result = await databaseClient.conta.create({data, include: { usuario: true }});
+			const { usuarioId, ...rest } = input;
+			const result = await databaseClient.conta.create({
+				data: {
+					...rest,
+					usuario: {connect: { id: usuarioId }}
+				},
+				include: {
+					usuario: true
+				}
+			});
 			return toConta(result);
 		} catch (error) {
 			console.error(error);
@@ -51,13 +61,17 @@ export const contaPrismaRepository: Repository<Conta> = {
 		}
 	},
 
-	edit: async (data: any): Promise<Conta | null> => {
+	edit: async (input: Conta): Promise<Conta | null> => {
 		try {
+			const { usuario, ...rest } = input;
 			const result = await databaseClient.conta.update({
-				data,
+				data: {
+					...rest,
+					usuario: {connect: usuario}
+				},
 				include: { usuario: true },
 				where: {
-					id: data.id
+					id: input.id
 				}
 			});
 			return toConta(result);

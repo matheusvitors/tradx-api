@@ -74,17 +74,19 @@ export const operacaoPrismaRepository: Repository<Operacao> = {
 	},
 
 	create: async (input: OperacaoDTO): Promise<Operacao> => {
-		console.log('dataEntrada', input.dataEntrada);
 
 		try {
 			const { ativoId, contaId, ...rest  } = input;
+			console.log('create',  ativoId, contaId);
+
 			const result = await databaseClient.operacao.create({
 				data: {
 					...rest,
-					conta: {connect: {id: contaId}},
-					ativo: {connect: { id: ativoId}}
+					conta: {connect: { id: contaId }},
+					ativo: {connect: { id: ativoId }}
 				}
 			});
+
 			const ativo = await ativosPrismaRepository.get(ativoId);
 			const conta = await contaPrismaRepository.get(contaId);
 
@@ -105,8 +107,8 @@ export const operacaoPrismaRepository: Repository<Operacao> = {
 				where: {id},
 				data: {
 					...rest,
-					conta: {connect: {id: contaId}},
-					ativo: {connect: { id: ativoId}}
+					conta: {connect: { id: contaId }},
+					ativo: {connect: { id: ativoId }},
 				}
 			});
 

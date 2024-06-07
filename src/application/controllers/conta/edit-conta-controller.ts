@@ -16,9 +16,6 @@ export const editContaController = async (params: EditContaControllerParams) => 
 		const { input, repository } = params;
 
 		const savedConta = await repository.get(input.id);
-		console.log(savedConta);
-
-
 
 		if(!savedConta){
 			return notFound();
@@ -31,16 +28,7 @@ export const editContaController = async (params: EditContaControllerParams) => 
 			saldo: savedConta.saldoInicial !== input.saldoInicial ? (savedConta.saldo - savedConta.saldoInicial) + input.saldoInicial : savedConta.saldo
 		}
 
-		console.log(savedConta.saldo,savedConta.saldoInicial, input.saldoInicial);
-
-
 		const conta = await repository.edit(editedConta);
-		console.log('editedConta', editedConta, input.saldoInicial);
-
-
-		console.log(conta);
-
-
 		return success({conta});
 	} catch (error: any) {
 		if(error instanceof ValidationError) {
