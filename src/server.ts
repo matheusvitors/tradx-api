@@ -13,6 +13,7 @@ app.use(routes);
 
 if(process.env.NODE_ENV !== "tests") {
 	app.listen(PORT || 8000, function (){
+		console.info('----------------------------------------------------------------------');
 		console.info("Tradx running on port %d", PORT || 8000);
 	});
 }

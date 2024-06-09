@@ -16,8 +16,6 @@ export const ativosPrismaRepository: Repository<Ativo> = {
 	},
 
 	get: async (id: string): Promise<Ativo | null> => {
-		console.log('conta id',id);
-		//FIXME: conta id está chegando a conta inteira (??)
 		const data = await databaseClient.ativo.findUnique({ where: {id}});
 
 		if(data) {

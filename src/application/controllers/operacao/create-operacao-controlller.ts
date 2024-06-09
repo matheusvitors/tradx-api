@@ -35,6 +35,7 @@ export const createOperacaoController = async (params: CreateOperacaoControllerP
 			return unprocessableEntity('Data e horário de entrada fora da validade do ativo.')
 		}
 
+
 		const operacao: OperacaoDTO = {
 			id: newID(),
 			ativoId: input.ativoId,
@@ -51,6 +52,8 @@ export const createOperacaoController = async (params: CreateOperacaoControllerP
 			operacaoPerdida: input.operacaoPerdida,
 			operacaoErrada: input.operacaoErrada,
 		};
+
+		console.log('input', operacao);
 
 
 		validateOperacao(operacao);

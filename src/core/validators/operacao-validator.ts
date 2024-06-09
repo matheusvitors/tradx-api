@@ -3,6 +3,8 @@ import { ValidationError } from "@/application/errors";
 import { Operacao, operacaoTypes } from "@/core/models";
 
 export const validateOperacao = (operacao: Operacao | OperacaoDTO) => {
+	console.log('quantidade', operacao.quantidade);
+
 
 	const availableTipos: Array<string> = operacaoTypes.map(tipo => tipo);
 
@@ -10,7 +12,7 @@ export const validateOperacao = (operacao: Operacao | OperacaoDTO) => {
 		throw new ValidationError("O tipo deve ser compra ou venda.");
 	}
 
-	if(operacao.quantidade < 0) {
+	if(!operacao.quantidade || operacao.quantidade < 0) {
 		throw new ValidationError("Quantidade não pode ter valor negativo.");
 	}
 
