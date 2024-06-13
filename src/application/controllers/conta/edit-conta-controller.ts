@@ -21,12 +21,20 @@ export const editContaController = async (params: EditContaControllerParams) => 
 			return notFound();
 		}
 
+		const { usuario } = savedConta;
+
 		validateConta(input);
 
-		const editedConta: ContaDTO = {
-			...input,
+		const { usuarioId, ...rest } = input;
+
+		const editedConta: Conta = {
+			...rest,
+			tipo: rest.tipo === 'real' ? 'real' : 'simulador',
+			usuario: usuario,
 			saldo: savedConta.saldoInicial !== input.saldoInicial ? (savedConta.saldo - savedConta.saldoInicial) + input.saldoInicial : savedConta.saldo
 		}
+
+		console.log('editedConta', editedConta);
 
 		const conta = await repository.edit(editedConta);
 		return success({conta});
