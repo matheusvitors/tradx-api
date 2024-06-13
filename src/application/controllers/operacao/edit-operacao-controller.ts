@@ -44,9 +44,11 @@ export const editOperacaoController = async (params: EditOperacaoControllerParam
 		const editedOperacao = await operacaoRepository.edit(input);
 
 		if(editedOperacao && editedOperacao.precoSaida){
+			console.log('tipos', conta.saldo);
+
 			const saldo = calculateSaldo({
 				tipo: editedOperacao.tipo === 'compra' ? 'compra' : 'venda',
-				previousSaldo: conta.saldo,
+				previousSaldo: typeof conta.saldo !== 'number' ? parseFloat(conta.saldo) : conta.saldo,
 				precoEntrada: editedOperacao.precoEntrada,
 				precoSaida: editedOperacao.precoSaida,
 				multiplicador: ativo.multiplicador
