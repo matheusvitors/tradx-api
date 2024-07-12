@@ -1,5 +1,6 @@
 export interface ContaDTO {
-	id: string;
+    id?: number;
+    publicId: string;
 	nome: string;
 	tipo: string;
 	saldoInicial: number;

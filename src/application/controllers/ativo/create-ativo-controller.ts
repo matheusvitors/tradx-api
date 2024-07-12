@@ -1,3 +1,4 @@
+import { AtivoDTO } from "@/application/dto";
 import { ValidationError } from "@/application/errors";
 import { Repository, ResponseData } from "@/application/interfaces";
 import { Ativo } from "@/core/models";
@@ -7,7 +8,7 @@ import { conflict, serverError, success, unprocessableEntity } from "@/infra/ada
 
 interface CreateAtivoControllerParams {
 	repository: Repository<Ativo>;
-	input: Omit<Ativo, 'id'>
+	input: AtivoDTO
 }
 
 export const createAtivoController = async (params: CreateAtivoControllerParams): Promise<ResponseData> => {
@@ -16,14 +17,15 @@ export const createAtivoController = async (params: CreateAtivoControllerParams)
 		const { input, repository } = params;
 		console.log(input);
 
-		const hasAcronimo = await repository.find('acronimo', input.acronimo);
+		const hasAcronimo = repository.find && await repository.find('acronimo', input.acronimo);
 
 		if(hasAcronimo){
 			return conflict('Acronimo não pode ter duplicação');
 		}
 
-		const ativo: Ativo = {
-			id: newID(),
+		const ativo: AtivoDTO = {
+			id: 1,
+			publicId: newID(),
 			nome: input.nome,
 			acronimo: input.acronimo,
 			tipo: input.tipo === 'acao' ? 'acao' : 'indice',

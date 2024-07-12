@@ -1,7 +1,7 @@
 import { FilterParams, Repository } from "@/application/interfaces";
 
 interface Entity {
-	id: string;
+	id: number;
 }
 
 export class InMemoryRepository<T extends Entity> implements Repository<T> {
@@ -18,7 +18,7 @@ export class InMemoryRepository<T extends Entity> implements Repository<T> {
 		return this.data;
 	}
 
-	async get(id: string): Promise<T | null> {
+	async get(id: number): Promise<T | null> {
 		return this.data.find((entity) => entity.id === id) || null;
 	}
 
@@ -51,7 +51,7 @@ export class InMemoryRepository<T extends Entity> implements Repository<T> {
 
 	}
 
-	async editField(id: string, field: keyof T, value: any): Promise<T | null> {
+	async editField(id: number, field: keyof T, value: any): Promise<T | null> {
 		const index = this.data.findIndex((e) => e.id === id);
 		if (index !== -1) {
 			this.data[index][field] = value;
@@ -60,7 +60,7 @@ export class InMemoryRepository<T extends Entity> implements Repository<T> {
 		return null
 	}
 
-	async remove(id: string): Promise<void> {
+	async remove(id: number): Promise<void> {
 		const index = this.data.findIndex((e) => e.id === id);
 		if (index !== -1) {
 			this.data.splice(index, 1);

@@ -1,9 +1,14 @@
+import { AtivoDTO } from "@/application/dto";
 import { ValidationError } from "@/application/errors";
 import { Ativo, ativoTypes } from "@/core/models";
 
-export const validateAtivo = (ativo: Partial<Ativo>) => {
+export const validateAtivo = (ativo: Partial<AtivoDTO>) => {
 	if(!ativo.id) {
 		throw new ValidationError('Id inexistente.')
+	}
+
+	if(!ativo.publicId || ativo.publicId.length < 1){
+		throw new ValidationError('É necessário ter um id público.');
 	}
 
 	if(!ativo.nome || ativo.nome.length < 2) {

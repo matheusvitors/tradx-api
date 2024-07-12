@@ -11,41 +11,50 @@ datasource db {
 }
 
 model Usuario {
-    id       String  @id @unique
-    nome     String
-    username String  @unique
-    password String
-    email    String  @unique
-    Conta    Conta[]
+    id        Int      @id @default(autoincrement())
+    publicId  String   @unique
+    nome      String
+    username  String   @unique
+    password  String
+    email     String   @unique
+    Conta     Conta[]
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 model Conta {
-    id           String     @id @unique
+    id           Int        @id @default(autoincrement())
+    publicId     String     @unique
     nome         String
     tipo         String
-    usuario      Usuario    @relation(fields: [usuarioId], references: [id],  onDelete: Cascade, onUpdate: Cascade)
-    usuarioId    String
+    usuario      Usuario    @relation(fields: [usuarioId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    usuarioId    Int
     saldo        Decimal    @default(0.00) @db.Decimal(15, 2)
     saldoInicial Decimal    @default(0.00) @db.Decimal(15, 2)
     Operacao     Operacao[]
+    createdAt    DateTime   @default(now())
+    updatedAt    DateTime   @updatedAt
 }
 
 model Ativo {
-    id             String     @id @unique
+    id             Int        @id @default(autoincrement())
+    publicId       String     @unique
     nome           String
     acronimo       String     @unique
     tipo           String
     multiplicador  Decimal    @default(1.00) @db.Decimal(7, 2)
     dataVencimento DateTime?
     Operacao       Operacao[]
+    createdAt      DateTime   @default(now())
+    updatedAt      DateTime   @updatedAt
 }
 
 model Operacao {
     id              String    @id @unique
-    ativo           Ativo     @relation(fields: [ativoId], references: [id],  onDelete: Cascade, onUpdate: Cascade)
-    ativoId         String
-    conta           Conta     @relation(fields: [contaId], references: [id],  onDelete: Cascade, onUpdate: Cascade)
-    contaId         String
+    ativo           Ativo     @relation(fields: [ativoId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    ativoId         Int
+    conta           Conta     @relation(fields: [contaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    contaId         Int
     quantidade      Int
     tipo            String
     precoEntrada    Int
@@ -59,4 +68,6 @@ model Operacao {
     operacaoErrada  Boolean
     motivo          String?
     comentarios     String?
+    createdAt       DateTime  @default(now())
+    updatedAt       DateTime  @updatedAt
 }

@@ -1,4 +1,5 @@
 import { createAtivoController } from "@/application/controllers/ativo";
+import { AtivoDTO } from "@/application/dto";
 import { Ativo } from "@/core/models";
 import { InMemoryRepository } from "@/infra/database/InMemoryRepository";
 import { beforeAll, describe, expect, it } from "vitest";
@@ -8,18 +9,22 @@ describe('Create Ativo Controller', () => {
 
 	beforeAll(() => {
 		const input: Ativo = {
-			id: "abc",
+			id: 1,
+			publicId: "abc",
 			nome: "Teste",
 			acronimo: "TSTE1",
 			tipo: "indice",
 			multiplicador: 2,
-			dataVencimento: new Date("01/01/2025")
+			dataVencimento: new Date("01/01/2025"),
+			createdAt: new Date(),
+			updatedAt: new Date()
 		}
 
 		repository.create(input)
 	})
 	it('should create ativo', async () => {
-		const input: Omit<Ativo, 'id'> = {
+		const input: AtivoDTO = {
+			publicId: 'abc',
 			nome: 'teste',
 			acronimo: "TSTE3",
 			tipo: "indice",
@@ -34,7 +39,8 @@ describe('Create Ativo Controller', () => {
 	});
 
 	it('should return 422 when pass invalid data', async () => {
-		const input: Omit<Ativo, 'id'> = {
+		const input: AtivoDTO = {
+			publicId: 'abc',
 			nome: 'T',
 			acronimo: "TSTE2",
 			tipo: "indice",
@@ -47,7 +53,8 @@ describe('Create Ativo Controller', () => {
 	});
 
 	it('should return 409 when pass duplicated acronimo', async () => {
-		const input: Omit<Ativo, 'id'> = {
+		const input: AtivoDTO = {
+			publicId: 'abc',
 			nome: 'Teste',
 			acronimo: "TSTE1",
 			tipo: "indice",
