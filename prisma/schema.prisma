@@ -23,7 +23,7 @@ model Conta {
     id           String     @id @unique
     nome         String
     tipo         String
-    usuario      Usuario    @relation(fields: [usuarioId], references: [id])
+    usuario      Usuario    @relation(fields: [usuarioId], references: [id],  onDelete: Cascade, onUpdate: Cascade)
     usuarioId    String
     saldo        Decimal    @default(0.00) @db.Decimal(15, 2)
     saldoInicial Decimal    @default(0.00) @db.Decimal(15, 2)
@@ -42,9 +42,9 @@ model Ativo {
 
 model Operacao {
     id              String    @id @unique
-    ativo           Ativo     @relation(fields: [ativoId], references: [id])
+    ativo           Ativo     @relation(fields: [ativoId], references: [id],  onDelete: Cascade, onUpdate: Cascade)
     ativoId         String
-    conta           Conta     @relation(fields: [contaId], references: [id])
+    conta           Conta     @relation(fields: [contaId], references: [id],  onDelete: Cascade, onUpdate: Cascade)
     contaId         String
     quantidade      Int
     tipo            String
