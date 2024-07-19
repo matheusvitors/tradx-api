@@ -7,10 +7,6 @@ export const validateAtivo = (ativo: Partial<AtivoDTO>) => {
 		throw new ValidationError('Id inexistente.')
 	}
 
-	if(!ativo.publicId || ativo.publicId.length < 1){
-		throw new ValidationError('É necessário ter um id público.');
-	}
-
 	if(!ativo.nome || ativo.nome.length < 2) {
 		throw new ValidationError('Nome do ativo deve conter pelo menos 2 caracteres.');
 	}
