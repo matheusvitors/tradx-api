@@ -9,22 +9,19 @@ describe('Create Ativo Controller', () => {
 
 	beforeAll(() => {
 		const input: Ativo = {
-			id: 1,
-			publicId: "abc",
+			id: "abc",
 			nome: "Teste",
 			acronimo: "TSTE1",
 			tipo: "indice",
 			multiplicador: 2,
 			dataVencimento: new Date("01/01/2025"),
-			createdAt: new Date(),
-			updatedAt: new Date()
 		}
 
 		repository.create(input)
 	})
 	it('should create ativo', async () => {
 		const input: AtivoDTO = {
-			publicId: 'abc',
+			id: 'abc',
 			nome: 'teste',
 			acronimo: "TSTE3",
 			tipo: "indice",
@@ -40,7 +37,7 @@ describe('Create Ativo Controller', () => {
 
 	it('should return 422 when pass invalid data', async () => {
 		const input: AtivoDTO = {
-			publicId: 'abc',
+			id: 'abc',
 			nome: 'T',
 			acronimo: "TSTE2",
 			tipo: "indice",
@@ -54,7 +51,7 @@ describe('Create Ativo Controller', () => {
 
 	it('should return 409 when pass duplicated acronimo', async () => {
 		const input: AtivoDTO = {
-			publicId: 'abc',
+			id: 'abc',
 			nome: 'Teste',
 			acronimo: "TSTE1",
 			tipo: "indice",

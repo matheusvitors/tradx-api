@@ -1,8 +1,7 @@
 import { AtivoType } from "@/core/models";
 
 export interface AtivoDTO {
-	id?: number;
-    publicId: string;
+	id?: string;
 	nome: string;
 	acronimo: string;
 	multiplicador: number;

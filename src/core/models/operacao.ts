@@ -17,8 +17,6 @@ export interface Operacao {
 	operacaoErrada: boolean;
 	motivo?: string;
 	comentarios?: string;
-	createdAt: Date;
-	updatedAt: Date;
 }
 
 export const operacaoTypes = ['compra', 'venda'] as const;

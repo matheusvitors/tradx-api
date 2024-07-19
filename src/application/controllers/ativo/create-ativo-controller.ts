@@ -24,8 +24,7 @@ export const createAtivoController = async (params: CreateAtivoControllerParams)
 		}
 
 		const ativo: AtivoDTO = {
-			id: 1,
-			publicId: newID(),
+			id: newID(),
 			nome: input.nome,
 			acronimo: input.acronimo,
 			tipo: input.tipo === 'acao' ? 'acao' : 'indice',

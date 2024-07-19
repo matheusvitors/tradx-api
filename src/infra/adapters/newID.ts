@@ -1,5 +1,5 @@
-import { createId } from '@paralleldrive/cuid2';
+import { uuidv7 } from "uuidv7";
 
 export const newID = () => {
-	return createId();
+	return uuidv7();
 }
