@@ -36,7 +36,7 @@ model Ativo {
     acronimo       String     @unique
     tipo           String
     multiplicador  Decimal    @default(1.00) @db.Decimal(7, 2)
-    dataVencimento DateTime?
+    dataVencimento String?
     Operacao       Operacao[]
 }
 
@@ -52,8 +52,8 @@ model Operacao {
     stopLoss        Int
     alvo            Int
     precoSaida      Int?
-    dataEntrada     DateTime
-    dataSaida       DateTime?
+    dataEntrada     String
+    dataSaida       String?
     margem          Decimal?
     operacaoPerdida Boolean
     operacaoErrada  Boolean

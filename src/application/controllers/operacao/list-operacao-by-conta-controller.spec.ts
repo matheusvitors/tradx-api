@@ -1,6 +1,7 @@
 import { listOperacaoByContaController } from "@/application/controllers/operacao/list-operacao-by-conta-controller";
 import { Operacao } from "@/core/models";
 import { InMemoryRepository } from "@/infra/database/InMemoryRepository";
+import { format } from "date-fns";
 import { beforeAll, describe, expect, it } from "vitest";
 
 describe("Operacao List Controller By Conta", () => {
@@ -35,7 +36,7 @@ describe("Operacao List Controller By Conta", () => {
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: new Date(),
+			dataEntrada: format(format(new Date(), 'yyyy-MM-dd'), 'yyyy-MM-dd'),
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false,
@@ -69,7 +70,7 @@ describe("Operacao List Controller By Conta", () => {
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: new Date(),
+			dataEntrada: format(new Date(), 'yyyy-MM-dd'),
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false,
@@ -103,7 +104,7 @@ describe("Operacao List Controller By Conta", () => {
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: new Date(),
+			dataEntrada: format(new Date(), 'yyyy-MM-dd'),
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false,

@@ -1,6 +1,7 @@
 import { getOperacaoController } from "@/application/controllers/operacao";
 import { Operacao } from "@/core/models";
 import { InMemoryRepository } from "@/infra/database/InMemoryRepository";
+import { format } from "date-fns";
 import { beforeAll, describe, expect, it } from "vitest";
 
 describe("Get Operacao Controller", () => {
@@ -14,13 +15,16 @@ describe("Get Operacao Controller", () => {
 				nome: "Teste",
 				acronimo: "TSTE1",
 				tipo: "indice",
+				multiplicador: 1
 			},
 			conta: {
-				id: "efg",
+				id: 1,
 				nome: "teste",
 				tipo: "simulador",
+				saldo: 0,
+				saldoInicial: 0,
 				usuario: {
-					id: "hij",
+					id: 1,
 					nome: "Teste",
 					username: "teste",
 					password: "123",
@@ -32,7 +36,7 @@ describe("Get Operacao Controller", () => {
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: new Date(),
+			dataEntrada: format(new Date(), 'yyyy-MM-dd'),
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false,

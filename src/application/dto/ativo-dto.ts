@@ -6,5 +6,5 @@ export interface AtivoDTO {
 	acronimo: string;
 	multiplicador: number;
 	tipo: AtivoType;
-	dataVencimento?: Date;
+	dataVencimento?: string;
 }

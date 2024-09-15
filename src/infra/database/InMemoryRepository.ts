@@ -1,7 +1,7 @@
 import { FilterParams, Repository } from "@/application/interfaces";
 
 interface Entity {
-	id: string;
+	id: string | number;
 }
 
 export class InMemoryRepository<T extends Entity> implements Repository<T> {

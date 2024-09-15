@@ -17,8 +17,8 @@ describe('Operacao Validator', () => {
 			stopLoss: 5,
 			alvo: 20,
 			precoSaida: 20,
-			dataEntrada: new Date('23/01/2024, 15:45:00'),
-			dataSaida: new Date('23/01/2024, 16:00:00'),
+			dataEntrada: '2024-01-23 15:45',
+			dataSaida: '2024-01-23 16:00',
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false
@@ -37,7 +37,7 @@ describe('Operacao Validator', () => {
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: new Date('23/01/2024, 15:45:00'),
+			dataEntrada: '2024-01-23 15:45',
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false
@@ -56,7 +56,7 @@ describe('Operacao Validator', () => {
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: new Date('23/01/2024, 15:45:00'),
+			dataEntrada: '2024-01-23 15:45',
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false
@@ -76,7 +76,7 @@ describe('Operacao Validator', () => {
 			precoSaida: -10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: new Date('23/01/2024, 15:45:00'),
+			dataEntrada: '23/01/2024 15:45',
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false
@@ -91,7 +91,7 @@ describe('Operacao Validator', () => {
 			precoEntrada: -10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: new Date('23/01/2024, 15:45:00'),
+			dataEntrada: '2024-01-23 15:45',
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false
@@ -105,7 +105,7 @@ describe('Operacao Validator', () => {
 			precoEntrada: 10,
 			stopLoss: -5,
 			alvo: 20,
-			dataEntrada: new Date('23/01/2024, 15:45:00'),
+			dataEntrada: '2024-01-23 15:45',
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false
@@ -120,7 +120,7 @@ describe('Operacao Validator', () => {
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: -20,
-			dataEntrada: new Date('23/01/2024, 15:45:00'),
+			dataEntrada: '2024-01-23 15:45',
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false
@@ -135,7 +135,7 @@ describe('Operacao Validator', () => {
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: new Date('23/01/2024, 15:45:00'),
+			dataEntrada: '2024-01-23 15:45',
 			margem: -10,
 			operacaoPerdida: false,
 			operacaoErrada: false
@@ -158,8 +158,8 @@ describe('Operacao Validator', () => {
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: new Date('2024-01-23 15:45:00'),
-			dataSaida: new Date('2024-01-22 15:45:00'),
+			dataEntrada: '2024-01-23 15:45',
+			dataSaida: '2024-01-22 15:45',
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false
@@ -178,8 +178,8 @@ describe('Operacao Validator', () => {
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: new Date('2024-01-23 15:45:00'),
-			dataSaida: new Date('2024-01-24 15:45:00'),
+			dataEntrada: '2024-01-23 15:45',
+			dataSaida: '2024-01-24 15:45',
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false

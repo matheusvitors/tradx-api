@@ -2,6 +2,7 @@ import { createOperacaoController } from "@/application/controllers/operacao";
 import { OperacaoDTO } from "@/application/dto";
 import { Ativo, Conta, Operacao } from "@/core/models";
 import { InMemoryRepository } from "@/infra/database/InMemoryRepository";
+import { format } from "date-fns";
 import { beforeAll, describe, expect, it } from "vitest";
 
 describe('Create Operacao Controller', () => {
@@ -16,7 +17,7 @@ describe('Create Operacao Controller', () => {
 			acronimo: "TSTE1",
 			tipo: "indice",
 			multiplicador: 2,
-			dataVencimento: new Date("2025-01-01")
+			dataVencimento: '2025-01-01',
 		})
 
 		contaRepository.create({
@@ -38,7 +39,7 @@ describe('Create Operacao Controller', () => {
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: new Date(),
+			dataEntrada: format(new Date(), 'yyyy-MM-dd'),
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false
@@ -59,7 +60,7 @@ describe('Create Operacao Controller', () => {
 			stopLoss: 5,
 			alvo: 20,
 			precoSaida: 20,
-			dataEntrada: new Date(),
+			dataEntrada: format(new Date(), 'yyyy-MM-dd'),
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false
@@ -80,7 +81,7 @@ describe('Create Operacao Controller', () => {
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: new Date(),
+			dataEntrada: format(new Date(), 'yyyy-MM-dd'),
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false
@@ -99,7 +100,7 @@ describe('Create Operacao Controller', () => {
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: new Date(),
+			dataEntrada: format(new Date(), 'yyyy-MM-dd'),
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false
@@ -118,7 +119,7 @@ describe('Create Operacao Controller', () => {
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: new Date(),
+			dataEntrada: format(new Date(), 'yyyy-MM-dd'),
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false
@@ -137,7 +138,7 @@ describe('Create Operacao Controller', () => {
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: new Date('2025-01-02'),
+			dataEntrada: '2025-01-02',
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false
@@ -156,8 +157,8 @@ describe('Create Operacao Controller', () => {
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: new Date('2024-01-23 15:45:00'),
-			dataSaida: new Date('2024-01-22 15:45:00'),
+			dataEntrada:'2024-01-23 15:45',
+			dataSaida: '2024-01-22 15:45',
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false
