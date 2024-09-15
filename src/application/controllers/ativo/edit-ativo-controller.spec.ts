@@ -12,7 +12,7 @@ describe('Create Ativo Controller', () => {
 			nome: "Teste",
 			acronimo: "TSTE1",
 			tipo: "indice",
-			dataVencimento: new Date("01/01/2025")
+			dataVencimento: '2025-01-01',
 		})
 
 		repository.create({
@@ -20,7 +20,7 @@ describe('Create Ativo Controller', () => {
 			nome: "Teste 2",
 			acronimo: "TSTE2",
 			tipo: "indice",
-			dataVencimento: new Date("01/01/2025")
+			dataVencimento: '2025-01-01',
 		})
 	})
 
@@ -31,13 +31,13 @@ describe('Create Ativo Controller', () => {
 			acronimo: "TSTE1",
 			tipo: "acao",
 			multiplicador: 1,
-			dataVencimento: new Date("02/01/2025")
+			dataVencimento: '2025-01-02',
 		}
 
 		const response = await editAtivoController({input, repository});
 		expect(response.status).toEqual(200);
 		expect(repository.data[0].tipo).toEqual('acao');
-		expect(repository.data[0].dataVencimento).toEqual(new Date('02/01/2025'));
+		expect(repository.data[0].dataVencimento).toEqual('2025-01-02',);
 	});
 
 	it('should return 404 if user not found', async () => {
