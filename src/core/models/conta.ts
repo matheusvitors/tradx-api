@@ -1,7 +1,7 @@
 import { Usuario } from "@/core/models";
 
 export interface Conta {
-    id: number;
+    id: string;
 	nome: string;
 	tipo: ContaType;
 	usuario: Usuario;

@@ -5,6 +5,7 @@ import { calculateSaldo } from "@/application/usecases/calculate-saldo";
 import { Ativo, Conta, Operacao } from "@/core/models";
 import { validateOperacao } from "@/core/validators";
 import { notFound, success, unprocessableEntity, serverError } from "@/infra/adapters/response-wrapper";
+import { format } from "date-fns";
 
 interface EditOperacaoControllerParams {
 	operacaoRepository: Repository<Operacao>;
@@ -16,6 +17,7 @@ interface EditOperacaoControllerParams {
 export const editOperacaoController = async (params: EditOperacaoControllerParams): Promise<ResponseData> => {
 	try {
 		const { operacaoRepository , ativoRepository, contaRepository, input } = params;
+
 
 		const ativo = await ativoRepository.get(input.ativoId);
 
@@ -41,11 +43,12 @@ export const editOperacaoController = async (params: EditOperacaoControllerParam
 			return notFound();
 		}
 
-		const editedOperacao = await operacaoRepository.edit(input);
+		const editedOperacao = await operacaoRepository.edit({
+			...input, dataEntrada: format(input.dataEntrada, 'yyyy-MM-dd hh:mm'),
+			dataSaida: input.dataSaida ? format(input.dataSaida, 'yyyy-MM-dd hh:mm') : undefined
+		});
 
 		if(editedOperacao && editedOperacao.precoSaida){
-			console.log('tipos', conta.saldo);
-
 			const saldo = calculateSaldo({
 				tipo: editedOperacao.tipo === 'compra' ? 'compra' : 'venda',
 				previousSaldo: typeof conta.saldo !== 'number' ? parseFloat(conta.saldo) : conta.saldo,

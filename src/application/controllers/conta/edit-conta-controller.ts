@@ -15,6 +15,10 @@ export const editContaController = async (params: EditContaControllerParams) => 
 	try {
 		const { input, repository } = params;
 
+		if(!input.id) {
+			return unprocessableEntity('O id da conta é obrigatório.')
+		}
+
 		const savedConta = await repository.get(input.id);
 
 		if(!savedConta){
@@ -25,16 +29,15 @@ export const editContaController = async (params: EditContaControllerParams) => 
 
 		validateConta(input);
 
-		const { usuarioId, ...rest } = input;
+		const { usuarioId, id, ...rest } = input;
 
 		const editedConta: Conta = {
 			...rest,
+			id,
 			tipo: rest.tipo === 'real' ? 'real' : 'simulador',
 			usuario: usuario,
 			saldo: savedConta.saldoInicial !== input.saldoInicial ? (savedConta.saldo - savedConta.saldoInicial) + input.saldoInicial : savedConta.saldo
 		}
-
-		console.log('editedConta', editedConta);
 
 		const conta = await repository.edit(editedConta);
 		return success({conta});

@@ -45,7 +45,6 @@ export const contaPrismaRepository: Repository<Conta> = {
 	create: async (input: ContaDTO): Promise<Conta> => {
 		try {
 			const { usuarioId, ...rest } = input;
-			console.log('rest', rest);
 
 			const result = await databaseClient.conta.create({
 				data: {

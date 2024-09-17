@@ -5,7 +5,7 @@ import { InMemoryRepository } from "@/infra/database/InMemoryRepository";
 import { format } from "date-fns";
 import { beforeAll, describe, expect, it } from "vitest";
 
-describe('Create Operacao Controller', () => {
+describe('Edit Operacao Controller', () => {
 	const operacaoRepository = new InMemoryRepository<Operacao>();
 	const ativoRepository = new InMemoryRepository<Ativo>();
 	const contaRepository = new InMemoryRepository<Conta>();
@@ -38,7 +38,7 @@ describe('Create Operacao Controller', () => {
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: format(new Date(), 'yyyy-MM-dd'),
+			dataEntrada: format(new Date(), 'yyyy-MM-dd hh:mm'),
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false,
@@ -56,7 +56,7 @@ describe('Create Operacao Controller', () => {
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: format(new Date(), 'yyyy-MM-dd'),
+			dataEntrada: format(new Date(), 'yyyy-MM-dd hh:mm'),
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false
@@ -64,7 +64,8 @@ describe('Create Operacao Controller', () => {
 
 		const response = await editOperacaoController({input, operacaoRepository, ativoRepository, contaRepository});
 		expect(response.status).toEqual(200);
-		expect(operacaoRepository.data[0]).toEqual(input);
+		expect(operacaoRepository.data[0].dataSaida).toEqual(undefined);
+		expect(operacaoRepository.data[0].precoSaida).toEqual(undefined);
 		expect(contaRepository.data[0].saldo).toEqual(10);
 	});
 
@@ -79,7 +80,8 @@ describe('Create Operacao Controller', () => {
 			stopLoss: 5,
 			alvo: 20,
 			precoSaida: 20,
-			dataEntrada: format(new Date(), 'yyyy-MM-dd'),
+			dataEntrada: format(new Date(), 'yyyy-MM-dd hh:mm'),
+			dataSaida: format(new Date(), 'yyyy-MM-dd hh:mm'),
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false

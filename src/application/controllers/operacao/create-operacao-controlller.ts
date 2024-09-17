@@ -53,9 +53,6 @@ export const createOperacaoController = async (params: CreateOperacaoControllerP
 			operacaoErrada: input.operacaoErrada,
 		};
 
-		console.log('input', operacao);
-
-
 		validateOperacao(operacao);
 		const createdOperacao = await operacaoRepository.create(operacao);
 
