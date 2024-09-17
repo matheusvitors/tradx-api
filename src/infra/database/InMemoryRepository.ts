@@ -29,7 +29,9 @@ export class InMemoryRepository<T extends Entity> implements Repository<T> {
 	async filter(params: FilterParams<T>[]): Promise<T[] | null> {
 		const result = this.data.filter(objeto => {
 			return params.every(condicao => {
-				return objeto[condicao.field] === condicao.value;
+				const fieldValue = condicao.field.toString().split('.').reduce((value: any, key) => value ? value[key] : undefined, objeto)
+				return fieldValue === condicao.value;
+				// return objeto[condicao.field] === condicao.value;
 			});
 		});
 

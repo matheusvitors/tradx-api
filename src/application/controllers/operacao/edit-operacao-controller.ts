@@ -49,8 +49,6 @@ export const editOperacaoController = async (params: EditOperacaoControllerParam
 		});
 
 		if(editedOperacao && editedOperacao.precoSaida){
-			console.log('tipos', conta.saldo);
-
 			const saldo = calculateSaldo({
 				tipo: editedOperacao.tipo === 'compra' ? 'compra' : 'venda',
 				previousSaldo: typeof conta.saldo !== 'number' ? parseFloat(conta.saldo) : conta.saldo,

@@ -3,8 +3,6 @@ import { ValidationError } from "@/application/errors";
 import { Operacao, operacaoTypes } from "@/core/models";
 
 export const validateOperacao = (operacao: Operacao | OperacaoDTO) => {
-	console.log('quantidade', operacao.quantidade);
-
 
 	const availableTipos: Array<string> = operacaoTypes.map(tipo => tipo);
 

@@ -14,7 +14,7 @@ export const operacaoPrismaRepository: Repository<Operacao> = {
 				include: {ativo: true, conta: true},
 				orderBy: [
 					{ dataSaida: {sort: 'desc', nulls: 'first'}},
-					{ dataEntrada: 'desc'},
+					{ dataEntrada: 'asc'},
 				]
 			});
 
@@ -77,7 +77,6 @@ export const operacaoPrismaRepository: Repository<Operacao> = {
 
 		try {
 			const { ativoId, contaId, ...rest  } = input;
-			console.log('create',  ativoId, contaId);
 
 			const result = await databaseClient.operacao.create({
 				data: {

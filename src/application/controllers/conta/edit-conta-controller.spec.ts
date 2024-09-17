@@ -46,6 +46,18 @@ describe('Edit Conta Controller', () => {
 		expect(response.status).toEqual(404);
 	});
 
+	it('should return 422 when not pass conta id', async () => {
+		const input: ContaDTO = {
+			nome: 'j',
+			tipo: "real",
+			saldoInicial: 25.10,
+			usuarioId: 'xyz',
+		}
+
+		const response = await editContaController({input, repository});
+		expect(response.status).toEqual(422);
+	});
+
 	it('should return 422 when pass invalid data', async () => {
 		const input: ContaDTO = {
 			id: 'abc',
