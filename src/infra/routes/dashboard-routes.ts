@@ -11,5 +11,7 @@ const operacaoRepository = operacaoPrismaRepository;
 
 router.get(`${path}/:conta`, async (request: Request, response: Response) => {
 	const responseData = await dashboardController({ contaRepository, operacaoRepository, contaId: request.params.conta });
-	return route({ response, responseData});
+	return route({ response, responseData });
 })
+
+export { router as DashboardRoutes}

@@ -1,0 +1,5 @@
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImF1dGgiOnRydWUsImlkIjoiMDE5MGNiNzgtMzQ2YS03MWRmLWI4ZGQtN2ExNjY0ZmE4MDJkIn0sImlhdCI6MTcyNjc2NTExOSwiZXhwIjoxNzI2ODM3MTE5fQ.7-fcUTWrtPFee481SlxZAjl8RVtjKIJ67QkVX4CZjaQ
+
+
+GET http://localhost:8000/dashboard/0190e5d2-a69d-7eed-ad83-69fe31a4c074
+Authorization: Bearer {{token}}

@@ -20,9 +20,8 @@ export const dashboardController = async (params: DashboardControllerParams): Pr
 		}
 
 		const operacoes = await operacaoRepository.filter!([
-			{field: 'conta.id', value: contaId},
+			{field: 'contaId', value: contaId},
 		]);
-
 
 		let operacoesEmAberto: Operacao[] = [];
 		let variacao: number[] = [];
