@@ -1,11 +1,18 @@
 import { Repository, ResponseData } from "@/application/interfaces";
 import { Conta, Operacao } from "@/core/models";
 import { serverError, success, unprocessableEntity } from "@/infra/adapters/response-wrapper";
+import { format } from "date-fns";
 
 interface DashboardControllerParams {
 	contaRepository: Repository<Conta>;
 	operacaoRepository: Repository<Operacao>;
 	contaId: string;
+}
+
+interface VariacaoInformation {
+	value: number;
+	data: string;
+	label: string;
 }
 
 //TODO: REfatorar essa para para que cada item tenha seu proprio endpoint
@@ -24,7 +31,8 @@ export const dashboardController = async (params: DashboardControllerParams): Pr
 		]);
 
 		let operacoesEmAberto: Operacao[] = [];
-		let variacao: number[] = [];
+		const variacao: VariacaoInformation[] = [];
+		let somatorioVariacao: number = 0;
 
 		if(operacoes) {
 			operacoesEmAberto = operacoes.filter(operacao => !operacao.precoSaida);
@@ -34,7 +42,12 @@ export const dashboardController = async (params: DashboardControllerParams): Pr
 			.sort((a,b) => new Date(a.dataEntrada).getTime() - new Date(b.dataEntrada).getTime())
 			.forEach(operacao => {
 				const resultadoPontos =  operacao.precoSaida ? operacao.tipo === 'compra' ? operacao.precoEntrada - operacao.precoSaida : operacao.precoSaida - operacao.precoEntrada : 0;
-				variacao.push((resultadoPontos * operacao.ativo.multiplicador) + (variacao[variacao.length - 1] || 0));
+				somatorioVariacao +=  (resultadoPontos * operacao.ativo.multiplicador) + (somatorioVariacao || 0);
+				variacao.push({
+					value: somatorioVariacao,
+					label: new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(parseFloat(somatorioVariacao.toString())),
+					data: format(operacao.dataEntrada, 'dd/MM/yyyy')
+				});
 			})
 		}
 
