@@ -42,7 +42,8 @@ export const dashboardController = async (params: DashboardControllerParams): Pr
 			.sort((a,b) => new Date(a.dataEntrada).getTime() - new Date(b.dataEntrada).getTime())
 			.forEach(operacao => {
 				const resultadoPontos =  operacao.precoSaida ? operacao.tipo === 'compra' ? operacao.precoEntrada - operacao.precoSaida : operacao.precoSaida - operacao.precoEntrada : 0;
-				somatorioVariacao +=  (resultadoPontos * operacao.ativo.multiplicador) + (somatorioVariacao || 0);
+				somatorioVariacao +=  (resultadoPontos * operacao.ativo.multiplicador);
+
 				variacao.push({
 					value: somatorioVariacao,
 					label: new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(parseFloat(somatorioVariacao.toString())),
