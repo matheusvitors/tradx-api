@@ -1,4 +1,4 @@
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImF1dGgiOnRydWUsImlkIjoiMDE5MGNiNzgtMzQ2YS03MWRmLWI4ZGQtN2ExNjY0ZmE4MDJkIn0sImlhdCI6MTcyNjU5NjUzNCwiZXhwIjoxNzI2NjY4NTM0fQ.T55HDArGAeyCKuwKX-HT8-d4LJIN6iUcQ356Mpd4PDU
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImF1dGgiOnRydWUsImlkIjoiMDE5MGNiNzgtMzQ2YS03MWRmLWI4ZGQtN2ExNjY0ZmE4MDJkIn0sImlhdCI6MTcyODQ4MjY0NiwiZXhwIjoxNzI4NTU0NjQ2fQ.iQoa7xG85dJLmB7IdJvzX0wqLYLtjzw_eIO1yI7dV3k
 @path=operacoes
 GET http://localhost:8000/{{path}}
 Authorization: Bearer {{token}}
@@ -8,7 +8,7 @@ GET http://localhost:8000/{{path}}/ideo5c6ahm0actaquo5hgr3w
 Authorization: Bearer {{token}}
 
 ###
-GET http://localhost:8000/{{path}}/conta/0190e5d2-a69d-7eed-ad83-69fe31a4c074
+GET http://localhost:8000/{{path}}/conta/0190e5d2-a69d-7eed-ad83-69fe31a4c074/range/2024-07-01/2024-07-31
 Authorization: Bearer {{token}}
 
 

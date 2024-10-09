@@ -13,7 +13,7 @@ describe("Dashboard Controller", () => {
 			nome: "Conta Principal",
 			tipo: "real",
 			usuario: {
-				id: 101,
+				id: '101',
 				nome: "João Silva",
 				email: "joao.silva@example.com",
 				username: "a",
@@ -28,7 +28,7 @@ describe("Dashboard Controller", () => {
 			nome: "Simulador",
 			tipo: "simulador",
 			usuario: {
-				id: 101,
+				id: '101',
 				nome: "João Silva",
 				email: "joao.silva@example.com",
 				username: "a",
@@ -51,12 +51,13 @@ describe("Dashboard Controller", () => {
 					tipo: "indice",
 					multiplicador: 4.5,
 				},
+				contaId: 'abc',
 				conta: {
 					id: "abc",
 					nome: "Simulador",
 					tipo: "simulador",
 					usuario: {
-						id: 101,
+						id: '101',
 						nome: "João Silva",
 						email: "joao.silva@example.com",
 						username: "a",
@@ -71,8 +72,8 @@ describe("Dashboard Controller", () => {
 				stopLoss: 5,
 				alvo: 20,
 				precoSaida: 10,
-				dataEntrada: "2024-08-22 14:50",
-				dataSaida: "2024-08-22 15:50",
+				dataEntrada: new Date( "2024-08-22 14:50"),
+				dataSaida: new Date("2024-08-22 15:50"),
 				margem: 20,
 				operacaoPerdida: false,
 				operacaoErrada: false,
@@ -86,12 +87,13 @@ describe("Dashboard Controller", () => {
 					tipo: "indice",
 					multiplicador: 4.5,
 				},
+				contaId: 'abc',
 				conta: {
 					id: "abc",
 					nome: "Simulador",
 					tipo: "simulador",
 					usuario: {
-						id: 101,
+						id: '101',
 						nome: "João Silva",
 						email: "joao.silva@example.com",
 						username: "a",
@@ -106,8 +108,8 @@ describe("Dashboard Controller", () => {
 				stopLoss: 5,
 				alvo: 20,
 				precoSaida: 20,
-				dataEntrada: "2024-07-24 16:40",
-				dataSaida: "2024-07-24 16:45",
+				dataEntrada: new Date("2024-07-24 16:40"),
+				dataSaida: new Date("2024-07-24 16:45"),
 				margem: 20,
 				operacaoPerdida: false,
 				operacaoErrada: false,
@@ -121,12 +123,13 @@ describe("Dashboard Controller", () => {
 					tipo: "indice",
 					multiplicador: 4.5,
 				},
+				contaId: 'abc',
 				conta: {
 					id: "abc",
 					nome: "Simulador",
 					tipo: "simulador",
 					usuario: {
-						id: 101,
+						id: '101',
 						nome: "João Silva",
 						email: "joao.silva@example.com",
 						username: "a",
@@ -141,8 +144,8 @@ describe("Dashboard Controller", () => {
 				stopLoss: 1,
 				alvo: 10,
 				precoSaida: 10,
-				dataEntrada: "2024-07-23 09:00",
-				dataSaida: "2024-07-23 14:00",
+				dataEntrada: new Date("2024-07-23 09:00"),
+				dataSaida: new Date("2024-07-23 14:00"),
 				margem: 10,
 				operacaoPerdida: false,
 				operacaoErrada: false,
@@ -157,12 +160,13 @@ describe("Dashboard Controller", () => {
 					multiplicador: 4.5,
 					dataVencimento: undefined,
 				},
+				contaId: 'abc',
 				conta: {
 					id: "abc",
 					nome: "Simulador",
 					tipo: "simulador",
 					usuario: {
-						id: 101,
+						id: '101',
 						nome: "João Silva",
 						email: "joao.silva@example.com",
 						username: "a",
@@ -176,7 +180,7 @@ describe("Dashboard Controller", () => {
 				precoEntrada: 10,
 				stopLoss: 5,
 				alvo: 20,
-				dataEntrada: "2024-07-19 12:40",
+				dataEntrada: new Date("2024-07-19 12:40"),
 				margem: 20,
 				operacaoPerdida: false,
 				operacaoErrada: false,
@@ -190,7 +194,7 @@ describe("Dashboard Controller", () => {
 		const response = await dashboardController({ contaRepository, operacaoRepository, contaId: "abc" });
 		expect(response.status).toEqual(200);
 		expect(response.body.content.contas.length).toEqual(2);
-		expect(response.body.content.variacao[response.body.content.variacao.length - 1]).toEqual(22.5);
+		expect(response.body.content.variacao[response.body.content.variacao.length - 1].value).toEqual(22.5);
 		expect(response.body.content.operacoes.length).toEqual(1);
 	});
 

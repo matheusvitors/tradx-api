@@ -1,6 +1,6 @@
 import { AtivoDTO } from "@/application/dto";
 import { ValidationError } from "@/application/errors";
-import { Ativo, ativoTypes } from "@/core/models";
+import { ativoTypes } from "@/core/models";
 
 export const validateAtivo = (ativo: Partial<AtivoDTO>) => {
 	if(!ativo.id) {

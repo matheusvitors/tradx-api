@@ -2,7 +2,9 @@ import { Ativo, Conta } from "@/core/models";
 
 export interface Operacao {
 	id: string;
+	ativoId?: string;
 	ativo: Ativo;
+	contaId?: string;
 	conta: Conta;
 	quantidade: number;
 	tipo: OperacaoType;
@@ -10,8 +12,8 @@ export interface Operacao {
 	stopLoss: number;
 	alvo: number;
 	precoSaida?: number;
-	dataEntrada: string;
-	dataSaida?: string;
+	dataEntrada: Date;
+	dataSaida?: Date;
 	margem: number;
 	operacaoPerdida: boolean;
 	operacaoErrada: boolean;
