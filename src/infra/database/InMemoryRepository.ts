@@ -5,11 +5,10 @@ interface Entity {
 }
 
 export class InMemoryRepository<T extends Entity> implements Repository<T> {
-
 	public data: T[] = [];
 
 	constructor(data?: T[]) {
-		if(data) {
+		if (data) {
 			this.data = data;
 		}
 	}
@@ -27,11 +26,34 @@ export class InMemoryRepository<T extends Entity> implements Repository<T> {
 	}
 
 	async filter(params: FilterParams<T>[]): Promise<T[] | null> {
-		const result = this.data.filter(objeto => {
-			return params.every(condicao => {
-				const fieldValue = condicao.field.toString().split('.').reduce((value: any, key) => value ? value[key] : undefined, objeto)
-				return fieldValue === condicao.value;
-				// return objeto[condicao.field] === condicao.value;
+		// const result = this.data.filter(objeto => {
+		// 	return params.every(condicao => {
+		// 		const fieldValue = condicao.field.toString().split('.').reduce((value: any, key) => value ? value[key] : undefined, objeto)
+		// 		return fieldValue === condicao.value;
+		// 	});
+		// });
+
+		// return result.length > 0 ? result : null;
+
+		const result = this.data.filter((objeto) => {
+			return params.every((condicao) => {
+				const fieldValue = condicao.field
+					.toString()
+					.split(".")
+					.reduce((value: any, key) => (value ? value[key] : undefined), objeto);
+
+				// Verifica se o value é uma string e faz a filtragem por igualdade
+				if (typeof condicao.value !== "object") {
+					return fieldValue === condicao.value;
+				}
+
+				// Verifica se o value é um objeto com lte e gte para filtragem de intervalo de datas
+				if (condicao.value && typeof condicao.value === "object" && "lte" in condicao.value && "gte" in condicao.value) {
+					const fieldDate = new Date(fieldValue);
+					return fieldDate >= condicao.value.gte && fieldDate <= condicao.value.lte;
+				}
+
+				return false;
 			});
 		});
 
@@ -50,7 +72,6 @@ export class InMemoryRepository<T extends Entity> implements Repository<T> {
 			return entity;
 		}
 		return null;
-
 	}
 
 	async editField(id: string, field: keyof T, value: any): Promise<T | null> {
@@ -59,7 +80,7 @@ export class InMemoryRepository<T extends Entity> implements Repository<T> {
 			this.data[index][field] = value;
 			return this.data[index];
 		}
-		return null
+		return null;
 	}
 
 	async remove(id: string): Promise<void> {

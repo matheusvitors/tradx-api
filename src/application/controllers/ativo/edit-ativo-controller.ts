@@ -22,7 +22,7 @@ export const editAtivoController = async (params: EditAtivoControllerParams): Pr
 		}
 
 		if(input.acronimo !== ativo.acronimo) {
-			const ativoAcronimoVerification = await repository.find('acronimo', input.acronimo);
+			const ativoAcronimoVerification = await repository.find!('acronimo', input.acronimo);
 
 			if(ativoAcronimoVerification && ativoAcronimoVerification.id !== input.id) {
 				return conflict('Acronimo não pode ter duplicação');

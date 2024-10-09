@@ -26,7 +26,7 @@ export const createAtivoController = async (params: CreateAtivoControllerParams)
 			id: newID(),
 			nome: input.nome,
 			acronimo: input.acronimo,
-			tipo: input.tipo === 'acao' ? 'acao' : 'indice',
+			tipo: input.tipo,
 			multiplicador: input.multiplicador || 1,
 			dataVencimento: input.dataVencimento
 		};

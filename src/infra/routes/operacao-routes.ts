@@ -14,8 +14,8 @@ router.get(`${path}`, async (request: Request, response: Response) => {
 	return route({ response, responseData });
 })
 
-router.get(`${path}/conta/:id`, async (request: Request, response: Response) => {
-	const responseData = await listOperacaoByContaController({repository, contaId: request.params.id});
+router.get(`${path}/conta/:id/range/:init/:end`, async (request: Request, response: Response) => {
+	const responseData = await listOperacaoByContaController({repository, contaId: request.params.id, range: {init: request.params.init, end: request.params.end}});
 	return route({ response, responseData });
 })
 

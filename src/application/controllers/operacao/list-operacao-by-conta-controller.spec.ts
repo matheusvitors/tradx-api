@@ -4,7 +4,7 @@ import { InMemoryRepository } from "@/infra/database/InMemoryRepository";
 import { format } from "date-fns";
 import { beforeAll, describe, expect, it } from "vitest";
 
-describe("Operacao List Controller By Conta", () => {
+describe("List Operacao By Conta Controller", () => {
 	const repository = new InMemoryRepository<Operacao>();
 
 	beforeAll(() => {
@@ -36,7 +36,7 @@ describe("Operacao List Controller By Conta", () => {
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: format(format(new Date(), 'yyyy-MM-dd'), 'yyyy-MM-dd'),
+			dataEntrada: new Date('2024-03-14 15:00'),
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false,
@@ -70,7 +70,7 @@ describe("Operacao List Controller By Conta", () => {
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: format(new Date(), 'yyyy-MM-dd'),
+			dataEntrada: new Date('2024-03-01 15:00'),
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false,
@@ -104,7 +104,7 @@ describe("Operacao List Controller By Conta", () => {
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: format(new Date(), 'yyyy-MM-dd'),
+			dataEntrada: new Date('2024-03-01 15:00'),
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false,
@@ -113,21 +113,21 @@ describe("Operacao List Controller By Conta", () => {
 	});
 
 	it("should list operacoes by conta", async () => {
-		const response1 = await listOperacaoByContaController({repository, contaId: 'aaa'});
+		const response1 = await listOperacaoByContaController({repository, contaId: 'aaa', range: { init: '2024-03-01', end: '2024-03-31'}});
 		expect(response1.status).toEqual(200);
 		expect(response1.body.content[0].id).toEqual("abc");
 
-		const response2 = await listOperacaoByContaController({repository, contaId: 'bbb'});
+		const response2 = await listOperacaoByContaController({repository, contaId: 'bbb', range: { init: '2024-03-01', end: '2024-03-31'}});
 		expect(response2.status).toEqual(200);
 		expect(response2.body.content[0].id).toEqual("cde");
 
-		const response3 = await listOperacaoByContaController({repository, contaId: 'ccc'});
+		const response3 = await listOperacaoByContaController({repository, contaId: 'ccc', range: { init: '2024-03-01', end: '2024-03-31'}});
 		expect(response3.status).toEqual(200);
 		expect(response3.body.content[0].id).toEqual("efg");
 	});
 
 	it("should return 404 if conta not exist", async () => {
-		const response = await listOperacaoByContaController({repository, contaId: 'zzz'});
+		const response = await listOperacaoByContaController({repository, contaId: 'zzz', range: { init: '2024-03-01', end: '2024-03-31'}});
 		expect(response.status).toEqual(404);
 	});
 
