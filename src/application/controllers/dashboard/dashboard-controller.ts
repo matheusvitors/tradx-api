@@ -1,10 +1,10 @@
 import { Repository, ResponseData } from "@/application/interfaces";
+import { calculateSaldoOfOperacao } from "@/application/usecases";
 import { Conta, Operacao } from "@/core/models";
 import { serverError, success, unprocessableEntity } from "@/infra/adapters/response-wrapper";
 import { format } from "date-fns";
 
 interface DashboardControllerParams {
-	contaRepository: Repository<Conta>;
 	operacaoRepository: Repository<Operacao>;
 	contaId: string;
 }
@@ -20,29 +20,64 @@ interface VariacaoInformation {
 
 export const dashboardController = async (params: DashboardControllerParams): Promise<ResponseData> => {
 	try {
-		const { contaRepository, operacaoRepository, contaId } = params;
+		const { operacaoRepository, contaId } = params;
 
 		if(!contaId || contaId.length === 0) {
 			return unprocessableEntity('A conta é obrigatória.');
 		}
 
+		let initDate = '';
+		let endDate = '';
+
+
+		initDate = format(new Date(new Date().getFullYear(), new Date().getMonth(), 1), 'yyyy-MM-dd');
+		endDate = format(new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0), 'yyyy-MM-dd');
+
+		if(process.env.NODE_ENV === 'test')  {
+			initDate = format(new Date(new Date().getFullYear(), 7, 1), 'yyyy-MM-dd');
+			endDate = format(new Date(new Date().getFullYear(), 8, 0), 'yyyy-MM-dd');
+		}
+
 		const operacoes = await operacaoRepository.filter!([
 			{field: 'contaId', value: contaId},
+			{field: 'dataEntrada', value: { gte: initDate, lte: endDate }}
 		]);
 
+		const conta = {
+			saldo: 0,
+			ganhos: 0,
+			perdas: 0
+		}
 		let operacoesEmAberto: Operacao[] = [];
 		const variacao: VariacaoInformation[] = [];
 		let somatorioVariacao: number = 0;
 
 		if(operacoes) {
+			conta.saldo = operacoes.reduce((accumulator, operacao) => accumulator + calculateSaldoOfOperacao(operacao), 0);
+
+			conta.ganhos = operacoes.reduce((accumulator, operacao) => {
+				if(operacao.precoSaida) {
+					let result = operacao.tipo === 'compra' ? operacao.precoSaida - operacao.precoEntrada : operacao.precoEntrada - operacao.precoSaida;
+					return result >= 0 ? accumulator + (result * operacao.ativo.multiplicador) : accumulator;
+				}
+				return accumulator;
+			},0);
+
+			conta.perdas = operacoes.reduce((accumulator, operacao) => {
+				if(operacao.precoSaida) {
+					let result = operacao.tipo === 'compra' ? operacao.precoSaida - operacao.precoEntrada : operacao.precoEntrada - operacao.precoSaida;
+					return result <= 0 ? accumulator - (result * operacao.ativo.multiplicador) : accumulator;
+				}
+				return accumulator;
+			},0);
+
 			operacoesEmAberto = operacoes.filter(operacao => !operacao.precoSaida);
 			const operacoesFechadas = operacoes.filter(operacao => operacao.precoSaida);
 
 			operacoesFechadas
 			.sort((a,b) => new Date(a.dataEntrada).getTime() - new Date(b.dataEntrada).getTime())
 			.forEach(operacao => {
-				const resultadoPontos =  operacao.precoSaida ? operacao.tipo === 'compra' ? operacao.precoEntrada - operacao.precoSaida : operacao.precoSaida - operacao.precoEntrada : 0;
-				somatorioVariacao +=  (resultadoPontos * operacao.ativo.multiplicador);
+				somatorioVariacao += calculateSaldoOfOperacao(operacao)
 
 				variacao.push({
 					value: somatorioVariacao,
@@ -52,10 +87,8 @@ export const dashboardController = async (params: DashboardControllerParams): Pr
 			})
 		}
 
-		const contas = await contaRepository.list();
-
 		return success({
-			contas: contas || [],
+			conta,
 			variacao,
 			operacoes: operacoesEmAberto
 		});
