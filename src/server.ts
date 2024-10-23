@@ -15,6 +15,7 @@ if(process.env.NODE_ENV !== "test") {
 	app.listen(PORT || 8000, function (){
 		console.info('----------------------------------------------------------------------');
 		console.info("Tradx running on port %d", PORT || 8000);
+		console.info('----------------------------------------------------------------------');
 	});
 }
 

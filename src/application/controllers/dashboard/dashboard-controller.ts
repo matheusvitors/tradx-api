@@ -26,17 +26,23 @@ export const dashboardController = async (params: DashboardControllerParams): Pr
 			return unprocessableEntity('A conta é obrigatória.');
 		}
 
-		let initDate = '';
-		let endDate = '';
+		let initDate = new Date();
+		let endDate = new Date();
 
 
-		initDate = format(new Date(new Date().getFullYear(), new Date().getMonth(), 1), 'yyyy-MM-dd');
-		endDate = format(new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0), 'yyyy-MM-dd');
-
+		initDate = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+		endDate = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0);
 		if(process.env.NODE_ENV === 'test')  {
-			initDate = format(new Date(new Date().getFullYear(), 7, 1), 'yyyy-MM-dd');
-			endDate = format(new Date(new Date().getFullYear(), 8, 0), 'yyyy-MM-dd');
+			initDate = new Date(new Date().getFullYear(), 7, 1);
+			endDate = new Date(new Date().getFullYear(), 8, 0);
 		}
+		// initDate = format(new Date(new Date().getFullYear(), new Date().getMonth(), 1), 'yyyy-MM-dd');
+		// endDate = format(new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0), 'yyyy-MM-dd');
+
+		// if(process.env.NODE_ENV === 'test')  {
+		// 	initDate = format(new Date(new Date().getFullYear(), 7, 1), 'yyyy-MM-dd');
+		// 	endDate = format(new Date(new Date().getFullYear(), 8, 0), 'yyyy-MM-dd');
+		// }
 
 		const operacoes = await operacaoRepository.filter!([
 			{field: 'contaId', value: contaId},
@@ -53,12 +59,13 @@ export const dashboardController = async (params: DashboardControllerParams): Pr
 		let somatorioVariacao: number = 0;
 
 		if(operacoes) {
+
 			conta.saldo = operacoes.reduce((accumulator, operacao) => accumulator + calculateSaldoOfOperacao(operacao), 0);
 
 			conta.ganhos = operacoes.reduce((accumulator, operacao) => {
 				if(operacao.precoSaida) {
 					let result = operacao.tipo === 'compra' ? operacao.precoSaida - operacao.precoEntrada : operacao.precoEntrada - operacao.precoSaida;
-					return result >= 0 ? accumulator + (result * operacao.ativo.multiplicador) : accumulator;
+					return result > 0 ? accumulator + (result * operacao.ativo.multiplicador) : accumulator;
 				}
 				return accumulator;
 			},0);
@@ -66,7 +73,7 @@ export const dashboardController = async (params: DashboardControllerParams): Pr
 			conta.perdas = operacoes.reduce((accumulator, operacao) => {
 				if(operacao.precoSaida) {
 					let result = operacao.tipo === 'compra' ? operacao.precoSaida - operacao.precoEntrada : operacao.precoEntrada - operacao.precoSaida;
-					return result <= 0 ? accumulator - (result * operacao.ativo.multiplicador) : accumulator;
+					return result < 0 ? accumulator - (result * operacao.ativo.multiplicador) : accumulator;
 				}
 				return accumulator;
 			},0);
