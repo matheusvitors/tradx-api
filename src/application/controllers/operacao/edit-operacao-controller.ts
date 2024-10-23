@@ -17,9 +17,12 @@ interface EditOperacaoControllerParams {
 export const editOperacaoController = async (params: EditOperacaoControllerParams): Promise<ResponseData> => {
 	try {
 		const { operacaoRepository , ativoRepository, contaRepository, input } = params;
+		console.log(input);
 
 
 		const ativo = await ativoRepository.get(input.ativoId);
+		console.log(ativo);
+
 
 		if(!ativo) {
 			return notFound('Ativo não encontrado.');
@@ -44,8 +47,8 @@ export const editOperacaoController = async (params: EditOperacaoControllerParam
 		}
 
 		const editedOperacao = await operacaoRepository.edit({
-			...input, dataEntrada: format(input.dataEntrada, 'yyyy-MM-dd hh:mm'),
-			dataSaida: input.dataSaida ? format(input.dataSaida, 'yyyy-MM-dd hh:mm') : undefined
+			...input, dataEntrada: new Date(input.dataEntrada),
+			dataSaida: input.dataSaida ? new Date(input.dataSaida) : undefined
 		});
 
 		if(editedOperacao && editedOperacao.precoSaida){

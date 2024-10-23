@@ -17,7 +17,16 @@ describe('Edit Operacao Controller', () => {
 			acronimo: "TSTE1",
 			tipo: "indice",
 			multiplicador: 2,
-			dataVencimento: "2025-01-01"
+			dataVencimento: new Date("2025-01-01")
+		})
+
+		ativoRepository.create({
+			id: "cde",
+			nome: "Teste 2",
+			acronimo: "TSTE2",
+			tipo: "indice",
+			multiplicador: 2,
+			dataVencimento: new Date("2023-01-01")
 		})
 
 		contaRepository.create({
@@ -29,7 +38,7 @@ describe('Edit Operacao Controller', () => {
 			saldo: 10.00
 		})
 
-		const input: OperacaoDTO = {
+		operacaoRepository.create({
 			id: "012",
 			ativoId: 'abc',
 			contaId: '123',
@@ -38,12 +47,26 @@ describe('Edit Operacao Controller', () => {
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: format(new Date(), 'yyyy-MM-dd hh:mm'),
+			dataEntrada: new Date('2024-01-05 13:00'),
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false,
-		};
-		operacaoRepository.create(input);
+		});
+
+		operacaoRepository.create({
+			id: "654",
+			ativoId: 'abc',
+			contaId: '123',
+			quantidade: 1,
+			tipo: "compra",
+			precoEntrada: 10,
+			stopLoss: 5,
+			alvo: 20,
+			dataEntrada: new Date('2024-01-05 13:00'),
+			margem: 10,
+			operacaoPerdida: false,
+			operacaoErrada: false,
+		});
 	});
 
 	it('should edit operacao without precoSaida', async () => {
@@ -56,7 +79,7 @@ describe('Edit Operacao Controller', () => {
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: format(new Date(), 'yyyy-MM-dd hh:mm'),
+			dataEntrada: new Date('05/01/2024 15:00'),
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false
@@ -80,8 +103,8 @@ describe('Edit Operacao Controller', () => {
 			stopLoss: 5,
 			alvo: 20,
 			precoSaida: 20,
-			dataEntrada: format(new Date(), 'yyyy-MM-dd hh:mm'),
-			dataSaida: format(new Date(), 'yyyy-MM-dd hh:mm'),
+			dataEntrada: new Date('05/01/2024 15:00'),
+			dataSaida: new Date('05/01/2024 16:00'),
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false
@@ -103,7 +126,7 @@ describe('Edit Operacao Controller', () => {
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: format(new Date(), 'yyyy-MM-dd'),
+			dataEntrada: new Date('05/01/2024 15:00'),
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false
@@ -123,7 +146,7 @@ describe('Edit Operacao Controller', () => {
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: format(new Date(), 'yyyy-MM-dd'),
+			dataEntrada: new Date('05/01/2024 15:00'),
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false
@@ -143,7 +166,7 @@ describe('Edit Operacao Controller', () => {
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: format(new Date(), 'yyyy-MM-dd'),
+			dataEntrada: new Date('05/01/2024 15:00'),
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false
@@ -163,7 +186,7 @@ describe('Edit Operacao Controller', () => {
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: format(new Date(), 'yyyy-MM-dd'),
+			dataEntrada: new Date('05/01/2024 15:00'),
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false
@@ -175,15 +198,15 @@ describe('Edit Operacao Controller', () => {
 
 	it('should return 422 when dataEntrada is out if ativo expiration', async () => {
 		const input: OperacaoDTO = {
-			id: 'aaaaaaaaa',
-			ativoId: "abc",
+			id: '654',
+			ativoId: "cde",
 			contaId: "123",
 			quantidade: 1,
 			tipo: "compra",
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: '2025-01-02',
+			dataEntrada: new Date('05/01/2024 15:00'),
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false
@@ -195,7 +218,7 @@ describe('Edit Operacao Controller', () => {
 
 	it('should return 422 when dataSaida is before dataEntrada', async () => {
 		const input: OperacaoDTO = {
-			id: 'aaaaaaaaa',
+			id: '012',
 			ativoId: "abc",
 			contaId: "123",
 			quantidade: 1,
@@ -203,8 +226,8 @@ describe('Edit Operacao Controller', () => {
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: '2024-01-23 15:45',
-			dataSaida: '2024-01-22 15:45',
+			dataEntrada: new Date('2024-01-23 15:45'),
+			dataSaida: new Date('2024-01-22 15:45'),
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false
