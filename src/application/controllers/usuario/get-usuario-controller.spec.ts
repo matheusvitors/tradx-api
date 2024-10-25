@@ -1,7 +1,7 @@
 import { beforeAll, describe, expect, it } from "vitest";
 import { InMemoryRepository } from "@/infra/database/InMemoryRepository";
-import { Usuario } from "@prisma/client";
 import { getUsuarioController } from "@/application/controllers/usuario";
+import { Usuario } from "@/core/models";
 
 describe('Usuario List Controller', () => {
 	const repository = new InMemoryRepository<Usuario>();

@@ -1,7 +1,7 @@
 import { parse } from "csv-parse"
 
 export const csv = {
-	parse: (file: string) => {
+	parse: () => {
 		return parse({delimiter: ',', columns: true});
 	}
 }

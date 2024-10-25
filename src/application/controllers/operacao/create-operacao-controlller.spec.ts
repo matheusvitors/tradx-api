@@ -39,7 +39,7 @@ describe('Create Operacao Controller', () => {
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: format(new Date(), 'yyyy-MM-dd'),
+			dataEntrada: new Date('2024-08-01'),
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false
@@ -60,7 +60,7 @@ describe('Create Operacao Controller', () => {
 			stopLoss: 5,
 			alvo: 20,
 			precoSaida: 20,
-			dataEntrada: format(new Date(), 'yyyy-MM-dd'),
+			dataEntrada: new Date('2024-08-01'),
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false
@@ -81,7 +81,7 @@ describe('Create Operacao Controller', () => {
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: format(new Date(), 'yyyy-MM-dd'),
+			dataEntrada: new Date('2024-08-01'),
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false
@@ -100,7 +100,7 @@ describe('Create Operacao Controller', () => {
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: format(new Date(), 'yyyy-MM-dd'),
+			dataEntrada: new Date('2024-08-01'),
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false
@@ -119,7 +119,7 @@ describe('Create Operacao Controller', () => {
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: format(new Date(), 'yyyy-MM-dd'),
+			dataEntrada: new Date('2024-08-01'),
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false
@@ -138,7 +138,7 @@ describe('Create Operacao Controller', () => {
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: '2025-01-02',
+			dataEntrada: new Date('2024-08-01'),
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false
@@ -157,8 +157,8 @@ describe('Create Operacao Controller', () => {
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada:'2024-01-23 15:45',
-			dataSaida: '2024-01-22 15:45',
+			dataEntrada: new Date('2024-08-01 15:45'),
+			dataSaida: new Date('2024-07-31 15:45'),
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false
