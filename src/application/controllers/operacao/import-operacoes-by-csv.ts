@@ -1,7 +1,10 @@
+import { OperacaoDTO } from "@/application/dto";
 import { ValidationError } from "@/application/errors";
 import { Repository } from "@/application/interfaces";
 import { processCsv } from "@/application/usecases/process-csv";
 import { Ativo, Conta, Operacao } from "@/core/models";
+import { validateOperacao } from "@/core/validators";
+import { newID } from "@/infra/adapters/newID";
 import { unprocessableEntity, serverError, notFound, success } from "@/infra/adapters/response-wrapper";
 
 interface ImportOperacoesByCsvParams {
@@ -15,22 +18,51 @@ export const importOperacoesByCsv = async (params: ImportOperacoesByCsvParams) =
 	try {
 		const { operacaoRepository, ativoRepository, contaRepository, csvFile } = params;
 
-		const processImportedCsv = async (input: unknown) => {
-			const ativo = await ativoRepository.get(input.ativoId);
+		const processImportedCsv = async (input: any) => {
+			if(
+				'ativoId' in input &&
+				'contaId' in input &&
+				'dataVencimento' in input &&
+				'dataEntrada' in input
+			) {
+				const ativo = await ativoRepository.get(input.ativoId);
 
-			if(!ativo) {
-				return notFound('Ativo não encontrado.');
+				if(!ativo) {
+					return notFound('Ativo não encontrado.');
+				}
+
+				const conta = await contaRepository.get(input.contaId);
+
+				if(!conta) {
+					return notFound('Conta não encontrada.');
+				}
+
+				if(ativo.dataVencimento && (input.dataEntrada > ativo.dataVencimento)) {
+					return unprocessableEntity('Data e horário de entrada fora da validade do ativo.')
+				}
 			}
 
-			const conta = await contaRepository.get(input.contaId);
+			const operacao: OperacaoDTO = {
+				id: newID(),
+				ativoId: input.ativoId,
+				contaId: input.contaId,
+				quantidade: input.quantidade,
+				tipo: input.tipo,
+				precoEntrada: input.precoEntrada,
+				stopLoss: input.stopLoss,
+				alvo: input.alvo,
+				precoSaida: input.precoSaida,
+				dataEntrada: new Date(input.dataEntrada),
+				dataSaida: input.dataSaida ? new Date(input.dataSaida) : undefined,
+				margem: 0,
+				operacaoPerdida: input.operacaoPerdida,
+				operacaoErrada: input.operacaoErrada,
+				comentarios: input.comentarios,
+				motivo: input.motivo
+			};
 
-			if(!conta) {
-				return notFound('Conta não encontrada.');
-			}
-
-			if(ativo.dataVencimento && (input.dataEntrada > ativo.dataVencimento)) {
-				return unprocessableEntity('Data e horário de entrada fora da validade do ativo.')
-			}
+			validateOperacao(operacao);
+			console.log(operacao);
 
 		}
 

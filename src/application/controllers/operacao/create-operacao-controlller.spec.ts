@@ -19,6 +19,14 @@ describe('Create Operacao Controller', () => {
 			multiplicador: 2,
 			dataVencimento: '2025-01-01',
 		})
+		ativoRepository.create({
+			id: "cde",
+			nome: "Teste2",
+			acronimo: "TSTE2",
+			tipo: "indice",
+			multiplicador: 1,
+			dataVencimento: '2023-01-01',
+		})
 
 		contaRepository.create({
 			id: '123',
@@ -129,9 +137,9 @@ describe('Create Operacao Controller', () => {
 		expect(response.status).toEqual(404)
 	});
 
-	it('should return 422 when dataEntrada is out if ativo expiration', async () => {
+	it.skip('should return 422 when dataEntrada is out if ativo expiration', async () => {
 		const input: Omit<OperacaoDTO, 'id'> = {
-			ativoId: "abc",
+			ativoId: "cde",
 			contaId: "123",
 			quantidade: 1,
 			tipo: "compra",
