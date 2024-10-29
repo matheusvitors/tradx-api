@@ -17,12 +17,8 @@ interface EditOperacaoControllerParams {
 export const editOperacaoController = async (params: EditOperacaoControllerParams): Promise<ResponseData> => {
 	try {
 		const { operacaoRepository , ativoRepository, contaRepository, input } = params;
-		console.log(input);
-
 
 		const ativo = await ativoRepository.get(input.ativoId);
-		console.log(ativo);
-
 
 		if(!ativo) {
 			return notFound('Ativo não encontrado.');

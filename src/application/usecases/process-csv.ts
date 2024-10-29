@@ -1,17 +1,13 @@
 import { createReadStream } from "fs";
 import { csv } from "@/infra/adapters/csv";
 
-export const processCsv = async (file: string, callback: (row: string) => void): Promise<boolean> => {
-	console.log(file);
-
+export const processCsv = async (file: string, callback: (row: any) => Promise<void>): Promise<boolean> => {
 	try{
 		createReadStream(file)
 		.pipe(csv.parse())
-		.on('data', async (row) => {
-			callback(row);
-		})
+		.on('data', async (row) => await callback(row))
 		.on('error', async (error) => {
-			console.error(error)
+			console.error('process csv error',error)
 			throw error;
 		})
 		.on('end', async () => {
