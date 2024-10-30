@@ -1,21 +1,24 @@
-import { createReadStream } from "fs";
+import { createReadStream, ReadStream } from "fs";
 import { csv } from "@/infra/adapters/csv";
 
-export const processCsv = async (file: string, callback: (row: any) => Promise<void>): Promise<boolean> => {
+export const processCsv = async (file: string, callback: (row: any, stream: ReadStream) => Promise<boolean>): Promise<boolean> => {
 	try{
-		createReadStream(file)
-		.pipe(csv.parse())
-		.on('data', async (row) => await callback(row))
-		.on('error', async (error) => {
-			console.error('process csv error',error)
-			throw error;
+		return new Promise((resolve, reject) => {
+			const stream = createReadStream(file);
+			stream
+			.pipe(csv.parse())
+			.on('data', async (row) => await callback(row, stream))
+			.on('error', async (error) => {
+				console.error('process csv error',error)
+				reject(error);
+			})
+			.on('end', async () => {
+				console.log('Arquivo processado!');
+			})
+			resolve(true);
 		})
-		.on('end', async () => {
-			console.log('Arquivo processado!');
-		})
-		return true;
 	} catch (error) {
-		console.error(error);
+		console.log('process csv', error);
 		return false;
 	}
 }

@@ -19,9 +19,11 @@ describe('Import operacoes by CSV', () => {
 
 	// });
 
-	// it('should return 422 if a field is invalid', () => {
-
-	// });
+	it('should return 422 if a field is invalid', async () => {
+		const invalidCsvFile = path.resolve(__dirname, '../', '../', '../', '../', 'tests', 'assets', 'operacoes-teste-invalid.csv');
+		const response = await importOperacoesByCsvController({ operacaoRepository, ativoRepository, contaRepository, csvFile: invalidCsvFile});
+		expect(response.status).toEqual(422);
+	});
 
 	// it('should return 500 if throw a error', () => {
 

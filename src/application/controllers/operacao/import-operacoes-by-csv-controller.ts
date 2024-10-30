@@ -1,11 +1,12 @@
 import { OperacaoDTO } from "@/application/dto";
-import { ValidationError } from "@/application/errors";
 import { Repository } from "@/application/interfaces";
 import { processCsv } from "@/application/usecases/process-csv";
 import { Ativo, Conta, Operacao } from "@/core/models";
 import { validateOperacao } from "@/core/validators";
 import { newID } from "@/infra/adapters/newID";
 import { unprocessableEntity, serverError, notFound, success } from "@/infra/adapters/response-wrapper";
+import { ReadStream } from "fs";
+import { z } from "zod";
 
 interface importOperacoesByCsvControllerParams {
 	operacaoRepository: Repository<Operacao>;
@@ -14,9 +15,34 @@ interface importOperacoesByCsvControllerParams {
 	csvFile: string;
 }
 
+const operacaoFromCsvSchema = z.object({
+	conta: z.string().min(2),
+	ativo: z.string().min(2),
+	quantidade: z.string().min(1),
+	tipo: z.string().min(4),
+	precoEntrada: z.string().min(2),
+	precoSaida: z.string().min(2),
+	dataEntrada: z.string().min(2),
+	dataSaida: z.string().min(2),
+	operacaoPerdida: z.string().min(2),
+	operacaoErrada: z.string().min(2),
+})
+
 export const importOperacoesByCsvController = async (params: importOperacoesByCsvControllerParams) => {
 	try {
 		const { operacaoRepository, ativoRepository, contaRepository, csvFile } = params;
+
+		const validateInformationsOfCsv = async (row: any, stream: ReadStream): Promise<boolean> => {
+			const validation = operacaoFromCsvSchema.safeParse(row);
+			console.log('validation', JSON.stringify(validation));
+
+			if (!validation.success) {
+				stream.emit('error', new Error('Formato inválido.'))
+				return false;
+			}
+
+			return true;
+		}
 
 		const processImportedCsv = async (input: any) => {
 			try {
@@ -29,7 +55,7 @@ export const importOperacoesByCsvController = async (params: importOperacoesByCs
 					const ativo = await ativoRepository.find!('acronimo', input.ativo);
 
 					if(!ativo) {
-						throw notFound('Ativo não encontrado.');
+						throw notFound('Ativo inexistente.');
 					}
 
 					const conta = await contaRepository.find!('nome', input.conta);
@@ -38,9 +64,6 @@ export const importOperacoesByCsvController = async (params: importOperacoesByCs
 						throw notFound('Conta não encontrada.');
 					}
 
-					// if(ativo.dataVencimento && (input.dataEntrada > ativo.dataVencimento)) {
-					// 	throw unprocessableEntity('Data e horário de entrada fora da validade do ativo.')
-					// }
 				}
 
 				const operacao: OperacaoDTO = {
@@ -73,11 +96,20 @@ export const importOperacoesByCsvController = async (params: importOperacoesByCs
 		}
 
 		// processamento do arquivo
-		// const isProcessedFile = await processCsv(csvFile, async (row) => console.log(row));
-		const isProcessedFile = await processCsv(csvFile, processImportedCsv);
+		const isValid = await processCsv(csvFile, validateInformationsOfCsv);
+		console.log('isValid', isValid);
 
-		return isProcessedFile ? success() : unprocessableEntity('Arquivo não foi processado devido a um erro desconhecido');
+		// if(!isValid) {
+		// 	return unprocessableEntity('Formato inválido.')
+		// }
+
+
+			// const isProcessedFile = await processCsv(csvFile, processImportedCsv);
+			// const isProcessedFile = await processCsv(csvFile, async (row) => console.log(row));
+		// return isProcessedFile ? success() : unprocessableEntity('Arquivo não foi processado devido a um erro desconhecido');
+		return success();
 	} catch (error: any) {
+		console.log('imported', error)
 		if('status' in error) {
 			return error;
 		} else {
