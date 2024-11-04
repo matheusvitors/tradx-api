@@ -1,7 +1,7 @@
 import { Router, Request, Response} from 'express'
 import { ativosPrismaRepository, contaPrismaRepository, operacaoPrismaRepository } from '@/infra/database/prisma';
 import { route } from '@/infra/adapters/route';
-import { createOperacaoController, editOperacaoController, getOperacaoController, listOperacaoByContaController, listOperacaoController, removeOperacaoController } from '@/application/controllers/operacao';
+import { createOperacaoController, editOperacaoController, getOperacaoController, importOperacoesByCsvController, listOperacaoByContaController, listOperacaoController, removeOperacaoController } from '@/application/controllers/operacao';
 
 const router = Router();
 const repository = operacaoPrismaRepository;
@@ -43,6 +43,16 @@ router.post(`${path}`, async (request: Request, response: Response) => {
 			operacaoPerdida: request.body.operacaoPerdida,
 			operacaoErrada: request.body.operacaoErrada
 	}});
+	return route({ response, responseData });
+})
+
+router.post(`${path}/import`, async (request: Request, response: Response) => {
+	const responseData = await importOperacoesByCsvController({
+		operacaoRepository: repository,
+		ativoRepository,
+		contaRepository,
+		csvFile: ''
+	})
 	return route({ response, responseData });
 })
 

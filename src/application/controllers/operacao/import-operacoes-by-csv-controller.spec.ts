@@ -15,9 +15,10 @@ describe('Import operacoes by CSV', () => {
 		expect(response.status).toEqual(200);
 	});
 
-	// it('should return 404 if not send file', () => {
-
-	// });
+	it('should return 404 if not send file', async () => {
+		const response = await importOperacoesByCsvController({ operacaoRepository, ativoRepository, contaRepository, csvFile: ''});
+		expect(response.status).toEqual(422);
+	});
 
 	it('should return 422 if a field is invalid', async () => {
 		const invalidCsvFile = path.resolve(__dirname, '../', '../', '../', '../', 'tests', 'assets', 'operacoes-teste-invalid.csv');
@@ -25,8 +26,10 @@ describe('Import operacoes by CSV', () => {
 		expect(response.status).toEqual(422);
 	});
 
-	// it('should return 500 if throw a error', () => {
-
-	// });
+	it('should return 500 if throw a error', async () => {
+		//@ts-ignore
+		const response = await importOperacoesByCsvController({ operacaoRepository, ativoRepository, contaRepository, csvFile: null});
+		expect(response.status).toEqual(500);
+	});
 
 });

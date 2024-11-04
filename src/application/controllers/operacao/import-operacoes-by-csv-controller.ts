@@ -1,5 +1,6 @@
 import { OperacaoDTO } from "@/application/dto";
-import { Repository } from "@/application/interfaces";
+import { Repository, ResponseData } from "@/application/interfaces";
+import { validateOperacoesCsv } from "@/application/usecases/operacao";
 import { processCsv } from "@/application/usecases/process-csv";
 import { Ativo, Conta, Operacao } from "@/core/models";
 import { validateOperacao } from "@/core/validators";
@@ -15,34 +16,17 @@ interface importOperacoesByCsvControllerParams {
 	csvFile: string;
 }
 
-const operacaoFromCsvSchema = z.object({
-	conta: z.string().min(2),
-	ativo: z.string().min(2),
-	quantidade: z.string().min(1),
-	tipo: z.string().min(4),
-	precoEntrada: z.string().min(2),
-	precoSaida: z.string().min(2),
-	dataEntrada: z.string().min(2),
-	dataSaida: z.string().min(2),
-	operacaoPerdida: z.string().min(2),
-	operacaoErrada: z.string().min(2),
-})
 
-export const importOperacoesByCsvController = async (params: importOperacoesByCsvControllerParams) => {
+export const importOperacoesByCsvController = async (params: importOperacoesByCsvControllerParams): Promise<ResponseData> => {
 	try {
 		const { operacaoRepository, ativoRepository, contaRepository, csvFile } = params;
 
-		const validateInformationsOfCsv = async (row: any, stream: ReadStream): Promise<boolean> => {
-			const validation = operacaoFromCsvSchema.safeParse(row);
-			console.log('validation', JSON.stringify(validation));
+		const isValid = await validateOperacoesCsv(csvFile);
 
-			if (!validation.success) {
-				stream.emit('error', new Error('Formato inválido.'))
-				return false;
-			}
-
-			return true;
+		if(!isValid){
+			return unprocessableEntity('Há informações inválidas nop arquivo.')
 		}
+
 
 		const processImportedCsv = async (input: any) => {
 			try {
@@ -96,8 +80,6 @@ export const importOperacoesByCsvController = async (params: importOperacoesByCs
 		}
 
 		// processamento do arquivo
-		const isValid = await processCsv(csvFile, validateInformationsOfCsv);
-		console.log('isValid', isValid);
 
 		// if(!isValid) {
 		// 	return unprocessableEntity('Formato inválido.')
