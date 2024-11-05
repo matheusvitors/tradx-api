@@ -16,6 +16,8 @@ interface importOperacoesByCsvControllerParams {
 	csvFile: string;
 }
 
+//TODO: Fazer o rollback caso haja algum erro de ativo ou conta invalida
+
 export const importOperacoesByCsvController = async (params: importOperacoesByCsvControllerParams): Promise<ResponseData> => {
 	try {
 		const { operacaoRepository, ativoRepository, contaRepository, csvFile } = params;
