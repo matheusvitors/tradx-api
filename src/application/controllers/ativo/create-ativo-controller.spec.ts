@@ -14,7 +14,7 @@ describe('Create Ativo Controller', () => {
 			acronimo: "TSTE1",
 			tipo: "indice",
 			multiplicador: 2,
-			dataVencimento: '2025-01-01',
+			dataVencimento: new Date('2025-01-01'),
 		}
 
 		repository.create(input)
@@ -26,13 +26,13 @@ describe('Create Ativo Controller', () => {
 			acronimo: "TSTE3",
 			tipo: "indice",
 			multiplicador: 0.2,
-			dataVencimento: '2025-01-01',
+			dataVencimento: new Date('2025-01-01'),
 
 		}
 
 		const response = await createAtivoController({input, repository});
 		expect(response.status).toEqual(200);
-		expect(repository.data[1].dataVencimento).toEqual('2025-01-01');
+		expect(repository.data[1].dataVencimento).toEqual(new Date('2025-01-01'));
 		expect(repository.data[1].multiplicador).toEqual(0.2);
 	});
 
@@ -43,8 +43,7 @@ describe('Create Ativo Controller', () => {
 			acronimo: "TSTE2",
 			tipo: "indice",
 			multiplicador: 3,
-			dataVencimento: '2025-01-01',
-
+			dataVencimento: new Date('2025-01-01'),
 		}
 
 		const response = await createAtivoController({repository, input});

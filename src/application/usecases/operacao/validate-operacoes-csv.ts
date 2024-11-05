@@ -23,12 +23,11 @@ export const validateOperacoesCsv = async (file: string): Promise<boolean> => {
 					reject(error)
 				})
 				.on('end', async () => {
-					console.log('Arquivo processado!');
 					resolve(isValid);
 				});
 		})
 
-		console.log('final isValid', isValid);
+		// console.log('final isValid', isValid);
 
 		return isValid;
 	} catch (error) {
