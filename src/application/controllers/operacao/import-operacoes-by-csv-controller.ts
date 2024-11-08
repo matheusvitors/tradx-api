@@ -8,6 +8,7 @@ import { validateOperacao } from "@/core/validators";
 import { csv } from "@/infra/adapters/csv";
 import { newID } from "@/infra/adapters/newID";
 import { unprocessableEntity, serverError, notFound, success } from "@/infra/adapters/response-wrapper";
+import { database } from "@/infra/database/database";
 
 interface importOperacoesByCsvControllerParams {
 	operacaoRepository: Repository<Operacao>;
@@ -19,21 +20,20 @@ interface importOperacoesByCsvControllerParams {
 //TODO: Fazer o rollback caso haja algum erro de ativo ou conta invalida
 
 export const importOperacoesByCsvController = async (params: importOperacoesByCsvControllerParams): Promise<ResponseData> => {
+	const { operacaoRepository, ativoRepository, contaRepository, csvFile } = params;
 	try {
-		const { operacaoRepository, ativoRepository, contaRepository, csvFile } = params;
-
+		const operacoesToSave: OperacaoDTO[] = [];
 		const isValid = await validateOperacoesCsv(csvFile);
 
 		if(!existsSync(csvFile)) {
 			return notFound('Arquivo não encontrado no servidor.');
 		}
 
-
 		if(!isValid){
 			return unprocessableEntity('Há informações inválidas no arquivo.')
 		}
 
-		await new Promise((resolve, reject) => {
+		const result = await new Promise((resolve, reject) => {
 			createReadStream(csvFile)
 			.pipe(csv.parse())
 			.on('data', async (row) => {
@@ -72,12 +72,14 @@ export const importOperacoesByCsvController = async (params: importOperacoesByCs
 					};
 
 					validateOperacao(operacao);
-					// console.log(operacao);
-					await operacaoRepository.create(operacao);
+					operacoesToSave.push(operacao);
+					console.log('id', operacao.id);
+
+
+					// await operacaoRepository.create(operacao);
 				} catch (error) {
 					reject(error)
 				}
-
 			})
 			.on('error', async (error) => {
 				console.error('process csv error',error);
@@ -88,8 +90,15 @@ export const importOperacoesByCsvController = async (params: importOperacoesByCs
 			});
 		})
 
+		console.log({result});
+
+
+		console.log(operacoesToSave);
+		console.log(operacoesToSave.length);
+		await operacaoRepository.batchCreation!(operacoesToSave);
 		return success();
 	} catch (error: any) {
+		operacaoRepository.rollback!();
 		if(typeof error === 'object' && 'status' in error) {
 			return error;
 		} else {

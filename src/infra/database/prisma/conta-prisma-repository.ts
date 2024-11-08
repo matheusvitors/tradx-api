@@ -1,13 +1,13 @@
 import { ContaDTO } from "@/application/dto";
 import { Repository } from "@/application/interfaces";
 import { Conta } from "@/core/models";
-import { databaseClient } from "@/infra/database/client";
+import { database } from "@/infra/database/database";
 import { toConta } from "@/utils/transforms";
 
 export const contaPrismaRepository: Repository<Conta> = {
 	list: async (): Promise<Conta[]> => {
 		try {
-			const data = await databaseClient.conta.findMany({include: { usuario: true }});
+			const data = await database.conta.findMany({include: { usuario: true }});
 			const contas: Conta[] = data.map(conta => toConta(conta));
 			return contas;
 		} catch (error) {
@@ -18,7 +18,7 @@ export const contaPrismaRepository: Repository<Conta> = {
 
 	get: async (id: string): Promise<Conta | null> => {
 		try {
-			const data = await databaseClient.conta.findUnique({
+			const data = await database.conta.findUnique({
 				where: {id},
 				include: { usuario: true }
 			})
@@ -46,7 +46,7 @@ export const contaPrismaRepository: Repository<Conta> = {
 		try {
 			const { usuarioId, ...rest } = input;
 
-			const result = await databaseClient.conta.create({
+			const result = await database.conta.create({
 				data: {
 					...rest,
 					usuario: {connect: { id: usuarioId }}
@@ -65,7 +65,7 @@ export const contaPrismaRepository: Repository<Conta> = {
 	edit: async (input: Conta): Promise<Conta | null> => {
 		try {
 			const { usuario, ...rest } = input;
-			const result = await databaseClient.conta.update({
+			const result = await database.conta.update({
 				data: {
 					...rest,
 					usuario: {connect: usuario}
@@ -84,7 +84,7 @@ export const contaPrismaRepository: Repository<Conta> = {
 
 	remove: async (id: string): Promise<void> => {
 		try {
-			await databaseClient.conta.delete({where: {id}})
+			await database.conta.delete({where: {id}})
 		} catch (error) {
 			console.error(error);
 			throw error;

@@ -2,7 +2,7 @@ import { Prisma } from "@prisma/client";
 import { OperacaoDTO } from "@/application/dto/operacao-dto";
 import { FilterParams, Repository } from "@/application/interfaces";
 import { Operacao } from "@/core/models";
-import { databaseClient } from "@/infra/database/client";
+import { database } from "@/infra/database/database";
 import { ativosPrismaRepository } from "@/infra/database/prisma/ativo-prisma-repository";
 import { contaPrismaRepository } from "@/infra/database/prisma/conta-prisma-repository";
 import { toAtivo, toConta, toOperacao } from "@/utils/transforms";
@@ -10,7 +10,7 @@ import { toAtivo, toConta, toOperacao } from "@/utils/transforms";
 export const operacaoPrismaRepository: Repository<Operacao> = {
 	list: async (): Promise<Operacao[]> => {
 		try {
-			const data = await databaseClient.operacao.findMany({
+			const data = await database.operacao.findMany({
 				include: {ativo: true, conta: true},
 				orderBy: [
 					{ dataSaida: {sort: 'desc', nulls: 'first'}},
@@ -31,7 +31,7 @@ export const operacaoPrismaRepository: Repository<Operacao> = {
 
 	get: async (id: string): Promise<Operacao | null> => {
 		try {
-			const data = await databaseClient.operacao.findUnique({ where: {id}, include: {ativo: true, conta: true}});
+			const data = await database.operacao.findUnique({ where: {id}, include: {ativo: true, conta: true}});
 			if(data) {
 				const operacao: Operacao = toOperacao(data);
 				return operacao;
@@ -53,7 +53,7 @@ export const operacaoPrismaRepository: Repository<Operacao> = {
 			(obj, item) => Object.assign(obj, { [item.field]: item.value }), {});
 
 		try {
-			const data = await databaseClient.operacao.findMany({
+			const data = await database.operacao.findMany({
 				where,
 				include: {ativo: true, conta: true},
 				orderBy: [
@@ -78,11 +78,15 @@ export const operacaoPrismaRepository: Repository<Operacao> = {
 		try {
 			const { ativoId, contaId, ...rest  } = input;
 
-			const result = await databaseClient.operacao.create({
+			const result = await database.operacao.create({
 				data: {
 					...rest,
 					conta: {connect: { id: contaId }},
 					ativo: {connect: { id: ativoId }}
+				},
+				include: {
+					ativo: true,
+					conta: true,
 				}
 			});
 
@@ -102,7 +106,7 @@ export const operacaoPrismaRepository: Repository<Operacao> = {
 	edit: async (input: OperacaoDTO): Promise<Operacao | null> => {
 		try {
 			const {id, ativoId, contaId, ...rest} = input;
-			const result = await databaseClient.operacao.update({
+			const result = await database.operacao.update({
 				where: {id},
 				data: {
 					...rest,
@@ -127,6 +131,6 @@ export const operacaoPrismaRepository: Repository<Operacao> = {
 	},
 
 	remove: async (id: string): Promise<void> => {
-		await databaseClient.operacao.delete({where: {id}})
+		await database.operacao.delete({where: {id}})
 	}
 }

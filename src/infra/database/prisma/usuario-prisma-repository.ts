@@ -1,17 +1,17 @@
 import { Repository } from "@/application/interfaces";
 import { Usuario } from "@/core/models";
-import { databaseClient } from "@/infra/database/client";
+import { database } from "@/infra/database/database";
 
 export const usuarioPrismaRepository: Repository<Usuario> = {
 	list: async (): Promise<Usuario[]> => {
-		return await databaseClient.usuario.findMany();
+		return await database.usuario.findMany();
 	},
 	get: async (id: string): Promise<Usuario | null> => {
-		return await databaseClient.usuario.findUnique({ where: {id}});
+		return await database.usuario.findUnique({ where: {id}});
 	},
 	find: async (field: keyof Usuario, value: any): Promise<Usuario | null> => {
 		//TODO: fazer do jeito certo o find do user
-		return await databaseClient.usuario.findUnique({where: {username: value}});
+		return await database.usuario.findUnique({where: {username: value}});
 	},
 	filter: async (params: any): Promise<Usuario[] | null> => {
 		throw new Error("Function not implemented.");
