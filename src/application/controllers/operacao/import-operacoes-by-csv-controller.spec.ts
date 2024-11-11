@@ -27,7 +27,6 @@ describe('Import operacoes by CSV', () => {
 		dataVencimento: '2025-01-01',
 	})
 
-
 	it('should import operacoes from csv file', async () => {
 		const response = await importOperacoesByCsvController({ operacaoRepository, ativoRepository, contaRepository, csvFile});
 		expect(response.status).toEqual(200);

@@ -1,7 +1,8 @@
-import { Prisma } from "@prisma/client";
+import { Prisma, PrismaPromise } from "@prisma/client";
 import { OperacaoDTO } from "@/application/dto/operacao-dto";
 import { FilterParams, Repository } from "@/application/interfaces";
 import { Operacao } from "@/core/models";
+import { Operacao as OperacaoPrisma } from '@prisma/client'
 import { database } from "@/infra/database/database";
 import { ativosPrismaRepository } from "@/infra/database/prisma/ativo-prisma-repository";
 import { contaPrismaRepository } from "@/infra/database/prisma/conta-prisma-repository";
@@ -103,6 +104,32 @@ export const operacaoPrismaRepository: Repository<Operacao> = {
 		}
 	},
 
+	batchCreation: async (input: OperacaoDTO[]) => {
+		try {
+			const queries: PrismaPromise<OperacaoPrisma>[] = [];
+			input.forEach(operacao => {
+				const { ativoId, contaId, ...rest  } = operacao;
+
+				queries.push(database.operacao.create({
+					data: {
+						...rest,
+						conta: {connect: { id: contaId }},
+						ativo: {connect: { id: ativoId }}
+					},
+					include: {
+						ativo: true,
+						conta: true,
+					}
+				}));
+
+			})
+			await database.$transaction(queries);
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	},
+
 	edit: async (input: OperacaoDTO): Promise<Operacao | null> => {
 		try {
 			const {id, ativoId, contaId, ...rest} = input;
@@ -132,5 +159,5 @@ export const operacaoPrismaRepository: Repository<Operacao> = {
 
 	remove: async (id: string): Promise<void> => {
 		await database.operacao.delete({where: {id}})
-	}
+	},
 }

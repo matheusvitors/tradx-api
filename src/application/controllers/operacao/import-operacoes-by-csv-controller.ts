@@ -33,72 +33,121 @@ export const importOperacoesByCsvController = async (params: importOperacoesByCs
 			return unprocessableEntity('Há informações inválidas no arquivo.')
 		}
 
+		const processRow = async (row: any, reject: (value: unknown) => void) => {
+			try {
+				const ativo = await ativoRepository.find!('acronimo', row.ativo);
+
+				if(!ativo) {
+					reject(unprocessableEntity('Ativo não encontrado.'));
+					return;
+				}
+
+				const conta = await contaRepository.find!('nome', row.conta);
+
+				if(!conta) {
+					reject(unprocessableEntity('Conta não encontrada.'));
+					return;
+				}
+
+				const operacao: OperacaoDTO = {
+					id: newID(),
+					ativoId: ativo.id,
+					contaId: conta.id,
+					quantidade: row.quantidade,
+					tipo: row.tipo.toLowerCase(),
+					precoEntrada: row.precoEntrada,
+					stopLoss: row.stopLoss,
+					alvo: row.alvo,
+					precoSaida: row.precoSaida,
+					dataEntrada: new Date(row.dataEntrada),
+					dataSaida: row.dataSaida ? new Date(row.dataSaida) : undefined,
+					margem: 0,
+					operacaoPerdida: row.operacaoPerdida,
+					operacaoErrada: row.operacaoErrada,
+					comentarios: row.comentarios,
+					motivo: row.motivo
+				};
+
+				validateOperacao(operacao);
+				operacoesToSave.push(operacao);
+				console.log('id', operacao.id);
+
+				// await operacaoRepository.create(operacao);
+			} catch (error) {
+				reject(error)
+			}
+		}
+
+		const promises: Promise<void>[] = [];
+
 		const result = await new Promise((resolve, reject) => {
 			createReadStream(csvFile)
 			.pipe(csv.parse())
-			.on('data', async (row) => {
-				try {
-					const ativo = await ativoRepository.find!('acronimo', row.ativo);
+			.on('data', row => promises.push(processRow(row, reject)))
+			// .on('data', async (row) => {
+			// 	try {
+			// 		const ativo = await ativoRepository.find!('acronimo', row.ativo);
 
-					if(!ativo) {
-						reject(unprocessableEntity('Ativo não encontrado.'));
-						return;
-					}
+			// 		if(!ativo) {
+			// 			reject(unprocessableEntity('Ativo não encontrado.'));
+			// 			return;
+			// 		}
 
-					const conta = await contaRepository.find!('nome', row.conta);
+			// 		const conta = await contaRepository.find!('nome', row.conta);
 
-					if(!conta) {
-						reject(unprocessableEntity('Conta não encontrada.'));
-						return;
-					}
+			// 		if(!conta) {
+			// 			reject(unprocessableEntity('Conta não encontrada.'));
+			// 			return;
+			// 		}
 
-					const operacao: OperacaoDTO = {
-						id: newID(),
-						ativoId: ativo.id,
-						contaId: conta.id,
-						quantidade: row.quantidade,
-						tipo: row.tipo.toLowerCase(),
-						precoEntrada: row.precoEntrada,
-						stopLoss: row.stopLoss,
-						alvo: row.alvo,
-						precoSaida: row.precoSaida,
-						dataEntrada: new Date(row.dataEntrada),
-						dataSaida: row.dataSaida ? new Date(row.dataSaida) : undefined,
-						margem: 0,
-						operacaoPerdida: row.operacaoPerdida,
-						operacaoErrada: row.operacaoErrada,
-						comentarios: row.comentarios,
-						motivo: row.motivo
-					};
+			// 		const operacao: OperacaoDTO = {
+			// 			id: newID(),
+			// 			ativoId: ativo.id,
+			// 			contaId: conta.id,
+			// 			quantidade: row.quantidade,
+			// 			tipo: row.tipo.toLowerCase(),
+			// 			precoEntrada: row.precoEntrada,
+			// 			stopLoss: row.stopLoss,
+			// 			alvo: row.alvo,
+			// 			precoSaida: row.precoSaida,
+			// 			dataEntrada: new Date(row.dataEntrada),
+			// 			dataSaida: row.dataSaida ? new Date(row.dataSaida) : undefined,
+			// 			margem: 0,
+			// 			operacaoPerdida: row.operacaoPerdida,
+			// 			operacaoErrada: row.operacaoErrada,
+			// 			comentarios: row.comentarios,
+			// 			motivo: row.motivo
+			// 		};
 
-					validateOperacao(operacao);
-					operacoesToSave.push(operacao);
-					console.log('id', operacao.id);
+			// 		validateOperacao(operacao);
+			// 		operacoesToSave.push(operacao);
+			// 		console.log('id', operacao.id);
 
 
-					// await operacaoRepository.create(operacao);
-				} catch (error) {
-					reject(error)
-				}
-			})
+			// 		// await operacaoRepository.create(operacao);
+			// 	} catch (error) {
+			// 		reject(error)
+			// 	}
+			// })
 			.on('error', async (error) => {
 				console.error('process csv error',error);
 				reject(error)
 			})
 			.on('end', async () => {
+				await Promise.all(promises);
 				resolve(true);
 			});
 		})
 
 		console.log({result});
 
-
 		console.log(operacoesToSave);
 		console.log(operacoesToSave.length);
+
 		await operacaoRepository.batchCreation!(operacoesToSave);
 		return success();
 	} catch (error: any) {
-		operacaoRepository.rollback!();
+		operacaoRepository.rollback && operacaoRepository.rollback();
 		if(typeof error === 'object' && 'status' in error) {
 			return error;
 		} else {
