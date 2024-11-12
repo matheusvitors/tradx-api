@@ -1,4 +1,4 @@
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImF1dGgiOnRydWUsImlkIjoiMDE5MGNiNzgtMzQ2YS03MWRmLWI4ZGQtN2ExNjY0ZmE4MDJkIn0sImlhdCI6MTcyODQ4MjY0NiwiZXhwIjoxNzI4NTU0NjQ2fQ.iQoa7xG85dJLmB7IdJvzX0wqLYLtjzw_eIO1yI7dV3k
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImF1dGgiOnRydWUsImlkIjoiMDE5MGNiNzgtMzQ2YS03MWRmLWI4ZGQtN2ExNjY0ZmE4MDJkIn0sImlhdCI6MTczMTQzOTY0NSwiZXhwIjoxNzMxNTExNjQ1fQ.zA4ajHL-NsCsEsLd5gljhr4WdK_NhOKEy0EOp8jVcx0
 @path=operacoes
 GET http://localhost:8000/{{path}}
 Authorization: Bearer {{token}}
@@ -10,6 +10,19 @@ Authorization: Bearer {{token}}
 ###
 GET http://localhost:8000/{{path}}/conta/0190e5d2-a69d-7eed-ad83-69fe31a4c074/range/2024-07-01/2024-07-31
 Authorization: Bearer {{token}}
+
+
+###
+POST http://localhost:8000/{{path}}/import
+Authorization: Bearer {{token}}
+# content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+| Content-Disposition: form-data; name="file"; filename="operacoes.csv"
+| Content-Type: text/csv
+< c:\Users\df90342ps\Desktop\operacoes.csv
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
 
 
 ###
