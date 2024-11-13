@@ -46,7 +46,14 @@ export const operacaoPrismaRepository: Repository<Operacao> = {
 	},
 
 	find: async (field: keyof Operacao, value: any): Promise<Operacao | null> => {
-		throw new Error("Function not implemented.");
+		const data = await database.operacao.findFirst({ where: {[field]: value}});
+
+		if(data) {
+			const operacao: Operacao = toOperacao(data);
+			return operacao;
+		}
+
+		return null;
 	},
 
 	filter: async (params: FilterParams<OperacaoDTO>[]): Promise<Operacao[] | null> => {

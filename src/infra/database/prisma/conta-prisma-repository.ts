@@ -35,7 +35,14 @@ export const contaPrismaRepository: Repository<Conta> = {
 	},
 
 	find: async (field: keyof Conta, value: any): Promise<Conta | null> => {
-		throw new Error("Function not implemented.");
+		const data = await database.conta.findFirst({ where: {[field]: value}});
+
+		if(data) {
+			const conta: Conta = toConta(data);
+			return conta;
+		}
+
+		return null;
 	},
 
 	filter: async (params: any): Promise<Conta[] | null> => {

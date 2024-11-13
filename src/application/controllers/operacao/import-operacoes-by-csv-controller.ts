@@ -9,6 +9,7 @@ import { csv } from "@/infra/adapters/csv";
 import { newID } from "@/infra/adapters/newID";
 import { unprocessableEntity, serverError, notFound, success } from "@/infra/adapters/response-wrapper";
 import { database } from "@/infra/database/database";
+import { toValidDate } from "@/utils/to-valid-date";
 
 interface importOperacoesByCsvControllerParams {
 	operacaoRepository: Repository<Operacao>;
@@ -53,17 +54,17 @@ export const importOperacoesByCsvController = async (params: importOperacoesByCs
 					id: newID(),
 					ativoId: ativo.id,
 					contaId: conta.id,
-					quantidade: row.quantidade,
+					quantidade: parseInt(row.quantidade),
 					tipo: row.tipo.toLowerCase(),
-					precoEntrada: row.precoEntrada,
-					stopLoss: row.stopLoss,
-					alvo: row.alvo,
-					precoSaida: row.precoSaida,
-					dataEntrada: new Date(row.dataEntrada),
-					dataSaida: row.dataSaida ? new Date(row.dataSaida) : undefined,
+					precoEntrada: parseFloat(row.precoEntrada),
+					stopLoss: parseFloat(row.stopLoss),
+					alvo: parseFloat(row.alvo),
+					precoSaida: parseFloat(row.precoSaida),
+					dataEntrada: toValidDate(row.dataEntrada),
+					dataSaida: row.dataSaida ? toValidDate(row.dataSaida) : undefined,
 					margem: 0,
-					operacaoPerdida: row.operacaoPerdida,
-					operacaoErrada: row.operacaoErrada,
+					operacaoPerdida: row.operacaoPerdida === 'false' ? false : true,
+					operacaoErrada: row.operacaoErrada === 'false' ? false : true,
 					comentarios: row.comentarios,
 					motivo: row.motivo
 				};
@@ -84,51 +85,6 @@ export const importOperacoesByCsvController = async (params: importOperacoesByCs
 			createReadStream(csvFile)
 			.pipe(csv.parse())
 			.on('data', row => promises.push(processRow(row, reject)))
-			// .on('data', async (row) => {
-			// 	try {
-			// 		const ativo = await ativoRepository.find!('acronimo', row.ativo);
-
-			// 		if(!ativo) {
-			// 			reject(unprocessableEntity('Ativo não encontrado.'));
-			// 			return;
-			// 		}
-
-			// 		const conta = await contaRepository.find!('nome', row.conta);
-
-			// 		if(!conta) {
-			// 			reject(unprocessableEntity('Conta não encontrada.'));
-			// 			return;
-			// 		}
-
-			// 		const operacao: OperacaoDTO = {
-			// 			id: newID(),
-			// 			ativoId: ativo.id,
-			// 			contaId: conta.id,
-			// 			quantidade: row.quantidade,
-			// 			tipo: row.tipo.toLowerCase(),
-			// 			precoEntrada: row.precoEntrada,
-			// 			stopLoss: row.stopLoss,
-			// 			alvo: row.alvo,
-			// 			precoSaida: row.precoSaida,
-			// 			dataEntrada: new Date(row.dataEntrada),
-			// 			dataSaida: row.dataSaida ? new Date(row.dataSaida) : undefined,
-			// 			margem: 0,
-			// 			operacaoPerdida: row.operacaoPerdida,
-			// 			operacaoErrada: row.operacaoErrada,
-			// 			comentarios: row.comentarios,
-			// 			motivo: row.motivo
-			// 		};
-
-			// 		validateOperacao(operacao);
-			// 		operacoesToSave.push(operacao);
-			// 		console.log('id', operacao.id);
-
-
-			// 		// await operacaoRepository.create(operacao);
-			// 	} catch (error) {
-			// 		reject(error)
-			// 	}
-			// })
 			.on('error', async (error) => {
 				console.error('process csv error',error);
 				reject(error)
