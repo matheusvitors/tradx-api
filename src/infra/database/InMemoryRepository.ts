@@ -6,6 +6,7 @@ interface Entity {
 
 export class InMemoryRepository<T extends Entity> implements Repository<T> {
 	public data: T[] = [];
+	private previousData: T[] = [];
 
 	constructor(data?: T[]) {
 		if (data) {
@@ -52,11 +53,18 @@ export class InMemoryRepository<T extends Entity> implements Repository<T> {
 	}
 
 	async create(entity: any): Promise<T> {
+		this.previousData = this.data;
 		this.data.push(entity);
 		return entity;
 	}
 
+	async batchCreation(entities: T[]): Promise<void> {
+		this.previousData = this.data;
+		entities.forEach(entity => this.data.push(entity))
+	}
+
 	async edit(entity: any): Promise<T | null> {
+		this.previousData = this.data;
 		const index = this.data.findIndex((e) => e.id === entity.id);
 		if (index !== -1) {
 			this.data[index] = entity;
@@ -66,6 +74,7 @@ export class InMemoryRepository<T extends Entity> implements Repository<T> {
 	}
 
 	async editField(id: string, field: keyof T, value: any): Promise<T | null> {
+		this.previousData = this.data;
 		const index = this.data.findIndex((e) => e.id === id);
 		if (index !== -1) {
 			this.data[index][field] = value;
@@ -75,9 +84,14 @@ export class InMemoryRepository<T extends Entity> implements Repository<T> {
 	}
 
 	async remove(id: string): Promise<void> {
+		this.previousData = this.data;
 		const index = this.data.findIndex((e) => e.id === id);
 		if (index !== -1) {
 			this.data.splice(index, 1);
 		}
+	}
+
+	async rollback(): Promise<void> {
+		this.data = this.previousData;
 	}
 }

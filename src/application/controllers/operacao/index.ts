@@ -1,6 +1,7 @@
 export * from './create-operacao-controlller'
 export * from './edit-operacao-controller'
 export * from './get-operacao-controller'
+export * from './import-operacoes-by-csv-controller'
 export * from './list-operacao-controller'
 export * from './list-operacao-by-conta-controller'
 export * from './remove-operacao-controller'

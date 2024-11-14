@@ -1,30 +1,44 @@
 import { Router, Request, Response} from 'express'
+import multer from 'multer';
 import { ativosPrismaRepository, contaPrismaRepository, operacaoPrismaRepository } from '@/infra/database/prisma';
 import { route } from '@/infra/adapters/route';
-import { createOperacaoController, editOperacaoController, getOperacaoController, listOperacaoByContaController, listOperacaoController, removeOperacaoController } from '@/application/controllers/operacao';
+import { createOperacaoController, editOperacaoController, getOperacaoController, importOperacoesByCsvController, listOperacaoByContaController, listOperacaoController, removeOperacaoController } from '@/application/controllers/operacao';
+import { notFound } from '@/infra/adapters/response-wrapper';
+import path from 'path';
 
 const router = Router();
 const repository = operacaoPrismaRepository;
 const contaRepository = contaPrismaRepository;
 const ativoRepository = ativosPrismaRepository;
-const path = '/operacoes'
+const defaultPath = '/operacoes'
 
-router.get(`${path}`, async (request: Request, response: Response) => {
+const storage = multer.diskStorage({
+	destination: function (request, file, callback) {
+		callback(null, 'temp/');
+	},
+	filename: function (request, file, callback) {
+		const extension = file.originalname.split('.');
+		callback(null, `operacoes.${extension[1]}`);
+	},
+})
+const upload = multer({storage});
+
+router.get(`${defaultPath}`, async (request: Request, response: Response) => {
 	const responseData = await listOperacaoController(repository);
 	return route({ response, responseData });
 })
 
-router.get(`${path}/conta/:id/range/:init/:end`, async (request: Request, response: Response) => {
+router.get(`${defaultPath}/conta/:id/range/:init/:end`, async (request: Request, response: Response) => {
 	const responseData = await listOperacaoByContaController({repository, contaId: request.params.id, range: {init: request.params.init, end: request.params.end}});
 	return route({ response, responseData });
 })
 
-router.get(`${path}/:id`, async (request: Request, response: Response) => {
+router.get(`${defaultPath}/:id`, async (request: Request, response: Response) => {
 	const responseData = await getOperacaoController({repository, id: request.params.id});
 	return route({ response, responseData });
 })
 
-router.post(`${path}`, async (request: Request, response: Response) => {
+router.post(`${defaultPath}`, async (request: Request, response: Response) => {
 	const responseData = await createOperacaoController({
 		operacaoRepository: repository,
 		contaRepository,
@@ -46,7 +60,25 @@ router.post(`${path}`, async (request: Request, response: Response) => {
 	return route({ response, responseData });
 })
 
-router.put(`${path}`, async (request: Request, response: Response) => {
+router.post(`${defaultPath}/import`, upload.single('csvFile'), async (request: Request, response: Response) => {
+	if(!request.file) {
+		return route({ response, responseData: notFound('Arquivo não encontrado') });
+	}
+
+	console.log(path.resolve('.', 'temp', request.file.filename));
+
+
+	const responseData = await importOperacoesByCsvController({
+		operacaoRepository: repository,
+		ativoRepository,
+		contaRepository,
+		csvFile: path.resolve('.', 'temp', request.file.filename)
+	})
+
+	return route({ response, responseData });
+})
+
+router.put(`${defaultPath}`, async (request: Request, response: Response) => {
 	const responseData = await editOperacaoController({
 		operacaoRepository: repository,
 		contaRepository,
@@ -71,7 +103,7 @@ router.put(`${path}`, async (request: Request, response: Response) => {
 })
 
 
-router.delete(`${path}/:id`, async (request: Request, response: Response) => {
+router.delete(`${defaultPath}/:id`, async (request: Request, response: Response) => {
 	const responseData = await removeOperacaoController({repository, id: request.params.id});
 	return route({ response, responseData });
 })

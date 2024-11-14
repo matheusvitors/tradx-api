@@ -1,11 +1,11 @@
 import { Repository } from "@/application/interfaces";
 import { Ativo } from "@/core/models";
-import { databaseClient } from "@/infra/database/client";
+import { database } from "@/infra/database/database";
 import { toAtivo } from "@/utils/transforms";
 
 export const ativosPrismaRepository: Repository<Ativo> = {
 	list: async (): Promise<Ativo[]> => {
-		const data = await databaseClient.ativo.findMany({
+		const data = await database.ativo.findMany({
 			orderBy: [
 				{ acronimo: 'asc'},
 			]
@@ -16,7 +16,7 @@ export const ativosPrismaRepository: Repository<Ativo> = {
 	},
 
 	get: async (id: string): Promise<Ativo | null> => {
-		const data = await databaseClient.ativo.findUnique({ where: {id}});
+		const data = await database.ativo.findUnique({ where: {id}});
 
 		if(data) {
 			const ativo: Ativo = toAtivo(data);
@@ -27,7 +27,7 @@ export const ativosPrismaRepository: Repository<Ativo> = {
 	},
 
 	find: async (field: keyof Ativo, value: any): Promise<Ativo | null> => {
-		const data = await databaseClient.ativo.findFirst({ where: {[field]: value}});
+		const data = await database.ativo.findFirst({ where: {[field]: value}});
 
 		if(data) {
 			const ativo: Ativo = toAtivo(data);
@@ -42,13 +42,13 @@ export const ativosPrismaRepository: Repository<Ativo> = {
 	},
 
 	create: async (data: Ativo): Promise<Ativo> => {
-		const result = await databaseClient.ativo.create({ data });
+		const result = await database.ativo.create({ data });
 		const ativo: Ativo = toAtivo(result);
 		return ativo;
 	},
 
 	edit: async (data: Ativo): Promise<Ativo | null> => {
-		const result = await databaseClient.ativo.update({where: {id: data.id}, data});
+		const result = await database.ativo.update({where: {id: data.id}, data});
 
 		if(result) {
 			const ativo: Ativo = toAtivo(result);
@@ -60,6 +60,6 @@ export const ativosPrismaRepository: Repository<Ativo> = {
 	},
 
 	remove: async (id: string): Promise<void> => {
-		await databaseClient.ativo.delete({where: {id}})
+		await database.ativo.delete({where: {id}})
 	}
 }

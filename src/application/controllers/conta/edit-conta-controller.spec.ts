@@ -47,6 +47,7 @@ describe('Edit Conta Controller', () => {
 	});
 
 	it('should return 422 when not pass conta id', async () => {
+		//@ts-ignore
 		const input: ContaDTO = {
 			nome: 'j',
 			tipo: "real",
