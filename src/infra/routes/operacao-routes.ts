@@ -1,5 +1,5 @@
 import { Router, Request, Response} from 'express'
-import multer from 'multer';
+import multer, { MulterError } from 'multer';
 import { ativosPrismaRepository, contaPrismaRepository, operacaoPrismaRepository } from '@/infra/database/prisma';
 import { route } from '@/infra/adapters/route';
 import { createOperacaoController, editOperacaoController, getOperacaoController, importOperacoesByCsvController, listOperacaoByContaController, listOperacaoController, removeOperacaoController } from '@/application/controllers/operacao';
@@ -61,21 +61,27 @@ router.post(`${defaultPath}`, async (request: Request, response: Response) => {
 })
 
 router.post(`${defaultPath}/import`, upload.single('csvFile'), async (request: Request, response: Response) => {
-	if(!request.file) {
-		return route({ response, responseData: notFound('Arquivo não encontrado') });
+	try {
+		console.log(request.file);
+
+		if(!request.file) {
+			return route({ response, responseData: notFound('Arquivo não encontrado') });
+		}
+
+		console.log(path.resolve('.', 'temp', request.file.filename));
+
+		const responseData = await importOperacoesByCsvController({
+			operacaoRepository: repository,
+			ativoRepository,
+			contaRepository,
+			csvFile: path.resolve('.', 'temp', request.file.filename)
+		})
+
+		return route({ response, responseData });
+
+	} catch (error: any) {
+		return response.status(500).json({message: error.message})
 	}
-
-	console.log(path.resolve('.', 'temp', request.file.filename));
-
-
-	const responseData = await importOperacoesByCsvController({
-		operacaoRepository: repository,
-		ativoRepository,
-		contaRepository,
-		csvFile: path.resolve('.', 'temp', request.file.filename)
-	})
-
-	return route({ response, responseData });
 })
 
 router.put(`${defaultPath}`, async (request: Request, response: Response) => {
