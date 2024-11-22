@@ -62,13 +62,9 @@ router.post(`${defaultPath}`, async (request: Request, response: Response) => {
 
 router.post(`${defaultPath}/import`, upload.single('csvFile'), async (request: Request, response: Response) => {
 	try {
-		console.log(request.file);
-
 		if(!request.file) {
 			return route({ response, responseData: notFound('Arquivo não encontrado') });
 		}
-
-		console.log(path.resolve('.', 'temp', request.file.filename));
 
 		const responseData = await importOperacoesByCsvController({
 			operacaoRepository: repository,

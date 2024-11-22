@@ -54,7 +54,6 @@ describe('Import operacoes by CSV', () => {
 	it('should return 422 if a conta is invalid', async () => {
 		const invalidCsvFile = path.resolve(__dirname, '../', '../', '../', '../', 'tests', 'assets', 'operacoes-teste-invalid-conta.csv');
 		const response = await importOperacoesByCsvController({ operacaoRepository, ativoRepository, contaRepository, csvFile: invalidCsvFile});
-		console.log(response);
 
 		expect(response.status).toEqual(422);
 		expect(response.body.message).toEqual('Conta não encontrada.');
