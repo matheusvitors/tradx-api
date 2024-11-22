@@ -1,0 +1,24 @@
+name: Tests
+on:
+    push:
+        branches:
+            - dev
+jobs:
+    tests:
+        runs-on: ubuntu-latest
+        env:
+            NODE_ENV: test
+            PASSWORD: 7c4a8d09ca3762af61e59520943dc26494f8941b
+            AUTHENTICATION: true
+            SECRET: devsecret
+            JWT_EXPIRE: 1h
+            ROUNDS: 1
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v4
+            - name: Setup Node
+              uses: actions/setup-node@v4
+            - name: Install Dependences
+              run: npm ci
+            - name: Run Tests
+              run: npm run test:ci

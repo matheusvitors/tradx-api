@@ -1,6 +1,6 @@
 {
 	"name": "tradx-api",
-	"version": "1.0.0",
+	"version": "0.0.0",
 	"main": "index.js",
 	"type": "module",
 	"scripts": {
@@ -9,6 +9,7 @@
 		"dev": "dotenv -e .env nodemon src/server.ts",
 		"upgrade": "ncu -u && npm i",
 		"test": "dotenv -e .env.tests vitest run --coverage",
+		"test:ci": "vitest run",
 		"test:watch": "vitest --ui"
 	},
 	"dependencies": {
