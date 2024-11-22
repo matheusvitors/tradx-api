@@ -1,0 +1,23 @@
+name: Deploy on VPS
+on:
+    push:
+        branches:
+            - main
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Deploy to server
+              uses: appleboy/ssh-action@master
+              with:
+                host: ${{ secrets.HOST}}
+                username: ${{ secrets.USERNAME }}
+                password: ${{ secrets.PASSWORD }}
+                port: ${{ secrets.PORT }}
+                script: |
+                      cd /var/www/tradx-api
+                      git pull origin main
+                      npm i
+                      npx prisma migrate deploy
+                      npx prisma generate
+                      npm run build
