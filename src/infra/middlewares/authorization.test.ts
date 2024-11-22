@@ -12,7 +12,6 @@ vi.mock("@/infra/adapters/jwt", () => ({
 	}
 }));
 
-
 describe('Authorization', () => {
 
 	afterEach(() => {
@@ -44,7 +43,7 @@ describe('Authorization', () => {
 		const token = sign({ id: 'abc' }, SECRET || 'thisisascret');
 
 		const response = await supertest(app)
-		.get('/ativos')
+		.get('/test')
 		.set({ authorization: `Bearer ${token}` });
 
 		expect(response.status).toEqual(200);
