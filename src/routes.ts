@@ -11,7 +11,7 @@ routes.get('/', (request: Request, response: Response) => {
 	});
 });
 
-routes.get('/teste', (request: Request, response: Response) => {
+routes.get('/test', (request: Request, response: Response) => {
 	return response.status(200).send({
 		message: 'ok'
 	});
