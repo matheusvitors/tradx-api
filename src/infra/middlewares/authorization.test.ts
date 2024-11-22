@@ -1,9 +1,9 @@
+import supertest from "supertest";
+import { JsonWebTokenError, NotBeforeError, TokenExpiredError, sign, verify } from "jsonwebtoken";
+import { vi, afterEach, expect, describe, it } from "vitest";
 import { jwt } from "@/infra/adapters/jwt";
 import { app } from "@/server";
-import { JsonWebTokenError, NotBeforeError, TokenExpiredError, sign, verify } from "jsonwebtoken";
 import { SECRET } from "@/infra/config/environment";
-import { vi, afterEach, expect, describe, it, beforeAll } from "vitest";
-import supertest from "supertest";
 
 vi.mock("@/infra/adapters/jwt", () => ({
 	jwt: {

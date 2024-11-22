@@ -8,7 +8,6 @@ jobs:
         runs-on: ubuntu-latest
         env:
             NODE_ENV: test
-            PASSWORD: 7c4a8d09ca3762af61e59520943dc26494f8941b
             AUTHENTICATION: true
             SECRET: devsecret
             JWT_EXPIRE: 1h

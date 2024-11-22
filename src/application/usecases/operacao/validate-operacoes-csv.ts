@@ -27,8 +27,6 @@ export const validateOperacoesCsv = async (file: string): Promise<boolean> => {
 				});
 		})
 
-		// console.log('final isValid', isValid);
-
 		return isValid;
 	} catch (error) {
 		return false;
