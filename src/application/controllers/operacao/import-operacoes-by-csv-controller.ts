@@ -71,9 +71,6 @@ export const importOperacoesByCsvController = async (params: importOperacoesByCs
 
 				validateOperacao(operacao);
 				operacoesToSave.push(operacao);
-				console.log('id', operacao.id);
-
-				// await operacaoRepository.create(operacao);
 			} catch (error) {
 				reject(error)
 			}
@@ -94,11 +91,6 @@ export const importOperacoesByCsvController = async (params: importOperacoesByCs
 				resolve(true);
 			});
 		})
-
-		console.log({result});
-
-		console.log(operacoesToSave);
-		console.log(operacoesToSave.length);
 
 		await operacaoRepository.batchCreation!(operacoesToSave);
 		return success();

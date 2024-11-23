@@ -11,6 +11,12 @@ routes.get('/', (request: Request, response: Response) => {
 	});
 });
 
+routes.get('/test', (request: Request, response: Response) => {
+	return response.status(200).send({
+		message: 'ok'
+	});
+});
+
 routes.use(Object.values(appRoutes))
 
 

@@ -13,12 +13,12 @@ export const processCsv = async (file: string, callback: (row: any, stream: Read
 				reject(error);
 			})
 			.on('end', async () => {
-				console.log('Arquivo processado!');
+				console.info('Arquivo processado!');
 			})
 			resolve(true);
 		})
 	} catch (error) {
-		console.log('process csv', error);
+		console.error('process csv', error);
 		return false;
 	}
 }
