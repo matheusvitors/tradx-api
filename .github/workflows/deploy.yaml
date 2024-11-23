@@ -17,7 +17,7 @@ jobs:
                 script: |
                       cd /var/www/tradx-api
                       git pull origin main
-                      npm i
-                      npx prisma migrate deploy
-                      npx prisma generate
+                      sudo npm i
+                      sudo npx prisma migrate deploy
+                      sudo npx prisma generate
                       npm run build
