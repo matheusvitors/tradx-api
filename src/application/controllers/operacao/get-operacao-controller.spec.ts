@@ -18,13 +18,13 @@ describe("Get Operacao Controller", () => {
 				multiplicador: 1
 			},
 			conta: {
-				id: 1,
+				id: '1',
 				nome: "teste",
 				tipo: "simulador",
 				saldo: 0,
 				saldoInicial: 0,
 				usuario: {
-					id: 1,
+					id: '1',
 					nome: "Teste",
 					username: "teste",
 					password: "123",
@@ -36,7 +36,7 @@ describe("Get Operacao Controller", () => {
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: format(new Date(), 'yyyy-MM-dd'),
+			dataEntrada: new Date(),
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false,
