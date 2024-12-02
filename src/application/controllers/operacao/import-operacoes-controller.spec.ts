@@ -4,11 +4,12 @@ import { InMemoryRepository } from "@/infra/database/InMemoryRepository";
 import { importOperacoesByCsvController } from "@/application/controllers/operacao/import-operacoes-controller";
 import { Ativo, Conta, Operacao } from "@/core/models";
 
-describe('Import operacoes by CSV', () => {
+describe('Import operacoes', () => {
 	const operacaoRepository = new InMemoryRepository<Operacao>();
 	const ativoRepository = new InMemoryRepository<Ativo>();
 	const contaRepository = new InMemoryRepository<Conta>();
-	const file = path.resolve(__dirname, '../', '../', '../', '../', 'tests', 'assets', 'operacoes-teste.csv');
+	const csvFile = path.resolve(__dirname, '../', '../', '../', '../', 'tests', 'assets', 'operacoes-teste.csv');
+	const xlsFile = path.resolve(__dirname, '../', '../', '../', '../', 'tests', 'assets', 'operacoes-teste.xlsx');
 
 	contaRepository.create({
 		id: 'abc',
@@ -28,7 +29,7 @@ describe('Import operacoes by CSV', () => {
 	})
 
 	it('should import operacoes from csv file', async () => {
-		const response = await importOperacoesByCsvController({ operacaoRepository, ativoRepository, contaRepository, file});
+		const response = await importOperacoesByCsvController({ operacaoRepository, ativoRepository, contaRepository, file: csvFile});
 		expect(response.status).toEqual(200);
 		expect(operacaoRepository.data.length).toEqual(3)
 	});
@@ -38,21 +39,48 @@ describe('Import operacoes by CSV', () => {
 		expect(response.status).toEqual(404);
 	});
 
-	it('should return 422 if a field is invalid', async () => {
+	it('should return 422 if a field is invalid from csv file', async () => {
 		const invalidCsvFile = path.resolve(__dirname, '../', '../', '../', '../', 'tests', 'assets', 'operacoes-teste-invalid.csv');
 		const response = await importOperacoesByCsvController({ operacaoRepository, ativoRepository, contaRepository, file: invalidCsvFile});
 		expect(response.status).toEqual(422);
 	});
 
-	it('should return 422 if a ativo is invalid', async () => {
+	it('should return 422 if a ativo is invalid from csv file', async () => {
 		const invalidCsvFile = path.resolve(__dirname, '../', '../', '../', '../', 'tests', 'assets', 'operacoes-teste-invalid-ativo.csv');
 		const response = await importOperacoesByCsvController({ operacaoRepository, ativoRepository, contaRepository, file: invalidCsvFile});
 		expect(response.status).toEqual(422);
 		expect(response.body.message).toEqual('Ativo não encontrado.');
 	});
 
-	it('should return 422 if a conta is invalid', async () => {
+	it('should return 422 if a conta is invalid from csv file', async () => {
 		const invalidCsvFile = path.resolve(__dirname, '../', '../', '../', '../', 'tests', 'assets', 'operacoes-teste-invalid-conta.csv');
+		const response = await importOperacoesByCsvController({ operacaoRepository, ativoRepository, contaRepository, file: invalidCsvFile});
+
+		expect(response.status).toEqual(422);
+		expect(response.body.message).toEqual('Conta não encontrada.');
+	});
+
+	it('should import operacoes from xls file', async () => {
+		const response = await importOperacoesByCsvController({ operacaoRepository, ativoRepository, contaRepository, file: xlsFile});
+		expect(response.status).toEqual(200);
+		expect(operacaoRepository.data.length).toEqual(3)
+	});
+
+	it('should return 422 if a field is invalid from xls file', async () => {
+		const invalidCsvFile = path.resolve(__dirname, '../', '../', '../', '../', 'tests', 'assets', 'operacoes-teste-invalid.xlsx');
+		const response = await importOperacoesByCsvController({ operacaoRepository, ativoRepository, contaRepository, file: invalidCsvFile});
+		expect(response.status).toEqual(422);
+	});
+
+	it('should return 422 if a ativo is invalid from xls file', async () => {
+		const invalidCsvFile = path.resolve(__dirname, '../', '../', '../', '../', 'tests', 'assets', 'operacoes-teste-invalid-ativo.xlsx');
+		const response = await importOperacoesByCsvController({ operacaoRepository, ativoRepository, contaRepository, file: invalidCsvFile});
+		expect(response.status).toEqual(422);
+		expect(response.body.message).toEqual('Ativo não encontrado.');
+	});
+
+	it('should return 422 if a conta is invalid from xls file', async () => {
+		const invalidCsvFile = path.resolve(__dirname, '../', '../', '../', '../', 'tests', 'assets', 'operacoes-teste-invalid-conta.xlsx');
 		const response = await importOperacoesByCsvController({ operacaoRepository, ativoRepository, contaRepository, file: invalidCsvFile});
 
 		expect(response.status).toEqual(422);
