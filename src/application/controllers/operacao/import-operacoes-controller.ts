@@ -83,6 +83,7 @@ export const importOperacoesByCsvController = async (params: importOperacoesByCs
 			.on('data', row => promises.push(new Promise(async (resolve) => {
 				const operacao = await processCsv({row, reject, ativoRepository, contaRepository});
 				operacao && operacoesToSave.push(operacao)
+				resolve();
 				})
 			))
 			// .on('data', row => promises.push(processRow(row, reject)))
