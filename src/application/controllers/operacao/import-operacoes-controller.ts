@@ -77,10 +77,14 @@ export const importOperacoesByCsvController = async (params: importOperacoesByCs
 
 		const promises: Promise<void>[] = [];
 
-		const result = await new Promise((resolve, reject) => {
+		await new Promise((resolve, reject) => {
 			createReadStream(file)
 			.pipe(csv.parse())
-			.on('data', row => promises.push(processCsv(row, reject)))
+			.on('data', row => promises.push(new Promise(async (resolve) => {
+				const operacao = await processCsv({row, reject, ativoRepository, contaRepository});
+				operacao && operacoesToSave.push(operacao)
+				})
+			))
 			// .on('data', row => promises.push(processRow(row, reject)))
 			.on('error', async (error) => {
 				console.error('process csv error',error);
