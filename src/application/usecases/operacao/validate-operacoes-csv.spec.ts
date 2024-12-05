@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import path from "path";
 import { InMemoryRepository } from "@/infra/database/InMemoryRepository";
-import { importOperacoesByCsvController } from "@/application/controllers/operacao/import-operacoes-controller";
+import { importOperacoesByCsvController } from "@/application/controllers/operacao/import-operacoes-csv-controller";
 import { Ativo, Conta, Operacao } from "@/core/models";
 import { validateOperacoesCsv } from "@/application/usecases/operacao/validate-operacoes-csv";
 

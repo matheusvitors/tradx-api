@@ -2,7 +2,7 @@ import { Router, Request, Response} from 'express'
 import multer, { MulterError } from 'multer';
 import { ativosPrismaRepository, contaPrismaRepository, operacaoPrismaRepository } from '@/infra/database/prisma';
 import { route } from '@/infra/adapters/route';
-import { createOperacaoController, editOperacaoController, getOperacaoController, importOperacoesByCsvController, listOperacaoByContaController, listOperacaoController, removeOperacaoController } from '@/application/controllers/operacao';
+import { createOperacaoController, editOperacaoController, getOperacaoController, importOperacoesByCsvController, importOperacoesByXlsController, listOperacaoByContaController, listOperacaoController, removeOperacaoController } from '@/application/controllers/operacao';
 import { notFound } from '@/infra/adapters/response-wrapper';
 import path from 'path';
 import { ResponseData } from '@/application/interfaces';
@@ -73,12 +73,20 @@ router.post(`${defaultPath}/import`, upload.single('file'), async (request: Requ
 		let responseData: ResponseData = { status: 422, body: 'Formato de arquivo inválido'}
 
 		if(acceptedExtensions.includes(extension)) {
+			responseData = await importOperacoesByXlsController({
+				operacaoRepository: repository,
+				ativoRepository,
+				contaRepository,
+				file: path.resolve('.', 'temp', request.file.filename)
+			})
+		} else if (extension === 'csv') {
 			responseData = await importOperacoesByCsvController({
 				operacaoRepository: repository,
 				ativoRepository,
 				contaRepository,
 				file: path.resolve('.', 'temp', request.file.filename)
 			})
+
 		}
 
 		return route({ response, responseData });
