@@ -23,22 +23,24 @@ export const importOperacoesByXlsController = async (params: ImportOperacoesByCs
 
 		const sheets = contentFile.SheetNames;
 
-		let data = []
+		let data: any = []
 
 		for (let i = 0; i < sheets.length; i++) {
 			const temp = xls.json(
 				contentFile.Sheets[contentFile.SheetNames[i]]
 			);
-			temp.forEach((res) => {
-				data.push(res);
+			temp.forEach((x: any) => {
+				data.push(x);
 			});
 		}
 
+		console.log(data);
 
 		return success();
 
 	} catch (error) {
 		operacaoRepository.rollback && operacaoRepository.rollback();
+		console.error(error)
 		return serverError(error);
 	}
 }
