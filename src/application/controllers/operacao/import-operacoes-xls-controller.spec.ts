@@ -11,7 +11,7 @@ describe('Import operacoes by xls', () => {
 	const xlsFile = path.resolve(__dirname, '../', '../', '../', '../', 'tests', 'assets', 'operacoes-teste.xlsx');
 
 	contaRepository.create({
-		id: 'abc',
+		id: 'xyz',
 		nome: 'Real',
 		tipo: "real",
 		usuarioId: 'xyz',
@@ -21,8 +21,16 @@ describe('Import operacoes by xls', () => {
 
 	ativoRepository.create({
 		id: "abc",
-		nome: "Teste",
-		acronimo: "WINQ24",
+		nome: "Indice",
+		acronimo: "WINZ24",
+		tipo: "indice",
+		dataVencimento: '2025-01-01',
+	})
+
+	ativoRepository.create({
+		id: "abc",
+		nome: "Dolar",
+		acronimo: "WDON24",
 		tipo: "indice",
 		dataVencimento: '2025-01-01',
 	})
@@ -30,7 +38,7 @@ describe('Import operacoes by xls', () => {
 	it('should import operacoes from xls file', async () => {
 		const response = await importOperacoesByXlsController({ operacaoRepository, ativoRepository, contaRepository, file: xlsFile});
 		expect(response.status).toEqual(200);
-		expect(operacaoRepository.data.length).toEqual(3)
+		expect(operacaoRepository.data.length).toEqual(5)
 	});
 
 	it('should return 404 if not send file', async () => {
@@ -39,30 +47,29 @@ describe('Import operacoes by xls', () => {
 	});
 
 	it('should return 422 if a field is invalid from xls file', async () => {
-		const invalidXlsFile = path.resolve(__dirname, '../', '../', '../', '../', 'tests', 'assets', 'operacoes-teste-invalid.xls');
+		const invalidXlsFile = path.resolve(__dirname, '../', '../', '../', '../', 'tests', 'assets', 'operacoes-teste-invalid.xlsx');
 		const response = await importOperacoesByXlsController({ operacaoRepository, ativoRepository, contaRepository, file: invalidXlsFile});
 		expect(response.status).toEqual(422);
 	});
 
 	it('should return 422 if a ativo is invalid from xls file', async () => {
-		const invalidXlsFile = path.resolve(__dirname, '../', '../', '../', '../', 'tests', 'assets', 'operacoes-teste-invalid-ativo.xls');
+		const invalidXlsFile = path.resolve(__dirname, '../', '../', '../', '../', 'tests', 'assets', 'operacoes-teste-invalid-ativo.xlsx');
 		const response = await importOperacoesByXlsController({ operacaoRepository, ativoRepository, contaRepository, file: invalidXlsFile});
 		expect(response.status).toEqual(422);
-		expect(response.body.message).toEqual('Ativo não encontrado.');
+		expect(response.body.message).toEqual('Há ativos inexistentes no arquivo enviado.');
 	});
 
 	it('should return 422 if a conta is invalid from xls file', async () => {
-		const invalidXlsFile = path.resolve(__dirname, '../', '../', '../', '../', 'tests', 'assets', 'operacoes-teste-invalid-conta.xls');
+		const invalidXlsFile = path.resolve(__dirname, '../', '../', '../', '../', 'tests', 'assets', 'operacoes-teste-invalid-conta.xlsx');
 		const response = await importOperacoesByXlsController({ operacaoRepository, ativoRepository, contaRepository, file: invalidXlsFile});
 
 		expect(response.status).toEqual(422);
-		expect(response.body.message).toEqual('Conta não encontrada.');
+		expect(response.body.message).toEqual('Há contas inexistentes no arquivo enviado.');
 	});
 
 	it('should return 500 if throw a error', async () => {
 		//@ts-ignore
-		const response = await importOperacoesByXlsController({ operacaoRepository, ativoRepository, contaRepository: null, file: csvFile});
+		const response = await importOperacoesByXlsController({ operacaoRepository, file: xlsFile});
 		expect(response.status).toEqual(500);
 	});
-
 });
