@@ -2,31 +2,29 @@ import { createReadStream, existsSync } from "fs";
 import { OperacaoDTO } from "@/application/dto";
 import { Repository, ResponseData } from "@/application/interfaces";
 import { validateOperacoesCsv } from "@/application/usecases/operacao";
-import { operacaoCsvValidator } from "@/application/validators";
 import { Ativo, Conta, Operacao } from "@/core/models";
-import { validateOperacao } from "@/core/validators";
 import { csv } from "@/infra/adapters/csv";
-import { newID } from "@/infra/adapters/newID";
 import { unprocessableEntity, serverError, notFound, success } from "@/infra/adapters/response-wrapper";
-import { database } from "@/infra/database/database";
+import { validateOperacao } from "@/core/validators";
+import { newID } from "@/infra/adapters/newID";
 import { toValidDate } from "@/utils/to-valid-date";
 
 interface importOperacoesByCsvControllerParams {
 	operacaoRepository: Repository<Operacao>;
 	ativoRepository: Repository<Ativo>;
 	contaRepository: Repository<Conta>;
-	csvFile: string;
+	file: string;
 }
 
 //TODO: Fazer o rollback caso haja algum erro de ativo ou conta invalida
 
 export const importOperacoesByCsvController = async (params: importOperacoesByCsvControllerParams): Promise<ResponseData> => {
-	const { operacaoRepository, ativoRepository, contaRepository, csvFile } = params;
+	const { operacaoRepository, ativoRepository, contaRepository, file } = params;
 	try {
 		const operacoesToSave: OperacaoDTO[] = [];
-		const isValid = await validateOperacoesCsv(csvFile);
+		const isValid = await validateOperacoesCsv(file);
 
-		if(!existsSync(csvFile)) {
+		if(!existsSync(file)) {
 			return notFound('Arquivo não encontrado no servidor.');
 		}
 
@@ -78,9 +76,15 @@ export const importOperacoesByCsvController = async (params: importOperacoesByCs
 
 		const promises: Promise<void>[] = [];
 
-		const result = await new Promise((resolve, reject) => {
-			createReadStream(csvFile)
+		await new Promise((resolve, reject) => {
+			createReadStream(file)
 			.pipe(csv.parse())
+			// .on('data', row => promises.push(new Promise(async (resolve) => {
+			// 	const operacao = await processCsv({row, reject, ativoRepository, contaRepository});
+			// 	operacao && operacoesToSave.push(operacao)
+			// 	resolve();
+			// 	})
+			// ))
 			.on('data', row => promises.push(processRow(row, reject)))
 			.on('error', async (error) => {
 				console.error('process csv error',error);
