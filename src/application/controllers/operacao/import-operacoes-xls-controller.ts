@@ -25,7 +25,6 @@ export const importOperacoesByXlsController = async (params: ImportOperacoesByCs
 
 		const contas = await contaRepository.list();
 		const ativos = await ativoRepository.list();
-		console.log(ativos.find(ativo => ativo.acronimo === 'WINQ24')?.id)
 
 		const contentFile = xls.read(file);
 
@@ -39,28 +38,12 @@ export const importOperacoesByXlsController = async (params: ImportOperacoesByCs
 			);
 
 			temp.forEach((x: any) => {
+
 				const splitDate = x['Data'].split('/');
 				const splitHoraEntrada = x['Horario - Entrada'].split(':')
 				const splitHoraSaida = x['Horario - Saída'].split(':')
 				const horarioEntrada = `${splitDate[2]}-${splitDate[1]}-${splitDate[0]} ${splitHoraEntrada[0]}:${splitHoraEntrada[1]}`
 				const horarioSaida = `${splitDate[2]}-${splitDate[1]}-${splitDate[0]} ${splitHoraSaida[0]}:${splitHoraSaida[1]}`
-
-				// console.log({
-				// 	data: x['Data'],
-				// 	contratos: x['Contratos'],
-				// 	ativo: x['Ativo'],
-				// 	conta: x['Conta'],
-				// 	tipo: x['Tipo'],
-				// 	entrada: x['Entrada'],
-				// 	stopLoss: x['Stop Loss'],
-				// 	alvo: x['Alvo'],
-				// 	saida: x['Saída'],
-				// 	horarioEntrada: x['Horario - Entrada'],
-				// 	horarioSaida: x['Horario - Saída'],
-				// 	operacaoPerdida: x['Operação Perdida?'],
-				// 	erro: x['Erro?'],
-				// 	comentario: x['Comentário'] ?? ''
-				// });
 
 				const ativo = ativos.find(ativo => ativo.acronimo === x['Ativo'])
 				const conta = contas.find(ativo => ativo.nome === x['Conta'])
@@ -96,7 +79,6 @@ export const importOperacoesByXlsController = async (params: ImportOperacoesByCs
 			});
 		}
 
-		// console.log(data);
 		operacaoRepository.batchCreation!(data);
 
 		return success();
