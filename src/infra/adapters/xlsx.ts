@@ -1,4 +1,4 @@
-const xlsx = require("xlsx");
+import xlsx from "xlsx";
 
 export const xls = {
 	read: (file: string) => {
