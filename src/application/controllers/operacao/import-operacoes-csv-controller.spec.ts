@@ -12,8 +12,8 @@ describe('Import operacoes', () => {
 
 	contaRepository.create({
 		id: 'abc',
-		nome: 'Real',
-		tipo: "real",
+		nome: 'Simulador',
+		tipo: "simulador",
 		usuarioId: 'xyz',
 		saldoInicial: 0.00,
 		saldo: 0.00,
@@ -22,15 +22,15 @@ describe('Import operacoes', () => {
 	ativoRepository.create({
 		id: "abc",
 		nome: "Teste",
-		acronimo: "WINQ24",
+		acronimo: "WING25",
 		tipo: "indice",
-		dataVencimento: '2025-01-01',
+		dataVencimento: '2026-01-01',
 	})
 
 	it('should import operacoes from csv file', async () => {
 		const response = await importOperacoesByCsvController({ operacaoRepository, ativoRepository, contaRepository, file: csvFile});
 		expect(response.status).toEqual(200);
-		expect(operacaoRepository.data.length).toEqual(3)
+		expect(operacaoRepository.data.length).toEqual(6)
 	});
 
 	it('should return 404 if not send file', async () => {
@@ -61,7 +61,7 @@ describe('Import operacoes', () => {
 
 	it('should return 500 if throw a error', async () => {
 		//@ts-ignore
-		const response = await importOperacoesByCsvController({ operacaoRepository, ativoRepository, contaRepository: null, file: csvFile});
+		const response = await importOperacoesByCsvController({ operacaoRepository, file: csvFile});
 		expect(response.status).toEqual(500);
 	});
 

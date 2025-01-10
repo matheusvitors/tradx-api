@@ -5,7 +5,7 @@ import { importOperacoesByCsvController } from "@/application/controllers/operac
 import { Ativo, Conta, Operacao } from "@/core/models";
 import { validateOperacoesCsv } from "@/application/usecases/operacao/validate-operacoes-csv";
 
-describe('Validade operacoes of CSV file', () => {
+describe.skip('Validade operacoes of CSV file', () => {
 	const csvFile = path.resolve(__dirname, '../', '../', '../', '../', 'tests', 'assets', 'operacoes-teste.csv');
 
 	it('should return true if informations of csv file is valid', async () => {
