@@ -1,4 +1,4 @@
-import { createReadStream, existsSync } from "fs";
+import { createReadStream, existsSync, unlinkSync } from "fs";
 import { OperacaoDTO } from "@/application/dto";
 import { Repository, ResponseData } from "@/application/interfaces";
 import { validateOperacoesCsv } from "@/application/usecases/operacao";
@@ -8,6 +8,7 @@ import { unprocessableEntity, serverError, notFound, success } from "@/infra/ada
 import { validateOperacao } from "@/core/validators";
 import { newID } from "@/infra/adapters/newID";
 import { toValidDate } from "@/utils/to-valid-date";
+import { NODE_ENV } from "@/infra/config/environment";
 
 interface importOperacoesByCsvControllerParams {
 	operacaoRepository: Repository<Operacao>;
@@ -97,6 +98,8 @@ export const importOperacoesByCsvController = async (params: importOperacoesByCs
 		})
 
 		await operacaoRepository.batchCreation!(operacoesToSave);
+		NODE_ENV !== "test" && unlinkSync(file);
+
 		return success();
 	} catch (error: any) {
 		operacaoRepository.rollback && operacaoRepository.rollback();
