@@ -1,4 +1,4 @@
-import { existsSync } from "fs";
+import { existsSync, unlinkSync } from "fs";
 import { Repository, ResponseData } from "@/application/interfaces";
 import { Ativo, Conta, Operacao } from "@/core/models";
 import { notFound, serverError, success, unprocessableEntity } from "@/infra/adapters/response-wrapper"
@@ -8,6 +8,7 @@ import { newID } from "@/infra/adapters/newID";
 import { format } from "date-fns";
 import { validateOperacao } from "@/core/validators";
 import { ValidationError } from "@/application/errors";
+import { NODE_ENV } from "@/infra/config/environment";
 
 interface ImportOperacoesByCsvControllerParams {
 	operacaoRepository: Repository<Operacao>;
@@ -80,6 +81,8 @@ export const importOperacoesByXlsController = async (params: ImportOperacoesByCs
 		}
 
 		operacaoRepository.batchCreation!(data);
+
+		NODE_ENV !== "test" && unlinkSync(file);
 
 		return success();
 
