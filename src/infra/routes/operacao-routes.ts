@@ -61,7 +61,7 @@ router.post(`${defaultPath}`, async (request: Request, response: Response) => {
 	return route({ response, responseData });
 })
 
-router.post(`${defaultPath}/import`, upload.single('file'), async (request: Request, response: Response) => {
+router.post(`${defaultPath}/:contaId/import`, upload.single('file'), async (request: Request, response: Response) => {
 	try {
 
 		if(!request.file) {
@@ -76,7 +76,7 @@ router.post(`${defaultPath}/import`, upload.single('file'), async (request: Requ
 			responseData = await importOperacoesByXlsController({
 				operacaoRepository: repository,
 				ativoRepository,
-				contaRepository,
+				contaId: request.params.contaId,
 				file: path.resolve('.', 'temp', request.file.filename)
 			})
 		} else if (extension === 'csv') {

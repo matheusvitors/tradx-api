@@ -13,6 +13,17 @@ describe('Calculate Saldo', () => {
 		expect(saldo).toEqual(250)
 	});
 
+	it('should return 0 if precoEntrada = precoSaida', () => {
+		const saldo = calculateSaldo({
+			tipo: 'compra',
+			previousSaldo: 50,
+			precoEntrada: 100,
+			precoSaida: 100,
+			multiplicador: 2
+		});
+		expect(saldo).toEqual(0)
+	});
+
 	it('should calculate saldo of failed operacao with type compra', () => {
 		const saldo = calculateSaldo({
 			tipo: 'compra',

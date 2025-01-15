@@ -9,29 +9,41 @@ import { format } from "date-fns";
 import { validateOperacao } from "@/core/validators";
 import { ValidationError } from "@/application/errors";
 import { NODE_ENV } from "@/infra/config/environment";
+import { calculateSaldo } from "@/application/usecases";
 
 interface ImportOperacoesByCsvControllerParams {
 	operacaoRepository: Repository<Operacao>;
 	ativoRepository: Repository<Ativo>;
 	contaRepository: Repository<Conta>;
+	contaId: string;
 	file: string;
 }
 
 export const importOperacoesByXlsController = async (params: ImportOperacoesByCsvControllerParams): Promise<ResponseData> => {
 	try {
-		const { operacaoRepository, ativoRepository, contaRepository, file } = params;
+		const { operacaoRepository, ativoRepository, contaRepository, contaId, file } = params;
+
 		if(!existsSync(file)) {
 			return notFound('Arquivo não encontrado no servidor.');
 		}
 
-		const contas = await contaRepository.list();
+		let conta = await contaRepository.get(contaId);
+
+		if(!contaId || !conta || contaId.length === 0) {
+			throw notFound('Conta não encontrada.')
+		}
+
+
 		const ativos = await ativoRepository.list();
 
 		const contentFile = xls.read(file);
 
 		const sheets = contentFile.SheetNames;
 
-		let data: OperacaoDTO[] = []
+		let data: OperacaoDTO[] = [];
+
+
+		let newSaldo = conta?.saldo;
 
 		for (let i = 0; i < sheets.length; i++) {
 			const temp = xls.json(
@@ -46,21 +58,17 @@ export const importOperacoesByXlsController = async (params: ImportOperacoesByCs
 				const horarioEntrada = `${splitDate[2]}-${splitDate[1]}-${splitDate[0]} ${splitHoraEntrada[0]}:${splitHoraEntrada[1]}`
 				const horarioSaida = `${splitDate[2]}-${splitDate[1]}-${splitDate[0]} ${splitHoraSaida[0]}:${splitHoraSaida[1]}`
 
-				const ativo = ativos.find(ativo => ativo.acronimo === x['Ativo'])
-				const conta = contas.find(ativo => ativo.nome === x['Conta'])
+				const ativo = ativos.find(ativo => ativo.acronimo === x['Ativo']);
 
 				if(!ativo) {
 					throw unprocessableEntity('Há ativos inexistentes no arquivo enviado.')
 				}
 
-				if(!conta) {
-					throw unprocessableEntity('Há contas inexistentes no arquivo enviado.')
-				}
 
 				const operacao: OperacaoDTO = {
 					id: newID(),
 					ativoId: ativo.id,
-					contaId: conta.id,
+					contaId,
 					quantidade: parseInt(x['Contratos']),
 					tipo: x['Tipo'] === 'Compra' ? 'compra' : 'venda',
 					precoEntrada: parseInt(x['Entrada']),
@@ -76,11 +84,23 @@ export const importOperacoesByXlsController = async (params: ImportOperacoesByCs
 
 				validateOperacao(operacao);
 
+				if(operacao.precoSaida){
+					const saldo = calculateSaldo({
+						tipo: operacao.tipo === 'compra' ? 'compra' : 'venda',
+						previousSaldo: newSaldo,
+						precoEntrada: operacao.precoEntrada,
+						precoSaida: operacao.precoSaida,
+						multiplicador: ativo.multiplicador
+					})
+					newSaldo = saldo !== 0 ? saldo : newSaldo ;
+				}
+
 				data.push(operacao);
 			});
 		}
 
 		operacaoRepository.batchCreation!(data);
+		await contaRepository.edit({...conta, saldo: newSaldo});
 
 		NODE_ENV !== "test" && unlinkSync(file);
 

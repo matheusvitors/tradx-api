@@ -9,8 +9,15 @@ interface CalculateSaldoParams {
 }
 
 export const calculateSaldo = ({ tipo, previousSaldo, precoEntrada, precoSaida, multiplicador}: CalculateSaldoParams): number => {
-	let result = tipo === 'compra' ? precoSaida - precoEntrada : precoEntrada - precoSaida;
-	result = result * multiplicador;
+	console.log({ tipo, previousSaldo, precoEntrada, precoSaida, multiplicador});
 
-	return result + previousSaldo;
+	if(precoEntrada !== precoSaida){
+
+		let result = tipo === 'compra' ? precoSaida - precoEntrada : precoEntrada - precoSaida;
+		result = result * multiplicador;
+
+		return result + previousSaldo;
+	}
+
+	return 0;
 }
