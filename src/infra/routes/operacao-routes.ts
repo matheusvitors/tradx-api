@@ -75,6 +75,7 @@ router.post(`${defaultPath}/:contaId/import`, upload.single('file'), async (requ
 		if(acceptedExtensions.includes(extension)) {
 			responseData = await importOperacoesByXlsController({
 				operacaoRepository: repository,
+				contaRepository,
 				ativoRepository,
 				contaId: request.params.contaId,
 				file: path.resolve('.', 'temp', request.file.filename)
@@ -82,8 +83,9 @@ router.post(`${defaultPath}/:contaId/import`, upload.single('file'), async (requ
 		} else if (extension === 'csv') {
 			responseData = await importOperacoesByCsvController({
 				operacaoRepository: repository,
-				ativoRepository,
 				contaRepository,
+				ativoRepository,
+				contaId: request.params.contaId,
 				file: path.resolve('.', 'temp', request.file.filename)
 			})
 

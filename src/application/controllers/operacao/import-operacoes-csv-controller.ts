@@ -31,16 +31,18 @@ export const importOperacoesByCsvController = async (params: importOperacoesByCs
 			return notFound('Arquivo não encontrado no servidor.');
 		}
 
-		const contas = await contaRepository.list();
-		const ativos = await ativoRepository.list();
+		let conta = await contaRepository.get(contaId);
 
-		let newSaldo = 0;
+		if(!contaId || !conta || contaId.length === 0) {
+			throw notFound('Conta não encontrada.');
+		}
+
+		const ativos = await ativoRepository.list();
+		let newSaldo = conta.saldo;
 
 
 		const processRow = async (row: any, reject: (value: unknown) => void) => {
 			try {
-				console.log(row.ativo);
-
 				const ativo = ativos.find(ativo => ativo.acronimo === row['Ativo'])
 
 				if(!ativo) {
@@ -48,11 +50,10 @@ export const importOperacoesByCsvController = async (params: importOperacoesByCs
 					return;
 				}
 
-				const conta = contas.find(conta => conta.nome === row['Conta'])
+				const dateRegex = new RegExp(/^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])\/(19|20)\d{2}$/);
 
-				if(!conta) {
-					reject(unprocessableEntity('Conta não encontrada.'));
-					return;
+				if(!dateRegex.test(row['Data'])) {
+					reject(unprocessableEntity('Formato de data inválida.'))
 				}
 
 				const splitDate = row['Data'].split('/');
@@ -90,7 +91,8 @@ export const importOperacoesByCsvController = async (params: importOperacoesByCs
 						precoSaida: operacao.precoSaida,
 						multiplicador: ativo.multiplicador
 					})
-					newSaldo = saldo !== 0 ? saldo : newSaldo ;
+					newSaldo = saldo !== 0 ? saldo : newSaldo;
+
 				}
 
 
@@ -105,12 +107,6 @@ export const importOperacoesByCsvController = async (params: importOperacoesByCs
 		await new Promise((resolve, reject) => {
 			createReadStream(file)
 			.pipe(csv.parse())
-			// .on('data', row => promises.push(new Promise(async (resolve) => {
-			// 	const operacao = await processCsv({row, reject, ativoRepository, contaRepository});
-			// 	operacao && operacoesToSave.push(operacao)
-			// 	resolve();
-			// 	})
-			// ))
 			.on('data', row => promises.push(processRow(row, reject)))
 			.on('error', async (error) => {
 				console.error('process csv error',error);
@@ -123,6 +119,7 @@ export const importOperacoesByCsvController = async (params: importOperacoesByCs
 		})
 
 		await operacaoRepository.batchCreation!(operacoesToSave);
+		await contaRepository.edit({...conta, saldo: newSaldo});
 		NODE_ENV !== "test" && unlinkSync(file);
 
 		return success();

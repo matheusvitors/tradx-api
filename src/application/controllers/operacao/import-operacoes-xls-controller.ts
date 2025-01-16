@@ -33,17 +33,12 @@ export const importOperacoesByXlsController = async (params: ImportOperacoesByCs
 			throw notFound('Conta não encontrada.')
 		}
 
-
-		const ativos = await ativoRepository.list();
-
 		const contentFile = xls.read(file);
-
 		const sheets = contentFile.SheetNames;
 
+		const ativos = await ativoRepository.list();
 		let data: OperacaoDTO[] = [];
-
-
-		let newSaldo = conta?.saldo;
+		let newSaldo = conta.saldo;
 
 		for (let i = 0; i < sheets.length; i++) {
 			const temp = xls.json(

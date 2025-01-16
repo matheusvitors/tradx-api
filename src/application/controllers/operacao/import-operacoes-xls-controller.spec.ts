@@ -63,7 +63,6 @@ describe('Import operacoes by xls', () => {
 	});
 
 	it('should return 404 if a conta is invalid ', async () => {
-		const invalidXlsFile = path.resolve(__dirname, '../', '../', '../', '../', 'tests', 'assets', 'operacoes-teste-invalid-conta.xlsx');
 		const response = await importOperacoesByXlsController({ operacaoRepository, ativoRepository, contaRepository, contaId: '', file: xlsFile});
 
 		expect(response.status).toEqual(404);

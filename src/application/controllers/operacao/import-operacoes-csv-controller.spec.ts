@@ -25,6 +25,7 @@ describe('Import operacoes', () => {
 		acronimo: "WING25",
 		tipo: "indice",
 		dataVencimento: '2026-01-01',
+		multiplicador: 0.2
 	})
 
 	it('should import operacoes from csv file', async () => {
@@ -45,6 +46,13 @@ describe('Import operacoes', () => {
 		expect(response.status).toEqual(422);
 	});
 
+	it('should return 422 if date field is invalid from csv file', async () => {
+		const invalidCsvFile = path.resolve(__dirname, '../', '../', '../', '../', 'tests', 'assets', 'operacoes-teste-invalid-date.csv');
+		const response = await importOperacoesByCsvController({ operacaoRepository, ativoRepository, contaRepository, contaId: 'abc', file: invalidCsvFile});
+		expect(response.status).toEqual(422);
+		expect(response.body.message).toEqual('Formato de data inválida.');
+	});
+
 	it('should return 422 if a ativo is invalid from csv file', async () => {
 		const invalidCsvFile = path.resolve(__dirname, '../', '../', '../', '../', 'tests', 'assets', 'operacoes-teste-invalid-ativo.csv');
 		const response = await importOperacoesByCsvController({ operacaoRepository, ativoRepository, contaRepository, contaId: 'abc', file: invalidCsvFile});
@@ -52,11 +60,10 @@ describe('Import operacoes', () => {
 		expect(response.body.message).toEqual('Ativo não encontrado.');
 	});
 
-	it('should return 422 if a conta is invalid from csv file', async () => {
-		const invalidCsvFile = path.resolve(__dirname, '../', '../', '../', '../', 'tests', 'assets', 'operacoes-teste-invalid-conta.csv');
-		const response = await importOperacoesByCsvController({ operacaoRepository, ativoRepository, contaRepository, contaId: 'abc', file: invalidCsvFile});
+	it('should return 404 if a conta is invalid from csv file', async () => {
+		const response = await importOperacoesByCsvController({ operacaoRepository, ativoRepository, contaRepository, contaId: '', file: csvFile});
 
-		expect(response.status).toEqual(422);
+		expect(response.status).toEqual(404);
 		expect(response.body.message).toEqual('Conta não encontrada.');
 	});
 
