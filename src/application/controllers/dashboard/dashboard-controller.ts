@@ -26,23 +26,17 @@ export const dashboardController = async (params: DashboardControllerParams): Pr
 			return unprocessableEntity('A conta é obrigatória.');
 		}
 
-		let initDate = new Date('2024-08-01');
-		let endDate = new Date('2024-08-31');
+		let initDate = new Date();
+		let endDate = new Date();
 
 
-		initDate = new Date(new Date('2024-08-01').getFullYear(), new Date().getMonth(), 1);
-		endDate = new Date(new Date('2024-08-31').getFullYear(), new Date().getMonth() + 1, 0);
+		initDate = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+		endDate = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0);
+
 		if(process.env.NODE_ENV === 'test')  {
 			initDate = new Date(new Date('2024-08-01').getFullYear(), 7, 1);
 			endDate = new Date(new Date('2024-08-31').getFullYear(), 8, 0);
 		}
-		// initDate = format(new Date(new Date().getFullYear(), new Date().getMonth(), 1), 'yyyy-MM-dd');
-		// endDate = format(new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0), 'yyyy-MM-dd');
-
-		// if(process.env.NODE_ENV === 'test')  {
-		// 	initDate = format(new Date(new Date().getFullYear(), 7, 1), 'yyyy-MM-dd');
-		// 	endDate = format(new Date(new Date().getFullYear(), 8, 0), 'yyyy-MM-dd');
-		// }
 
 		const operacoes = await operacaoRepository.filter!([
 			{field: 'contaId', value: contaId},
