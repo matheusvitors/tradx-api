@@ -17,7 +17,6 @@ export const listOperacaoByContaController = async (params: ListOperacaoByContaC
 	try {
 
 		const { repository, contaId, range } = params;
-		console.log({ gte: new Date(`${range.init} 00:00`), lte: new Date(`${range.end} 23:59`)});
 		const operacoes = await repository.filter!([
 			{ field: 'contaId', value: contaId },
 			{ field: 'dataEntrada', value: { gte: new Date(`${range.init} 00:00`), lte: new Date(`${range.end} 23:59`)}}
