@@ -15,10 +15,11 @@ interface ListOperacaoByContaControllerParams {
 
 export const listOperacaoByContaController = async (params: ListOperacaoByContaControllerParams): Promise<ResponseData> => {
 	try {
+
 		const { repository, contaId, range } = params;
 		const operacoes = await repository.filter!([
 			{ field: 'contaId', value: contaId },
-			{ field: 'dataEntrada', value: { gte: new Date(range.init), lte: new Date(range.end)}}
+			{ field: 'dataEntrada', value: { gte: new Date(`${range.init} 00:00`), lte: new Date(`${range.end} 23:59`)}}
 		]);
 
 		if(!operacoes) {
