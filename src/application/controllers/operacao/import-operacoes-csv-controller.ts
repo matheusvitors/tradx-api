@@ -95,7 +95,6 @@ export const importOperacoesByCsvController = async (params: importOperacoesByCs
 
 				}
 
-
 				operacoesToSave.push(operacao);
 			} catch (error) {
 				reject(error)
@@ -120,7 +119,7 @@ export const importOperacoesByCsvController = async (params: importOperacoesByCs
 
 		await operacaoRepository.batchCreation!(operacoesToSave);
 		await contaRepository.edit({...conta, saldo: newSaldo});
-		NODE_ENV !== "test" && unlinkSync(file);
+
 
 		return success();
 	} catch (error: any) {
@@ -135,5 +134,7 @@ export const importOperacoesByCsvController = async (params: importOperacoesByCs
 
 		return serverError(error);
 
+	} finally {
+		NODE_ENV !== "test" && unlinkSync(file);
 	}
 }

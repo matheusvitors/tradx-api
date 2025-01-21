@@ -20,8 +20,8 @@ interface ImportOperacoesByCsvControllerParams {
 }
 
 export const importOperacoesByXlsController = async (params: ImportOperacoesByCsvControllerParams): Promise<ResponseData> => {
+	const { operacaoRepository, ativoRepository, contaRepository, contaId, file } = params;
 	try {
-		const { operacaoRepository, ativoRepository, contaRepository, contaId, file } = params;
 
 		if(!existsSync(file)) {
 			return notFound('Arquivo não encontrado no servidor.');
@@ -97,7 +97,6 @@ export const importOperacoesByXlsController = async (params: ImportOperacoesByCs
 		operacaoRepository.batchCreation!(data);
 		await contaRepository.edit({...conta, saldo: newSaldo});
 
-		NODE_ENV !== "test" && unlinkSync(file);
 
 		return success();
 
@@ -112,5 +111,7 @@ export const importOperacoesByXlsController = async (params: ImportOperacoesByCs
 		}
 
 		return serverError(error);
+	} finally {
+		NODE_ENV !== "test" && unlinkSync(file);
 	}
 }
