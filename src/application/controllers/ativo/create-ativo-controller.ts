@@ -5,6 +5,7 @@ import { Ativo } from "@/core/models";
 import { validateAtivo } from "@/core/validators";
 import { newID } from "@/infra/adapters/newID";
 import { conflict, serverError, success, unprocessableEntity } from "@/infra/adapters/response-wrapper";
+import { format } from "node:util";
 
 interface CreateAtivoControllerParams {
 	repository: Repository<Ativo>;
@@ -28,7 +29,7 @@ export const createAtivoController = async (params: CreateAtivoControllerParams)
 			acronimo: input.acronimo,
 			tipo: input.tipo,
 			multiplicador: input.multiplicador || 1,
-			dataVencimento: input.dataVencimento
+			dataVencimento: input.dataVencimento ? new Date(`${format(input.dataVencimento, 'yyyy-MM-dd')} 23:59`) : undefined
 		};
 
 		validateAtivo(ativo);
