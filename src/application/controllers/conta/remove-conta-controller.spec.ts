@@ -1,11 +1,10 @@
-import { getOperacaoController, removeOperacaoController } from "@/application/controllers/operacao";
-import { Operacao } from "@/core/models";
+import { removeContaController } from "@/application/controllers/conta/remove-conta-controller";
+import { Conta, Operacao } from "@/core/models";
 import { InMemoryRepository } from "@/infra/database/InMemoryRepository";
-import { format } from "date-fns";
 import { beforeAll, describe, expect, it } from "vitest";
 
 describe('Remove Operacao Controller', () => {
-	const repository = new InMemoryRepository<Operacao>();
+	const repository = new InMemoryRepository<Conta>();
 
 	beforeAll(() => {
 		const input: Operacao = {
@@ -18,13 +17,13 @@ describe('Remove Operacao Controller', () => {
 				multiplicador: 1
 			},
 			conta: {
-				id: 1,
+				id: '1',
 				nome: "teste",
 				tipo: "simulador",
 				saldo: 0,
 				saldoInicial: 0,
 				usuario: {
-					id: 1,
+					id: '1',
 					nome: "Teste",
 					username: "teste",
 					password: "123",
@@ -36,7 +35,7 @@ describe('Remove Operacao Controller', () => {
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: format(new Date(), 'yyyy-MM-dd'),
+			dataEntrada: new Date(),
 			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false,
@@ -45,20 +44,20 @@ describe('Remove Operacao Controller', () => {
 	});
 
 
-	it('should remove operacao', async () => {
-		const response = await removeOperacaoController({id: 'abc', repository});
+	it('should remove conta', async () => {
+		const response = await removeContaController({id: 'abc', repository});
 		expect(response.status).toEqual(200);
 		expect(repository.data.length).toEqual(0);
 	});
 
-	it('should return 404 if operacao not found', async () => {
-		const response = await getOperacaoController({id: 'eee', repository});
+	it('should return 404 if conta not found', async () => {
+		const response = await removeContaController({id: 'eee', repository});
 		expect(response.status).toEqual(404)
 	});
 
 	it('should return 500 if have error server', async () => {
 		//@ts-ignore
-		const response = await getOperacaoController(null);
+		const response = await removeContaController(null);
 		expect(response.status).toEqual(500);
 	});
 });
