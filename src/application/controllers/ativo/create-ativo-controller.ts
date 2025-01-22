@@ -5,11 +5,7 @@ import { Ativo } from "@/core/models";
 import { validateAtivo } from "@/core/validators";
 import { newID } from "@/infra/adapters/newID";
 import { conflict, serverError, success, unprocessableEntity } from "@/infra/adapters/response-wrapper";
-<<<<<<< HEAD
 import { format } from "date-fns";
-=======
-import { format } from "node:util";
->>>>>>> df3c4e4453ba6b5f4a31dabe547d16e86564c7e1
 
 interface CreateAtivoControllerParams {
 	repository: Repository<Ativo>;
