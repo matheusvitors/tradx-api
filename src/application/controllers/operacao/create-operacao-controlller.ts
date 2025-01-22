@@ -63,16 +63,6 @@ export const createOperacaoController = async (params: CreateOperacaoControllerP
 			ativo
 		})
 
-		// if(operacao.precoSaida){
-		// 	const saldo = calculateSaldo({
-		// 		tipo: operacao.tipo === 'compra' ? 'compra' : 'venda',
-		// 		previousSaldo: conta.saldo,
-		// 		precoEntrada: operacao.precoEntrada,
-		// 		precoSaida: operacao.precoSaida,
-		// 		multiplicador: ativo.multiplicador
-		// 	})
-		// 	await contaRepository.edit({...conta, saldo})
-		// }
 		return success(createdOperacao);
 
 	} catch (error) {

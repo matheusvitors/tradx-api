@@ -32,7 +32,7 @@ describe('Create Ativo Controller', () => {
 
 		const response = await createAtivoController({input, repository});
 		expect(response.status).toEqual(200);
-		expect(repository.data[1].dataVencimento).toEqual(new Date('2025-01-01'));
+		expect(repository.data[1].dataVencimento).toEqual(new Date('2025-01-01 23:59'));
 		expect(repository.data[1].multiplicador).toEqual(0.2);
 	});
 
