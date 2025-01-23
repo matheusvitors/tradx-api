@@ -22,7 +22,7 @@ router.post('/ativos', async (request: Request, response: Response) => {
 		acronimo: request.body.acronimo,
 		tipo: request.body.tipo,
 		multiplicador: request.body.multiplicador,
-		dataVencimento: request.body.dataVencimento
+		dataVencimento: request.body.dataVencimento ? new Date(request.body.dataVencimento) : undefined
 	}});
 	return route({ response, responseData });
 })

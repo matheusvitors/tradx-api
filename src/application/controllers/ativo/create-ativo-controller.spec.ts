@@ -27,7 +27,6 @@ describe('Create Ativo Controller', () => {
 			tipo: "indice",
 			multiplicador: 0.2,
 			dataVencimento: new Date('2025-01-01'),
-
 		}
 
 		const response = await createAtivoController({input, repository});
