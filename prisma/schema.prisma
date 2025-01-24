@@ -48,10 +48,10 @@ model Operacao {
     contaId         String
     quantidade      Int
     tipo            String
-    precoEntrada    Int
-    stopLoss        Int
-    alvo            Int
-    precoSaida      Int?
+    precoEntrada    Decimal?
+    stopLoss        Decimal?
+    alvo            Decimal?
+    precoSaida      Decimal?
     dataEntrada     DateTime
     dataSaida       DateTime?
     margem          Decimal?

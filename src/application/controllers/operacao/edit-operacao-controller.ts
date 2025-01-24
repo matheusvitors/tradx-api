@@ -43,8 +43,10 @@ export const editOperacaoController = async (params: EditOperacaoControllerParam
 		}
 
 		const editedOperacao = await operacaoRepository.edit({
-			...input, dataEntrada: new Date(input.dataEntrada),
-			dataSaida: input.dataSaida ? new Date(input.dataSaida) : undefined
+			...input,
+			dataEntrada: new Date(input.dataEntrada),
+			dataSaida: input.dataSaida ? new Date(input.dataSaida) : undefined,
+			precoSaida: input.precoSaida || null
 		});
 
 		if(editedOperacao && editedOperacao.precoSaida){
