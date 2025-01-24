@@ -124,7 +124,7 @@ router.put(`${defaultPath}`, async (request: Request, response: Response) => {
 
 
 router.delete(`${defaultPath}/:id`, async (request: Request, response: Response) => {
-	const responseData = await removeOperacaoController({repository, id: request.params.id});
+	const responseData = await removeOperacaoController({ operacaoRepository: repository, contaRepository, id: request.params.id});
 	return route({ response, responseData });
 })
 

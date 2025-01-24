@@ -88,7 +88,7 @@ describe('Edit Operacao Controller', () => {
 		const response = await editOperacaoController({input, operacaoRepository, ativoRepository, contaRepository});
 		expect(response.status).toEqual(200);
 		expect(operacaoRepository.data[0].dataSaida).toEqual(undefined);
-		expect(operacaoRepository.data[0].precoSaida).toEqual(undefined);
+		expect(operacaoRepository.data[0].precoSaida).toEqual(null);
 		expect(contaRepository.data[0].saldo).toEqual(10);
 	});
 
