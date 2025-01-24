@@ -8,7 +8,7 @@
 
 */
 -- AlterTable
-ALTER TABLE `operacao` MODIFY `precoEntrada` DECIMAL(65, 30) NULL,
+ALTER TABLE `Operacao` MODIFY `precoEntrada` DECIMAL(65, 30) NULL,
     MODIFY `stopLoss` DECIMAL(65, 30) NULL,
     MODIFY `alvo` DECIMAL(65, 30) NULL,
     MODIFY `precoSaida` DECIMAL(65, 30) NULL;
