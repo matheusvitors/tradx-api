@@ -16,8 +16,8 @@ jobs:
                 port: ${{ secrets.PORT }}
                 script: |
                       cd /var/www/tradx-api
-                      git pull origin main
                       git stash
+                      git pull origin main
                       npm i
                       npx prisma migrate deploy
                       npx prisma generate

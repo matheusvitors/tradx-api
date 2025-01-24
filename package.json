@@ -1,6 +1,6 @@
 {
 	"name": "tradx-api",
-	"version": "1.0.0-Beta[24/01/2025]",
+	"version": "1.0.0-Beta[24/01/2025]2",
 	"main": "index.js",
 	"type": "module",
 	"scripts": {
