@@ -20,8 +20,6 @@ export const removeOperacaoController = async (params: RemoveOperacaoControllerP
 			return notFound();
 		}
 
-		await operacaoRepository.remove(id);
-
 		await updateSaldo({
 			operacao: toOperacaoDto(operacao),
 			conta: operacao.conta,
@@ -29,6 +27,8 @@ export const removeOperacaoController = async (params: RemoveOperacaoControllerP
 			ativo: operacao.ativo,
 			isRemoving: true
 		})
+
+		await operacaoRepository.remove(id);
 
 		return success();
 	} catch (error) {

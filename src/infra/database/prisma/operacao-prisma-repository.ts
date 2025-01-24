@@ -139,6 +139,7 @@ export const operacaoPrismaRepository: Repository<Operacao> = {
 
 	edit: async (input: OperacaoDTO): Promise<Operacao | null> => {
 		try {
+
 			const {id, ativoId, contaId, ...rest} = input;
 			const result = await database.operacao.update({
 				where: {id},
@@ -150,7 +151,7 @@ export const operacaoPrismaRepository: Repository<Operacao> = {
 			});
 
 			if(result) {
-				let {ativoId, contaId, ...cleanResult } = result;
+				let { ativoId, contaId, ...cleanResult } = result;
 				const ativo = await ativosPrismaRepository.get(ativoId);
 				const conta = await contaPrismaRepository.get(contaId);
 
