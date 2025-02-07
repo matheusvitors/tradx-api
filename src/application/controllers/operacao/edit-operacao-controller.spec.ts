@@ -107,7 +107,8 @@ describe('Edit Operacao Controller', () => {
 			dataSaida: new Date('05/01/2024 16:00'),
 			margem: 10,
 			operacaoPerdida: false,
-			operacaoErrada: false
+			operacaoErrada: false,
+			comentarios: 'Teste'
 		}
 
 		const response = await editOperacaoController({input, operacaoRepository, ativoRepository, contaRepository});

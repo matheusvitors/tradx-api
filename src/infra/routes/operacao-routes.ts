@@ -117,7 +117,8 @@ router.put(`${defaultPath}`, async (request: Request, response: Response) => {
 			dataSaida: request.body.dataSaida,
 			margem: request.body.margem,
 			operacaoPerdida: request.body.operacaoPerdida,
-			operacaoErrada: request.body.operacaoErrada
+			operacaoErrada: request.body.operacaoErrada,
+			comentarios: request.body.comentarios
 	}});
 	return route({ response, responseData });
 })
