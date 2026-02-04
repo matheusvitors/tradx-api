@@ -7,7 +7,8 @@ const routes = Router();
 routes.get('/', (request: Request, response: Response) => {
 	return response.status(200).send({
 		name: 'Tradx',
-		version: project.version
+		version: project.version,
+		datetime: new Date()
 	});
 });
 
