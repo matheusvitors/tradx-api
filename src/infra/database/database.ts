@@ -1,8 +1,5 @@
-import { PrismaClient } from "@prisma/client";
+import { db } from "@/infra/database/drizzle/client";
 
-const database = new PrismaClient({
-	log: ['info', 'warn', 'error'],
-	errorFormat: 'pretty'
-});
+const database = db
 
 export { database }
