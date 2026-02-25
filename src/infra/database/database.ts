@@ -1,5 +1,6 @@
-import { db } from "@/infra/database/drizzle/client";
+import { DATABASE_URL } from "@/infra/config/environment";
+import { drizzle } from "drizzle-orm/mysql2";
 
-const database = db
+const database = drizzle(DATABASE_URL!);
 
 export { database }

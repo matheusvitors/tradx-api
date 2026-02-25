@@ -10,7 +10,11 @@
 		"upgrade": "ncu -u && npm i",
 		"test": "dotenv -e .env.tests vitest run --coverage",
 		"test:ci": "vitest run",
-		"test:watch": "vitest --ui"
+		"test:watch": "vitest --ui",
+		"fix-ssl": "set NODE_TLS_REJECT_UNAUTHORIZED=0",
+		"db:push": "npx drizzle-kit push",
+		"db:generate": "npx drizzle-kit generate",
+		"db:migrate": "npx drizzle-kit migrate"
 	},
 	"dependencies": {
 		"bcrypt": "^6.0.0",
@@ -41,6 +45,7 @@
 		"@vitest/coverage-v8": "^4.0.18",
 		"@vitest/ui": "^4.0.18",
 		"dotenv-cli": "^11.0.0",
+		"drizzle-kit": "^0.31.9",
 		"nodemon": "^3.1.11",
 		"supertest": "^7.2.2",
 		"ts-node": "^10.9.2",
