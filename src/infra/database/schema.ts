@@ -9,8 +9,14 @@ export const usuarioTable = mysqlTable('usuario', {
 	email: varchar({ length: 255 }).unique().notNull()
 })
 
-export const usuarioContas = relations(usuarioTable, ({ many }) => ({
+/** Usuario 1 - n Contas */
+export const usuarioToContas = relations(usuarioTable, ({ many }) => ({
 	contas: many(contaTable)
+}))
+
+/** Usuario 1 - n Trading Plans */
+export const usuarioToTradingPlans = relations(usuarioTable, ({ many }) => ({
+	tradingPlans: many(tradingPlanTable)
 }))
 
 export const contaTable = mysqlTable('conta', {
@@ -20,7 +26,21 @@ export const contaTable = mysqlTable('conta', {
 	tipo: varchar({ length: 255 }).notNull(),
 	saldo: int().notNull().default(0),
 	saldoInicial: int().notNull().default(0),
-})
+});
+
+/** Contas n - 1 Usuario */
+export const contasToUsuario = relations(contaTable, ({ one }) => ({
+	usuario: one(usuarioTable, {
+		fields: [contaTable.usuarioId],
+		references: [usuarioTable.id]
+	})
+}));
+
+/** Conta 1 - n Operações */
+export const contaToOperacoes = relations(contaTable, ({ many }) => ({
+	operacoes: many(operacaoTable)
+}))
+
 
 export const ativoTable = mysqlTable('ativo', {
 	id: varchar({ length: 255 }).primaryKey().unique().notNull(),
@@ -32,24 +52,50 @@ export const ativoTable = mysqlTable('ativo', {
 	dataVencimento: date(),
 });
 
+/** Ativo 1 - n Operações */
+export const ativoToOperacoes = relations(ativoTable, ({ many }) => ({
+	operacoes: many(operacaoTable)
+}))
+
 export const tradingPlanTable = mysqlTable('trading_plan', {
 	id: varchar({ length: 255 }).primaryKey().unique().notNull(),
+	usuarioId: varchar({ length: 255 }).notNull(),
 	nome: varchar({ length: 255 }).notNull(),
 	link: text(),
 })
 
-export const tradingPlanToRegrasEntrada = relations(tradingPlanTable, ({ one }) => ({
-	regrasEntradaTradingPlan: one(regrasEntradaTradingPlanTable, {
-		fields: [tradingPlanTable.id],
-		references: [regrasEntradaTradingPlanTable.tradingPlanId]
-	})
+/** trading plan 1 - n regras */
+export const tradingPlanToRegras = relations(tradingPlanTable, ({ many }) => ({
+	regrasEntrada: many(regrasEntradaTable)
 }))
 
-export const regrasEntradaTradingPlanTable = mysqlTable('regras_entrada_trading_plan', {
+
+/** tradingPlan n - 1 Usuario */
+export const tradingPlanToUsuario = relations(tradingPlanTable, ({ one }) => ({
+	usuario: one(usuarioTable, {
+		fields: [tradingPlanTable.usuarioId],
+		references: [usuarioTable.id]
+	})
+}));
+
+export const regrasEntradaTable = mysqlTable('regras_entrada', {
 	id: varchar({ length: 255 }).primaryKey().unique().notNull(),
 	tradingPlanId: varchar({ length: 255 }).notNull(),
 	nome: text().notNull(),
 })
+
+/** regras 1 - n operacoes */
+export const regrasEntradaToOperacoes = relations(regrasEntradaTable, ({ many }) => ({
+	operacoes: many(operacaoTable)
+}))
+
+/** regras n - n trading plan */
+export const regrasEntradaToTradingPlan = relations(tradingPlanTable, ({ one }) => ({
+	regrasEntradaTradingPlan: one(regrasEntradaTable, {
+		fields: [tradingPlanTable.id],
+		references: [regrasEntradaTable.tradingPlanId]
+	})
+}))
 
 export const operacaoTable = mysqlTable('operacao', {
 	id: varchar({ length: 255 }).primaryKey().unique().notNull(),
@@ -70,43 +116,26 @@ export const operacaoTable = mysqlTable('operacao', {
 	comentários: text()
 });
 
-
-/** Relacionamentos */
-
-/** Usuario 1 - n Contas */
-export const usuarioToContas = relations(usuarioTable, ({ many }) => ({
-	contas: many(contaTable)
-}))
-
-export const contasToUsuario = relations(contaTable, ({ one }) => ({
-	usuario: one(usuarioTable, {
-		fields: [contaTable.usuarioId],
-		references: [usuarioTable.id]
-	})
-}));
-
-/** Ativo 1 - n Operacoes */
-export const ativoToOperacoes = relations(ativoTable, ({ many }) => ({
-	operacoes: many()
-}))
-
-export const ativoToOperacoes = relations(ativoTable, ({ one }) => ({
-	operacao: one(operacaoTable, {
-		fields:[ativoTable.id],
-		references: [operacaoTable.ativoId]
+/** operacoes n - 1 contas */
+export const operacoesToContas = relations(operacaoTable, ({ one }) => ({
+	conta: one(contaTable, {
+		fields: [operacaoTable.contaId],
+		references: [contaTable.id]
 	})
 }))
 
-export const operacoesToAtivo = relations(usuarioTable, ({ many }) => ({
-	contas: many(contaTable)
-}))
-
-
-
-export const contaToOperacoes = relations(contaTable, ({ one }) => ({
-	operacao: one(operacaoTable, {
-		fields:[contaTable.id],
-		references: [operacaoTable.ativoId]
+/** operacoes n - 1 ativo */
+export const operacoesToAtivo = relations(operacaoTable, ({ one }) => ({
+	ativo: one(ativoTable, {
+		fields: [operacaoTable.ativoId],
+		references: [ativoTable.id]
 	})
 }))
 
+/** operacoes n - 1 regras */
+export const operacoesToRegrasEntrada = relations(operacaoTable, ({ one }) => ({
+	regrasEntradaTradingPlan: one(regrasEntradaTable, {
+		fields: [operacaoTable.regraEntradaId],
+		references: [regrasEntradaTable.id]
+	})
+}))
