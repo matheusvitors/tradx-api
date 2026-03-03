@@ -2,33 +2,50 @@ import { Repository } from "@/application/interfaces";
 import { Usuario } from "@/core/models";
 import { database } from "@/infra/database/database";
 import { usuarioTable } from "@/infra/database/schema";
+import { eq } from "drizzle-orm";
 
 export const usuarioRepository: Repository<Usuario> = {
 	list: async (): Promise<Usuario[]> => {
+		throw new Error("Function not implemented.");
+
+	},
+
+	get: async (id: string): Promise<Usuario | null> => {
 		try {
+			const [data] = await database.select().from(usuarioTable).where(eq(usuarioTable.id, id));
 
-			const data = await database.select().from(usuarioTable);
+			if(!data) {
+				return null;
+			}
 
-			const usuarios: Usuario[] = data.map(usuario => ({
-				id: usuario.id,
-				nome: usuario.nome,
-				username: usuario.username,
-				password: usuario.password,
-				email: usuario.email
-			}));
-			return usuarios;
+			return {
+				id: data.id,
+				nome: data.nome,
+				username: data.username,
+				password: data.password,
+				email: data.email
+			};
+
 		} catch (error) {
 			console.error(error);
 			throw error;
 		}
 	},
 
-	get: function (id: string): Promise<Usuario | null> {
-		throw new Error("Function not implemented.");
-	},
+	create: async (input: Usuario | any): Promise<void> => {
+		try {
+			await database.insert(usuarioTable).values({
+				id: input.id,
+				nome: input.nome,
+				username: input.username,
+				password: input.password,
+				email: input.email
+			});
 
-	create: function (data: Usuario | any): Promise<Usuario> {
-		throw new Error("Function not implemented.");
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
 	},
 
 	edit: function (data: Usuario | any): Promise<Usuario | null> {
