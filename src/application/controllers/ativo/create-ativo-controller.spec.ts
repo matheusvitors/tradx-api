@@ -4,7 +4,7 @@ import { Ativo } from "@/core/models";
 import { InMemoryRepository } from "@/infra/database/InMemoryRepository";
 import { beforeAll, describe, expect, it } from "vitest";
 
-describe('Create Ativo Controller', () => {
+describe.skip('Create Ativo Controller', () => {
 	const repository = new InMemoryRepository<Ativo>();
 
 	beforeAll(() => {

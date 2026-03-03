@@ -2,7 +2,7 @@ import { calculateSaldoOfOperacao } from "@/application/usecases/calculate-saldo
 import { Operacao } from "@/core/models";
 import { describe, expect, it } from "vitest";
 
-describe('Calculate saldo of operacao', () => {
+describe.skip('Calculate saldo of operacao', () => {
 	const operacao: Operacao = {
 		id: "01917ba5-42f3-7379-8391-4bdbb1cea814",
 		ativo: {

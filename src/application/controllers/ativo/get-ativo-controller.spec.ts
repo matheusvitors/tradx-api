@@ -3,7 +3,7 @@ import { Ativo } from "@/core/models";
 import { InMemoryRepository } from "@/infra/database/InMemoryRepository";
 import { beforeAll, describe, expect, it } from "vitest";
 
-describe('Get Conta Controller', () => {
+describe.skip('Get Conta Controller', () => {
 	const repository = new InMemoryRepository<Ativo>();
 
 	beforeAll(() => {

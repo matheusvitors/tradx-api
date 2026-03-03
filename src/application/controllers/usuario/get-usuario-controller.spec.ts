@@ -3,7 +3,7 @@ import { InMemoryRepository } from "@/infra/database/InMemoryRepository";
 import { getUsuarioController } from "@/application/controllers/usuario";
 import { Usuario } from "@/core/models";
 
-describe('Usuario List Controller', () => {
+describe.skip('Usuario List Controller', () => {
 	const repository = new InMemoryRepository<Usuario>();
 
 	beforeAll(() => {

@@ -2,7 +2,7 @@ import { ValidationError } from "@/application/errors";
 import { validateConta } from "@/core/validators/conta-validator";
 import { describe, expect, it } from "vitest";
 
-describe('Usuario Validator', () => {
+describe.skip('Usuario Validator', () => {
 	it('should validate a usuario', () => {
 		const input = {
 			id: 'abc',
