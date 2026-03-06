@@ -1,16 +1,21 @@
+import { beforeAll } from "vitest";
+import { faker } from '@faker-js/faker';
 import { Usuario } from "@/core/models";
 import { newID } from "@/infra/adapters/newID";
 import { usuarioRepository } from "@/infra/database/repositories/usuario-repository";
-import { beforeAll } from "vitest";
 
 export const user: Usuario ={
 	id: newID(),
 	nome: 'Tester',
-	username: "test",
+	username: faker.internet.username(),
 	password: "123",
-	email: "test@test.com"
+	email: faker.internet.email()
 }
 
 beforeAll(async () => {
-	await usuarioRepository.create(user);
+	const result = await usuarioRepository.get(user.id);
+
+	if(!result) {
+		await usuarioRepository.create(user);
+	}
 })

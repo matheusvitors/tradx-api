@@ -52,10 +52,10 @@ export class InMemoryRepository<T extends Entity> implements Repository<T> {
 		return result.length > 0 ? result : null;
 	}
 
-	async create(entity: any): Promise<T> {
+	async create(entity: any): Promise<void> {
 		this.previousData = this.data;
 		this.data.push(entity);
-		return entity;
+		// return entity;
 	}
 
 	async batchCreation(entities: T[]): Promise<void> {

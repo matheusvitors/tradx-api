@@ -3,7 +3,7 @@ import { Usuario } from "@/core/models";
 import { InMemoryRepository } from "@/infra/database/InMemoryRepository";
 import { describe, expect, it } from "vitest";
 
-describe.skip('Usuario List Controller', () => {
+describe('Usuario List Controller', () => {
 	const repository = new InMemoryRepository<Usuario>();
 
 	it('should list users', async () => {

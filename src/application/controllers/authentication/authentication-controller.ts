@@ -15,7 +15,7 @@ export const authenticationController = async (params: AuthenticationControllerP
 	try {
 
 		const { repository, username, password } = params;
-		const usuario = await repository.find('username', username);
+		const usuario = await repository.find!('username', username);
 
 		if(!usuario) {
 			return notFound('Usuário não encontrado.');
