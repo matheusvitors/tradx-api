@@ -1,7 +1,7 @@
 import { ContaDTO } from "@/application/dto";
 import { Repository } from "@/application/interfaces";
 import { Conta } from "@/core/models";
-import { database } from "@/infra/database/database";
+import { database } from "@/infra/database";
 import { toConta } from "@/utils/transforms";
 
 export const contaPrismaRepository: Repository<Conta> = {

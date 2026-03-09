@@ -3,7 +3,7 @@ import { OperacaoDTO } from "@/application/dto/operacao-dto";
 import { FilterParams, Repository } from "@/application/interfaces";
 import { Operacao } from "@/core/models";
 import { Operacao as OperacaoPrisma } from '@prisma/client'
-import { database } from "@/infra/database/database";
+import { database } from "@/infra/database";
 import { ativosPrismaRepository } from "@/infra/database/prisma/ativo-prisma-repository";
 import { contaPrismaRepository } from "@/infra/database/prisma/conta-prisma-repository";
 import { toAtivo, toConta, toOperacao } from "@/utils/transforms";

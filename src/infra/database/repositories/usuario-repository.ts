@@ -1,6 +1,6 @@
 import { Repository } from "@/application/interfaces";
 import { Usuario } from "@/core/models";
-import { database } from "@/infra/database/database";
+import { database } from "@/infra/database";
 import { usuarioTable } from "@/infra/database/schema";
 import { eq } from "drizzle-orm";
 
@@ -32,7 +32,7 @@ export const usuarioRepository: Repository<Usuario> = {
 		}
 	},
 
-	create: async (input: Usuario | any): Promise<void> => {
+	create: async (input: Usuario): Promise<void> => {
 		try {
 			await database.insert(usuarioTable).values({
 				id: input.id,

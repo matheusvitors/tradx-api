@@ -1,6 +1,6 @@
 import { Repository } from "@/application/interfaces";
 import { Ativo } from "@/core/models";
-import { database } from "@/infra/database/database";
+import { database } from "@/infra/database";
 import { toAtivo } from "@/utils/transforms";
 
 export const ativosPrismaRepository: Repository<Ativo> = {

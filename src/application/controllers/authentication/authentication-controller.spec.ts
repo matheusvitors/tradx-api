@@ -18,7 +18,6 @@ describe.skip("Authentication Controller", () => {
 		})
 	})
 
-
 	it("should authenticate the user", async () => {
 
 		const result = await authenticationController({ repository, username: "teste", password: '123456' });
