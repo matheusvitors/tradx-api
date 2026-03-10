@@ -1,14 +1,14 @@
 import { dashboardController } from '@/application/controllers/dashboard';
 import { route } from '@/infra/adapters/route';
-import { operacaoPrismaRepository } from '@/infra/database/prisma';
+import { operacaoRepository } from '@/infra/database/repositories';
 import { Router, Request, Response} from 'express'
 
 const router = Router();
 const path = '/dashboard';
-const operacaoRepository = operacaoPrismaRepository;
+const repository = operacaoRepository;
 
 router.get(`${path}/:conta`, async (request: Request, response: Response) => {
-	const responseData = await dashboardController({ operacaoRepository, contaId: request.params.conta });
+	const responseData = await dashboardController({ repository, contaId: request.params.conta });
 	return route({ response, responseData });
 })
 

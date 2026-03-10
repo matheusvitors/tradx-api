@@ -1,10 +1,10 @@
 import { Request, Response, Router } from "express";
 import { route } from "@/infra/adapters/route";
 import { authenticationController } from "@/application/controllers/authentication/authentication-controller";
-import { usuarioPrismaRepository } from "@/infra/database/prisma";
+import { usuarioRepository } from "@/infra/database/repositories";
 
 const router = Router();
-const repository = usuarioPrismaRepository;
+const repository = usuarioRepository;
 
 router.post('/login', async (request: Request, response: Response) => {
 	const responseData = await authenticationController({

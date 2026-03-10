@@ -1,21 +1,24 @@
 import { Router, Request, Response } from "express";
 import { route } from "@/infra/adapters/route";
-import { usuarioPrismaRepository } from "@/infra/database/prisma";
-import { getUsuarioController, listUsuariosController } from "@/application/controllers/usuario";
+import { getUsuarioController } from "@/application/controllers/usuario";
+import { extractUserId } from "@/utils/extract-user-id";
+import { serverError } from "@/infra/adapters/response-wrapper";
+import { usuarioRepository } from "@/infra/database/repositories/usuario-repository";
 
 const router = Router();
-const repository = usuarioPrismaRepository;
-const path = '/usuarios'
+const repository = usuarioRepository;
 
-router.get(`${path}`, async (request: Request, response: Response) => {
-	const responseData = await listUsuariosController(repository);
-	return route({ response, responseData });
+router.get(`/me`, async (request: Request, response: Response) => {
+	try {
+		const responseData = await getUsuarioController({
+			repository,
+			id: extractUserId(request.headers['authorization']?.split(' ')[1])
+		});
+		return route({ response, responseData });
+	} catch (error) {
+		console.log(error);
+		return route({ response, responseData: serverError(error) })
+	}
 })
 
-router.get(`${path}/:id`, async (request: Request, response: Response) => {
-	const responseData = await getUsuarioController({
-		repository,
-		id: request.params.id
-	});
-	return route({ response, responseData });
-})
+export { router as usuarioRoutes }

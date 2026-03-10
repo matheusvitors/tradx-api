@@ -20,5 +20,4 @@ routes.get('/test', (request: Request, response: Response) => {
 
 routes.use(Object.values(appRoutes))
 
-
 export { routes }

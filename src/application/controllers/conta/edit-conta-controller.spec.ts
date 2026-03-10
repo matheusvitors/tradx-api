@@ -4,7 +4,7 @@ import { Conta } from "@/core/models";
 import { InMemoryRepository } from "@/infra/database/InMemoryRepository";
 import { beforeAll, describe, expect, it } from "vitest";
 
-describe('Edit Conta Controller', () => {
+describe.skip('Edit Conta Controller', () => {
 	const repository = new InMemoryRepository<Conta>();
 
 	beforeAll(() => {

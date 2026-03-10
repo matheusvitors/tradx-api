@@ -1,3 +1,5 @@
 export * from './ativo-dto'
 export * from './conta-dto'
 export * from './operacao-dto'
+export * from './regra-entrada-dto'
+export * from './trading-plan-dto'

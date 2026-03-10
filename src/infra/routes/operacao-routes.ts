@@ -1,16 +1,14 @@
 import { Router, Request, Response} from 'express'
 import multer, { MulterError } from 'multer';
-import { ativosPrismaRepository, contaPrismaRepository, operacaoPrismaRepository } from '@/infra/database/prisma';
 import { route } from '@/infra/adapters/route';
 import { createOperacaoController, editOperacaoController, getOperacaoController, importOperacoesByCsvController, importOperacoesByXlsController, listOperacaoByContaController, listOperacaoController, removeOperacaoController } from '@/application/controllers/operacao';
 import { notFound } from '@/infra/adapters/response-wrapper';
 import path from 'path';
 import { ResponseData } from '@/application/interfaces';
+import { ativoRepository, contaRepository, operacaoRepository } from '@/infra/database/repositories';
 
 const router = Router();
-const repository = operacaoPrismaRepository;
-const contaRepository = contaPrismaRepository;
-const ativoRepository = ativosPrismaRepository;
+const repository = operacaoRepository;
 const defaultPath = '/operacoes'
 
 const storage = multer.diskStorage({

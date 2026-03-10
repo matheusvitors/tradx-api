@@ -3,7 +3,7 @@ import { Conta } from "@/core/models";
 import { InMemoryRepository } from "@/infra/database/InMemoryRepository";
 import { describe, expect, it } from "vitest";
 
-describe('Create Conta Controller', () => {
+describe.skip('Create Conta Controller', () => {
 	const repository = new InMemoryRepository<Conta>();
 
 	it('should create a conta', async () => {

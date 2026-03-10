@@ -2,6 +2,7 @@ export interface OperacaoDTO {
 	id: string;
 	ativoId: string;
 	contaId: string;
+	regraEntradaId: string;
 	quantidade: number;
 	tipo: string;
 	precoEntrada: number;
@@ -10,9 +11,7 @@ export interface OperacaoDTO {
 	precoSaida?: number;
 	dataEntrada: Date;
 	dataSaida?: Date;
-	margem?: number;
 	operacaoPerdida: boolean;
 	operacaoErrada: boolean;
-	motivo?: string;
 	comentarios?: string;
 }

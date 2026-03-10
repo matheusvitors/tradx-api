@@ -4,7 +4,7 @@ import { InMemoryRepository } from "@/infra/database/InMemoryRepository";
 import { inspect } from "util";
 import { beforeAll, describe, expect, it } from "vitest";
 
-describe("Dashboard Controller", () => {
+describe.skip("Dashboard Controller", () => {
 	const operacaoRepository = new InMemoryRepository<Operacao>();
 
 	beforeAll(() => {

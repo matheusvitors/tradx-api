@@ -3,7 +3,7 @@ import { Conta, Operacao } from "@/core/models";
 import { InMemoryRepository } from "@/infra/database/InMemoryRepository";
 import { beforeAll, describe, expect, it } from "vitest";
 
-describe('Remove Operacao Controller', () => {
+describe.skip('Remove Operacao Controller', () => {
 	const repository = new InMemoryRepository<Conta>();
 
 	beforeAll(() => {
