@@ -1,10 +1,10 @@
 import { Router, Request, Response} from 'express'
 import { createAtivoController, editAtivoController, getAtivoController, listAtivosController, removeAtivoController } from '@/application/controllers/ativo';
 import { route } from '@/infra/adapters/route';
-import { ativosPrismaRepository } from '@/infra/database/prisma/ativo-prisma-repository';
+import { ativoRepository } from '@/infra/database/repositories';
 
 const router = Router();
-const repository = ativosPrismaRepository;
+const repository = ativoRepository;
 
 router.get('/ativos', async (request: Request, response: Response) => {
 	const responseData = await listAtivosController(repository);

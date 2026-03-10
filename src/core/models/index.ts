@@ -1,4 +1,6 @@
 export * from './ativo'
 export * from './conta'
 export * from './operacao'
+export * from './regra-entrada'
+export * from './trading-plan'
 export * from './usuario'

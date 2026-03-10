@@ -1,2 +1,6 @@
 export * from './ativo-repository'
+export * from './conta-repository'
+export * from './operacao-repository'
+export * from './regra-entrada-repository'
+export * from './trading-plan-repository'
 export * from './usuario-repository'

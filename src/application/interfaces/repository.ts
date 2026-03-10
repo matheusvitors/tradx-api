@@ -5,7 +5,7 @@ export interface Repository<T> {
 	filter?(params: any[]): Promise<T[] | null>;
 	create(input: T | any): Promise<void>;
 	batchCreation?(data: T[] | any): Promise<void>;
-	edit(input: T | any): Promise<T | null>;
+	edit(input: T | any): Promise<void>;
 	remove(id: string): Promise<void>;
 	rollback?(): Promise<void>;
 }

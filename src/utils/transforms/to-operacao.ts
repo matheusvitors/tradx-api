@@ -1,11 +1,12 @@
 import { Operacao } from "@/core/models"
-import { toAtivo, toConta } from "@/utils/transforms"
+import { toAtivo, toConta, toRegraEntrada } from "@/utils/transforms"
 
 export const toOperacao = (input: any): Operacao => {
 	return {
 		id: input.id,
 		ativo: toAtivo(input.ativo),
 		conta: toConta(input.conta),
+		regraEntrada: toRegraEntrada(input.regraEntrada),
 		quantidade: input.quantidade,
 		tipo: input.tipo === 'compra' ? 'compra' : 'venda',
 		precoEntrada: input.precoEntrada,
@@ -14,10 +15,8 @@ export const toOperacao = (input: any): Operacao => {
 		precoSaida: input.precoSaida,
 		dataEntrada: input.dataEntrada,
 		dataSaida: input.dataSaida,
-		margem: input.alvo,
 		operacaoPerdida: input.operacaoPerdida,
 		operacaoErrada: input.operacaoErrada,
-		motivo: input.motivo || undefined,
 		comentarios: input.comentarios || undefined
 	}
 }

@@ -1,11 +1,11 @@
 import { Router, Request, Response} from 'express'
-import { contaPrismaRepository } from '@/infra/database/prisma';
 import { route } from '@/infra/adapters/route';
 import { createContaController, editContaController, getContaController, listContasController, removeContaController } from '@/application/controllers/conta';
 import { extractUserId } from '@/utils/extract-user-id';
+import { contaRepository } from '@/infra/database/repositories';
 
 const router = Router();
-const repository = contaPrismaRepository;
+const repository = contaRepository;
 const path = '/contas'
 
 router.get(`${path}`, async (request: Request, response: Response) => {

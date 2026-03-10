@@ -1,23 +1,15 @@
 import { and, eq, SQL } from "drizzle-orm";
-import { Repository } from "@/application/interfaces";
+import { FilterParams, Repository } from "@/application/interfaces";
 import { Ativo } from "@/core/models";
 import { database } from "@/infra/database";
 import { ativoTable } from "@/infra/database/schema";
+import { toAtivo } from "@/utils/transforms";
 
 export const ativoRepository: Repository<Ativo> = {
 	list: async (): Promise<Ativo[]> => {
 		try {
 			const data = await database.select().from(ativoTable);
-			return data.map<Ativo>((ativo) => {
-				return {
-					id: ativo.id,
-					nome: ativo.nome,
-					acronimo: ativo.acronimo,
-					multiplicador: ativo.multiplicador,
-					tipo: ativo.tipo === "indice" ? "indice" : "acao",
-					dataVencimento: ativo.dataVencimento || undefined,
-				};
-			});
+			return data.map<Ativo>(ativo => toAtivo(ativo));
 		} catch (error) {
 			console.error(error);
 			throw error;
@@ -32,14 +24,7 @@ export const ativoRepository: Repository<Ativo> = {
 				return null;
 			}
 
-			return {
-				id: data.id,
-				nome: data.nome,
-				acronimo: data.acronimo,
-				multiplicador: data.multiplicador,
-				tipo: data.tipo === "indice" ? "indice" : "acao",
-				dataVencimento: data.dataVencimento || undefined,
-			};
+			return toAtivo(data);
 		} catch (error) {
 			console.error(error);
 			throw error;
@@ -54,21 +39,14 @@ export const ativoRepository: Repository<Ativo> = {
 				return null;
 			}
 
-				return {
-					id: data.id,
-					nome: data.nome,
-					acronimo: data.acronimo,
-					multiplicador: data.multiplicador,
-					tipo: data.tipo === "indice" ? "indice" : "acao",
-					dataVencimento: data.dataVencimento || undefined,
-				};
+			return toAtivo(data);
 		} catch (error) {
 			console.error(error);
 			throw error;
 		}
 	},
 
-		filter: async (params: FilterParams<Ativo>[]): Promise<Ativo[] | null> => {
+	filter: async (params: FilterParams<Ativo>[]): Promise<Ativo[] | null> => {
 
 		const filters: SQL[] = [];
 
@@ -77,17 +55,8 @@ export const ativoRepository: Repository<Ativo> = {
 		})
 
 		try {
-			const data = await database.select().from(notaFiscalTable).where(and(...filters));
-
-			const notasFiscais: NotaFiscalDTO[] = data.map(nf => {return {
-				id: nf.id,
-				description: nf.description,
-				link: nf.link,
-				data: format(new Date(nf.data), 'yyyy-MM-dd'),
-				check: nf.check,
-			}})
-
-			return notasFiscais;
+			const data = await database.select().from(ativoTable).where(and(...filters));
+			return data.map<Ativo>(ativo => toAtivo(ativo));
 		} catch (error) {
 			console.error(error);
 			throw error;
@@ -96,14 +65,44 @@ export const ativoRepository: Repository<Ativo> = {
 
 
 	create: async (input: Ativo | any): Promise<void> => {
-		throw new Error("Function not implemented.");
+		try {
+			await database.insert(ativoTable).values({
+				id: input.id,
+				nome: input.nome,
+				acronimo: input.acronimo,
+				tipo: input.tipo,
+				multiplicador: input.multiplicador,
+				dataVencimento: input.dataVencimento
+			});
+
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
 	},
 
-	edit: async (input: Ativo | any): Promise<Ativo | null> => {
-		throw new Error("Function not implemented.");
+	edit: async (input: Ativo | any): Promise<void> => {
+		try {
+			await database.update(ativoTable).set({
+				id: input.id,
+				nome: input.nome,
+				acronimo: input.acronimo,
+				tipo: input.tipo,
+				multiplicador: input.multiplicador,
+				dataVencimento: input.dataVencimento
+			})
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
 	},
 
 	remove: async (id: string): Promise<void> => {
-		throw new Error("Function not implemented.");
+		try {
+			await database.delete(ativoTable).where(eq(ativoTable.id, id));
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
 	},
 };

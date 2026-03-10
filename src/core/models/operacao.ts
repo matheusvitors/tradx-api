@@ -1,4 +1,4 @@
-import { Ativo, Conta } from "@/core/models";
+import { Ativo, Conta, RegraEntrada } from "@/core/models";
 
 export interface Operacao {
 	id: string;
@@ -6,6 +6,8 @@ export interface Operacao {
 	ativo: Ativo;
 	contaId?: string;
 	conta: Conta;
+	regraEntradaId?: string;
+	regraEntrada: RegraEntrada;
 	quantidade: number;
 	tipo: OperacaoType;
 	precoEntrada: number;
@@ -14,10 +16,8 @@ export interface Operacao {
 	precoSaida?: number;
 	dataEntrada: Date;
 	dataSaida?: Date;
-	margem: number;
 	operacaoPerdida: boolean;
 	operacaoErrada: boolean;
-	motivo?: string;
 	comentarios?: string;
 }
 

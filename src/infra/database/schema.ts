@@ -64,9 +64,9 @@ export const tradingPlanTable = mysqlTable('trading_plan', {
 	link: text(),
 })
 
-/** trading plan 1 - n regras */
+/** trading plan 1 - n regra */
 export const tradingPlanToRegras = relations(tradingPlanTable, ({ many }) => ({
-	regrasEntrada: many(regrasEntradaTable)
+	regraEntrada: many(regraEntradaTable)
 }))
 
 
@@ -78,22 +78,22 @@ export const tradingPlanToUsuario = relations(tradingPlanTable, ({ one }) => ({
 	})
 }));
 
-export const regrasEntradaTable = mysqlTable('regras_entrada', {
+export const regraEntradaTable = mysqlTable('regra_entrada', {
 	id: varchar({ length: 255 }).primaryKey().unique().notNull(),
 	tradingPlanId: varchar({ length: 255 }).notNull(),
 	nome: text().notNull(),
 })
 
-/** regras 1 - n operacoes */
-export const regrasEntradaToOperacoes = relations(regrasEntradaTable, ({ many }) => ({
+/** regra 1 - n operacoes */
+export const regraEntradaToOperacoes = relations(regraEntradaTable, ({ many }) => ({
 	operacoes: many(operacaoTable)
 }))
 
-/** regras n - n trading plan */
-export const regrasEntradaToTradingPlan = relations(tradingPlanTable, ({ one }) => ({
-	regrasEntradaTradingPlan: one(regrasEntradaTable, {
+/** regra n - n trading plan */
+export const regraEntradaToTradingPlan = relations(tradingPlanTable, ({ one }) => ({
+	regraEntradaTradingPlan: one(regraEntradaTable, {
 		fields: [tradingPlanTable.id],
-		references: [regrasEntradaTable.tradingPlanId]
+		references: [regraEntradaTable.tradingPlanId]
 	})
 }))
 
@@ -102,7 +102,6 @@ export const operacaoTable = mysqlTable('operacao', {
 	ativoId: varchar({ length: 255 }).notNull(),
 	contaId: varchar({ length: 255 }).notNull(),
 	regraEntradaId: varchar({ length: 255 }).notNull(),
-
 	quantidade: int().notNull().default(1),
 	tipo: varchar({ length: 100 }).notNull(),
 	precoEntrada: int().notNull(),
@@ -113,7 +112,7 @@ export const operacaoTable = mysqlTable('operacao', {
 	dataSaida: datetime({mode: 'date'}),
 	operacaoPerdida: boolean().notNull().default(false),
 	operacaoErrada: boolean().notNull().default(false),
-	comentários: text()
+	comentarios: text()
 });
 
 /** operacoes n - 1 contas */
@@ -132,10 +131,10 @@ export const operacoesToAtivo = relations(operacaoTable, ({ one }) => ({
 	})
 }))
 
-/** operacoes n - 1 regras */
+/** operacoes n - 1 regra */
 export const operacoesToRegrasEntrada = relations(operacaoTable, ({ one }) => ({
-	regrasEntradaTradingPlan: one(regrasEntradaTable, {
+	regraEntradaTradingPlan: one(regraEntradaTable, {
 		fields: [operacaoTable.regraEntradaId],
-		references: [regrasEntradaTable.id]
+		references: [regraEntradaTable.id]
 	})
 }))

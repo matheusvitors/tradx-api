@@ -2,6 +2,7 @@ import { Repository } from "@/application/interfaces";
 import { Usuario } from "@/core/models";
 import { database } from "@/infra/database";
 import { usuarioTable } from "@/infra/database/schema";
+import { toUsuario } from "@/utils/transforms";
 import { eq } from "drizzle-orm";
 
 export const usuarioRepository: Repository<Usuario> = {
@@ -18,13 +19,7 @@ export const usuarioRepository: Repository<Usuario> = {
 				return null;
 			}
 
-			return {
-				id: data.id,
-				nome: data.nome,
-				username: data.username,
-				password: data.password,
-				email: data.email
-			};
+			return toUsuario(data);
 
 		} catch (error) {
 			console.error(error);
@@ -48,7 +43,7 @@ export const usuarioRepository: Repository<Usuario> = {
 		}
 	},
 
-	edit: function (data: Usuario | any): Promise<Usuario | null> {
+	edit: function (data: Usuario | any): Promise<void> {
 		throw new Error("Function not implemented.");
 	},
 
