@@ -4,7 +4,7 @@ import { jwt } from "@/infra/adapters/jwt";
 import { InMemoryRepository } from "@/infra/database/InMemoryRepository";
 import { describe, it, expect, beforeAll} from "vitest";
 
-describe.skip("Authentication Controller", () => {
+describe("Authentication Controller", () => {
 
 	const repository = new InMemoryRepository<Usuario>()
 

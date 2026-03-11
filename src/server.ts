@@ -10,7 +10,6 @@ const app = express();
 app.use(helmet());
 app.use(middlewares);
 app.use(routes);
-console.log({environment: process.env.NODE_ENV});
 
 if(process.env.NODE_ENV !== "test") {
 	app.listen(PORT || 8000, function (){

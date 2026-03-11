@@ -16,7 +16,7 @@ router.get(`/me`, async (request: Request, response: Response) => {
 		});
 		return route({ response, responseData });
 	} catch (error) {
-		console.log(error);
+		console.error(error);
 		return route({ response, responseData: serverError(error) })
 	}
 })

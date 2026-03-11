@@ -3,6 +3,7 @@ import { route } from '@/infra/adapters/route';
 import { createContaController, editContaController, getContaController, listContasController, removeContaController } from '@/application/controllers/conta';
 import { extractUserId } from '@/utils/extract-user-id';
 import { contaRepository } from '@/infra/database/repositories';
+import { RequestParams } from '@/application/interfaces';
 
 const router = Router();
 const repository = contaRepository;
@@ -13,7 +14,7 @@ router.get(`${path}`, async (request: Request, response: Response) => {
 	return route({ response, responseData });
 });
 
-router.get(`${path}/:id`, async (request: Request, response: Response) => {
+router.get(`${path}/:id`, async (request: Request<RequestParams>, response: Response) => {
 	const responseData = await getContaController({repository, id: request.params.id});
 	return route({ response, responseData });
 });
@@ -39,7 +40,7 @@ router.put(`${path}`, async (request: Request, response: Response) => {
 	return route({ response, responseData });
 })
 
-router.delete(`${path}/:id`, async (request: Request, response: Response) => {
+router.delete(`${path}/:id`, async (request: Request<RequestParams>, response: Response) => {
 	const responseData = await removeContaController({repository, id: request.params.id});
 	return route({ response, responseData });
 })

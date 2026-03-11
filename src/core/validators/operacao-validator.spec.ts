@@ -11,6 +11,7 @@ describe.skip('Operacao Validator', () => {
 			id: 'abc',
 			ativoId: '123',
 			contaId: 'abc',
+			regraEntradaId: 'adfsdfbc',
 			quantidade: 1,
 			tipo: 'compra',
 			precoEntrada: 10,
@@ -19,7 +20,6 @@ describe.skip('Operacao Validator', () => {
 			precoSaida: 20,
 			dataEntrada: '2024-01-23 15:45',
 			dataSaida: '2024-01-23 16:00',
-			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false
 		};
@@ -32,13 +32,14 @@ describe.skip('Operacao Validator', () => {
 			id: 'abc',
 			ativoId: '123',
 			contaId: 'abc',
+			regraEntradaId: 'adfsdfbc',
 			quantidade: 1,
 			tipo: 'compra',
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
 			dataEntrada: '2024-01-23 15:45',
-			margem: 10,
+
 			operacaoPerdida: false,
 			operacaoErrada: false
 		};
@@ -51,13 +52,14 @@ describe.skip('Operacao Validator', () => {
 			id: 'abc',
 			ativoId: '123',
 			contaId: 'abc',
+			regraEntradaId: 'adfsdfbc',
 			quantidade: -10,
 			tipo: 'compra',
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
 			dataEntrada: '2024-01-23 15:45',
-			margem: 10,
+
 			operacaoPerdida: false,
 			operacaoErrada: false
 		};
@@ -70,6 +72,7 @@ describe.skip('Operacao Validator', () => {
 			id: 'abc',
 			ativoId: '123',
 			contaId: 'abc',
+			regraEntradaId: 'adfsdfbc',
 			quantidade: 10,
 			tipo: 'compra',
 			precoEntrada: 10,
@@ -77,7 +80,7 @@ describe.skip('Operacao Validator', () => {
 			stopLoss: 5,
 			alvo: 20,
 			dataEntrada: '23/01/2024 15:45',
-			margem: 10,
+
 			operacaoPerdida: false,
 			operacaoErrada: false
 		};
@@ -86,13 +89,14 @@ describe.skip('Operacao Validator', () => {
 			id: 'abc',
 			ativoId: '123',
 			contaId: 'abc',
+			regraEntradaId: 'adfsdfbc',
 			quantidade: 10,
 			tipo: 'compra',
 			precoEntrada: -10,
 			stopLoss: 5,
 			alvo: 20,
 			dataEntrada: '2024-01-23 15:45',
-			margem: 10,
+
 			operacaoPerdida: false,
 			operacaoErrada: false
 		};
@@ -100,13 +104,14 @@ describe.skip('Operacao Validator', () => {
 			id: 'abc',
 			ativoId: '123',
 			contaId: 'abc',
+			regraEntradaId: 'adfsdfbc',
 			quantidade: 10,
 			tipo: 'compra',
 			precoEntrada: 10,
 			stopLoss: -5,
 			alvo: 20,
 			dataEntrada: '2024-01-23 15:45',
-			margem: 10,
+
 			operacaoPerdida: false,
 			operacaoErrada: false
 		};
@@ -115,13 +120,14 @@ describe.skip('Operacao Validator', () => {
 			id: 'abc',
 			ativoId: '123',
 			contaId: 'abc',
+			regraEntradaId: 'adfsdfbc',
 			quantidade: 10,
 			tipo: 'compra',
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: -20,
 			dataEntrada: '2024-01-23 15:45',
-			margem: 10,
+
 			operacaoPerdida: false,
 			operacaoErrada: false
 		};
@@ -130,13 +136,13 @@ describe.skip('Operacao Validator', () => {
 			id: 'abc',
 			ativoId: '123',
 			contaId: 'abc',
+			regraEntradaId: 'adfsdfbc',
 			quantidade: 10,
 			tipo: 'compra',
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
 			dataEntrada: '2024-01-23 15:45',
-			margem: -10,
 			operacaoPerdida: false,
 			operacaoErrada: false
 		};
@@ -153,6 +159,7 @@ describe.skip('Operacao Validator', () => {
 			id: 'abc',
 			ativoId: '123',
 			contaId: 'abc',
+			regraEntradaId: 'adfsdfbc',
 			quantidade: 10,
 			tipo: 'compra',
 			precoEntrada: 10,
@@ -160,7 +167,7 @@ describe.skip('Operacao Validator', () => {
 			alvo: 20,
 			dataEntrada: '2024-01-23 15:45',
 			dataSaida: '2024-01-22 15:45',
-			margem: 10,
+
 			operacaoPerdida: false,
 			operacaoErrada: false
 		};
@@ -173,6 +180,7 @@ describe.skip('Operacao Validator', () => {
 			id: 'abc',
 			ativoId: '123',
 			contaId: 'abc',
+			regraEntradaId: 'adfsdfbc',
 			quantidade: 10,
 			tipo: 'nada',
 			precoEntrada: 10,
@@ -180,7 +188,7 @@ describe.skip('Operacao Validator', () => {
 			alvo: 20,
 			dataEntrada: '2024-01-23 15:45',
 			dataSaida: '2024-01-24 15:45',
-			margem: 10,
+
 			operacaoPerdida: false,
 			operacaoErrada: false
 		};

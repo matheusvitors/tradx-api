@@ -3,7 +3,7 @@ import { ValidationError } from '@/application/errors';
 import { Ativo } from '@/core/models';
 import { validateAtivo } from '@/core/validators/ativo-validator';
 
-describe.skip('Ativo Validator', () => {
+describe('Ativo Validator', () => {
 	it('should validate a ativo', () => {
 		const input: Ativo = {
 			id: 'abc',

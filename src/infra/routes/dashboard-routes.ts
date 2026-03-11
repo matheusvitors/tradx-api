@@ -7,8 +7,8 @@ const router = Router();
 const path = '/dashboard';
 const repository = operacaoRepository;
 
-router.get(`${path}/:conta`, async (request: Request, response: Response) => {
-	const responseData = await dashboardController({ repository, contaId: request.params.conta });
+router.get(`${path}/:conta`, async (request: Request<{ conta: string; }>, response: Response) => {
+	const responseData = await dashboardController({ operacaoRepository: repository, contaId: request.params.conta });
 	return route({ response, responseData });
 })
 
