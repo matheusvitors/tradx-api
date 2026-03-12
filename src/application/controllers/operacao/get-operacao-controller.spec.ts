@@ -1,10 +1,10 @@
 import { getOperacaoController } from "@/application/controllers/operacao";
 import { Operacao } from "@/core/models";
 import { InMemoryRepository } from "@/infra/database/InMemoryRepository";
-import { format } from "date-fns";
 import { beforeAll, describe, expect, it } from "vitest";
+import { user } from '../../../../__tests__/setup'
 
-describe.skip("Get Operacao Controller", () => {
+describe("Get Operacao Controller", () => {
 	const repository = new InMemoryRepository<Operacao>();
 
 	beforeAll(() => {
@@ -31,13 +31,21 @@ describe.skip("Get Operacao Controller", () => {
 					email: "teste@teste.com",
 				},
 			},
+			regraEntrada: {
+				id: "dsfds",
+				tradingPlan: {
+					id: "sdfsdf",
+					usuario: user,
+					nome: "Teste"
+				},
+				nome: "Teste"
+			},
 			quantidade: 1,
 			tipo: "compra",
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
 			dataEntrada: new Date(),
-			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false,
 		};

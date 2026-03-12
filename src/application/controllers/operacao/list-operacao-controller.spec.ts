@@ -3,7 +3,7 @@ import { Operacao } from "@/core/models";
 import { InMemoryRepository } from "@/infra/database/InMemoryRepository";
 import { beforeAll, describe, expect, it } from "vitest";
 
-describe.skip("Operacao List Controller", () => {
+describe("Operacao List Controller", () => {
 	const repository = new InMemoryRepository<Operacao>();
 
 	beforeAll(() => {

@@ -25,8 +25,4 @@ export const validateOperacao = (operacao: Operacao | OperacaoDTO) => {
 	if(operacao.dataSaida && operacao.dataSaida < operacao.dataEntrada){
 		throw new ValidationError("Data de saída não pode ser anterior a data de entrada");
 	}
-
-	if(operacao.margem && operacao.margem < 0){
-		throw new ValidationError("Margem não pode ter valor negativo.");
-	}
 }

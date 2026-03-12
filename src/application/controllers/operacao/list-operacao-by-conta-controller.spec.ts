@@ -4,7 +4,7 @@ import { InMemoryRepository } from "@/infra/database/InMemoryRepository";
 import { format } from "date-fns";
 import { beforeAll, describe, expect, it } from "vitest";
 
-describe.skip("List Operacao By Conta Controller", () => {
+describe("List Operacao By Conta Controller", () => {
 	const repository = new InMemoryRepository<Operacao>();
 
 	beforeAll(() => {

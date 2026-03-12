@@ -1,5 +1,6 @@
 export const NODE_ENV = process.env.NODE_ENV;
 export const PORT = process.env.PORT;
+export const TEST_TYPE = process.env.TEST_TYPE;
 export const DATABASE_URL = process.env.DATABASE_URL;
 export const AUTHENTICATION = process.env.AUTHENTICATION;
 export const SECRET = process.env.SECRET;

@@ -4,11 +4,11 @@ import { InMemoryRepository } from "@/infra/database/InMemoryRepository";
 import { importOperacoesByCsvController } from "@/application/controllers/operacao/import-operacoes-csv-controller";
 import { Ativo, Conta, Operacao } from "@/core/models";
 
-describe.skip('Import operacoes', () => {
+describe('Import operacoes', () => {
 	const operacaoRepository = new InMemoryRepository<Operacao>();
 	const ativoRepository = new InMemoryRepository<Ativo>();
 	const contaRepository = new InMemoryRepository<Conta>();
-	const csvFile = path.resolve(__dirname, '../', '../', '../', '../', 'tests', 'assets', 'operacoes-teste.csv');
+	const csvFile = path.resolve(__dirname, '../', '../', '../', '../', '__tests__', 'assets', 'operacoes-teste.csv');
 
 	contaRepository.create({
 		id: 'abc',

@@ -63,14 +63,12 @@ export class InMemoryRepository<T extends Entity> implements Repository<T> {
 		entities.forEach(entity => this.data.push(entity))
 	}
 
-	async edit(entity: any): Promise<T | null> {
+	async edit(entity: any): Promise<void> {
 		this.previousData = this.data;
 		const index = this.data.findIndex((e) => e.id === entity.id);
 		if (index !== -1) {
 			this.data[index] = entity;
-			return entity;
 		}
-		return null;
 	}
 
 	async editField(id: string, field: keyof T, value: any): Promise<T | null> {

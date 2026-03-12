@@ -4,7 +4,7 @@ import { InMemoryRepository } from "@/infra/database/InMemoryRepository";
 import { Ativo, Conta, Operacao } from "@/core/models";
 import { importOperacoesByXlsController } from "@/application/controllers/operacao/import-operacoes-xls-controller";
 
-describe.skip('Import operacoes by xls', () => {
+describe('Import operacoes by xls', () => {
 	const operacaoRepository = new InMemoryRepository<Operacao>();
 	const ativoRepository = new InMemoryRepository<Ativo>();
 	const contaRepository = new InMemoryRepository<Conta>();

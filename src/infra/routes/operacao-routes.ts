@@ -4,12 +4,18 @@ import { route } from '@/infra/adapters/route';
 import { createOperacaoController, editOperacaoController, getOperacaoController, importOperacoesByCsvController, importOperacoesByXlsController, listOperacaoByContaController, listOperacaoController, removeOperacaoController } from '@/application/controllers/operacao';
 import { notFound } from '@/infra/adapters/response-wrapper';
 import path from 'path';
-import { ResponseData } from '@/application/interfaces';
+import { RequestParams, ResponseData } from '@/application/interfaces';
 import { ativoRepository, contaRepository, operacaoRepository } from '@/infra/database/repositories';
+
+interface OperacaoRequestParams {
+	id: string;
+	init: string;
+	end: string;
+}
 
 const router = Router();
 const repository = operacaoRepository;
-const defaultPath = '/operacoes'
+const defaultPath = '/operacoes';
 
 const storage = multer.diskStorage({
 	destination: function (request, file, callback) {
@@ -20,6 +26,7 @@ const storage = multer.diskStorage({
 		callback(null, `operacoes.${extension[1]}`);
 	},
 })
+
 const upload = multer({storage});
 
 router.get(`${defaultPath}`, async (request: Request, response: Response) => {
@@ -27,12 +34,12 @@ router.get(`${defaultPath}`, async (request: Request, response: Response) => {
 	return route({ response, responseData });
 })
 
-router.get(`${defaultPath}/conta/:id/range/:init/:end`, async (request: Request, response: Response) => {
+router.get(`${defaultPath}/conta/:id/range/:init/:end`, async (request: Request<OperacaoRequestParams>, response: Response) => {
 	const responseData = await listOperacaoByContaController({repository, contaId: request.params.id, range: {init: request.params.init, end: request.params.end}});
 	return route({ response, responseData });
 })
 
-router.get(`${defaultPath}/:id`, async (request: Request, response: Response) => {
+router.get(`${defaultPath}/:id`, async (request: Request<RequestParams>, response: Response) => {
 	const responseData = await getOperacaoController({repository, id: request.params.id});
 	return route({ response, responseData });
 })
@@ -45,6 +52,7 @@ router.post(`${defaultPath}`, async (request: Request, response: Response) => {
 		input: {
 			ativoId: request.body.ativoId,
 			contaId: request.body.contaId,
+			regraEntradaId: request.body.regraEntradaId,
 			quantidade: request.body.quantidade,
 			tipo: request.body.tipo,
 			precoEntrada: request.body.precoEntrada,
@@ -59,7 +67,7 @@ router.post(`${defaultPath}`, async (request: Request, response: Response) => {
 	return route({ response, responseData });
 })
 
-router.post(`${defaultPath}/:contaId/import`, upload.single('file'), async (request: Request, response: Response) => {
+router.post(`${defaultPath}/:contaId/import`, upload.single('file'), async (request: Request<{ contaId: string; }>, response: Response) => {
 	try {
 
 		if(!request.file) {
@@ -105,6 +113,7 @@ router.put(`${defaultPath}`, async (request: Request, response: Response) => {
 			id: request.body.id,
 			ativoId: request.body.ativoId,
 			contaId: request.body.contaId,
+			regraEntradaId: request.body.regraEntradaId,
 			quantidade: request.body.quantidade,
 			tipo: request.body.tipo,
 			precoEntrada: request.body.precoEntrada,
@@ -113,7 +122,6 @@ router.put(`${defaultPath}`, async (request: Request, response: Response) => {
 			precoSaida: request.body.precoSaida,
 			dataEntrada:request.body.dataEntrada,
 			dataSaida: request.body.dataSaida,
-			margem: request.body.margem,
 			operacaoPerdida: request.body.operacaoPerdida,
 			operacaoErrada: request.body.operacaoErrada,
 			comentarios: request.body.comentarios
@@ -122,7 +130,7 @@ router.put(`${defaultPath}`, async (request: Request, response: Response) => {
 })
 
 
-router.delete(`${defaultPath}/:id`, async (request: Request, response: Response) => {
+router.delete(`${defaultPath}/:id`, async (request: Request<RequestParams>, response: Response) => {
 	const responseData = await removeOperacaoController({ operacaoRepository: repository, contaRepository, id: request.params.id});
 	return route({ response, responseData });
 })

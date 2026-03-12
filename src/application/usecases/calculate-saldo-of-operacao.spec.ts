@@ -2,7 +2,7 @@ import { calculateSaldoOfOperacao } from "@/application/usecases/calculate-saldo
 import { Operacao } from "@/core/models";
 import { describe, expect, it } from "vitest";
 
-describe.skip('Calculate saldo of operacao', () => {
+describe('Calculate saldo of operacao', () => {
 	const operacao: Operacao = {
 		id: "01917ba5-42f3-7379-8391-4bdbb1cea814",
 		ativo: {
@@ -27,6 +27,22 @@ describe.skip('Calculate saldo of operacao', () => {
 			saldo: 3073,
 			saldoInicial: 0,
 		},
+		regraEntradaId: 'çdsnfjksa',
+		regraEntrada: {
+			id: "sdfgdff",
+			tradingPlan: {
+				id: "54544564",
+				usuario: {
+					id: "sdfsdf",
+					nome: "Tester",
+					username: "tester",
+					password: "123",
+					email: "test@test.com"
+				},
+				nome: "Teste"
+			},
+			nome: "Teste"
+		},
 		quantidade: 1,
 		tipo: "compra",
 		precoEntrada: 10,
@@ -35,7 +51,6 @@ describe.skip('Calculate saldo of operacao', () => {
 		precoSaida: 20,
 		dataEntrada: new Date( "2024-08-22 14:50"),
 		dataSaida: new Date("2024-08-22 15:50"),
-		margem: 20,
 		operacaoPerdida: false,
 		operacaoErrada: false,
 	}

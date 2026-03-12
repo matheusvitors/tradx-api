@@ -2,10 +2,9 @@ import { createOperacaoController } from "@/application/controllers/operacao";
 import { OperacaoDTO } from "@/application/dto";
 import { Ativo, Conta, Operacao } from "@/core/models";
 import { InMemoryRepository } from "@/infra/database/InMemoryRepository";
-import { format } from "date-fns";
 import { beforeAll, describe, expect, it } from "vitest";
 
-describe.skip('Create Operacao Controller', () => {
+describe('Create Operacao Controller', () => {
 	const operacaoRepository = new InMemoryRepository<Operacao>();
 	const ativoRepository = new InMemoryRepository<Ativo>();
 	const contaRepository = new InMemoryRepository<Conta>();
@@ -42,13 +41,13 @@ describe.skip('Create Operacao Controller', () => {
 		const input: Omit<OperacaoDTO, 'id'> = {
 			ativoId: "abc",
 			contaId: "123",
+			regraEntradaId: 'xyz',
 			quantidade: 1,
 			tipo: "compra",
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: new Date('2024-08-01'),
-			margem: 10,
+			dataEntrada: '2024-08-01',
 			operacaoPerdida: false,
 			operacaoErrada: false
 		}
@@ -62,14 +61,14 @@ describe.skip('Create Operacao Controller', () => {
 		const input: Omit<OperacaoDTO, 'id'> = {
 			ativoId: "abc",
 			contaId: "123",
+			regraEntradaId: 'xyz',
 			quantidade: 1,
 			tipo: "compra",
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
 			precoSaida: 20,
-			dataEntrada: new Date('2024-08-01'),
-			margem: 10,
+			dataEntrada: '2024-08-01',
 			operacaoPerdida: false,
 			operacaoErrada: false
 		}
@@ -84,13 +83,13 @@ describe.skip('Create Operacao Controller', () => {
 		const input: Omit<OperacaoDTO, 'id'> = {
 			ativoId: "abc",
 			contaId: "123",
+			regraEntradaId: 'xyz',
 			quantidade: 1,
 			tipo: "teste",
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: new Date('2024-08-01'),
-			margem: 10,
+			dataEntrada: '2024-08-01',
 			operacaoPerdida: false,
 			operacaoErrada: false
 		}
@@ -103,13 +102,13 @@ describe.skip('Create Operacao Controller', () => {
 		const input: Omit<OperacaoDTO, 'id'> = {
 			ativoId: "abc",
 			contaId: "zzz",
+			regraEntradaId: 'xyz',
 			quantidade: 1,
 			tipo: "compra",
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: new Date('2024-08-01'),
-			margem: 10,
+			dataEntrada: '2024-08-01',
 			operacaoPerdida: false,
 			operacaoErrada: false
 		}
@@ -122,13 +121,13 @@ describe.skip('Create Operacao Controller', () => {
 		const input: Omit<OperacaoDTO, 'id'> = {
 			ativoId: "zzz",
 			contaId: "123",
+			regraEntradaId: 'xyz',
 			quantidade: 1,
 			tipo: "compra",
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: new Date('2024-08-01'),
-			margem: 10,
+			dataEntrada: '2024-08-01',
 			operacaoPerdida: false,
 			operacaoErrada: false
 		}
@@ -141,13 +140,13 @@ describe.skip('Create Operacao Controller', () => {
 		const input: Omit<OperacaoDTO, 'id'> = {
 			ativoId: "cde",
 			contaId: "123",
+			regraEntradaId: 'xyz',
 			quantidade: 1,
 			tipo: "compra",
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: new Date('2024-08-01'),
-			margem: 10,
+			dataEntrada: '2024-08-01',
 			operacaoPerdida: false,
 			operacaoErrada: false
 		}
@@ -160,14 +159,14 @@ describe.skip('Create Operacao Controller', () => {
 		const input: Omit<OperacaoDTO, 'id'> = {
 			ativoId: "abc",
 			contaId: "123",
+			regraEntradaId: 'xyz',
 			quantidade: 1,
 			tipo: "compra",
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: new Date('2024-08-01 15:45'),
-			dataSaida: new Date('2024-07-31 15:45'),
-			margem: 10,
+			dataEntrada: '2024-08-01 15:45',
+			dataSaida: '2024-07-31 15:45',
 			operacaoPerdida: false,
 			operacaoErrada: false
 		}

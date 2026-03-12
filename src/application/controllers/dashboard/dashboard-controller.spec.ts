@@ -1,13 +1,23 @@
 import { dashboardController } from "@/application/controllers/dashboard/dashboard-controller";
-import { Conta, Operacao } from "@/core/models";
+import { Conta, Operacao, RegraEntrada } from "@/core/models";
 import { InMemoryRepository } from "@/infra/database/InMemoryRepository";
-import { inspect } from "util";
 import { beforeAll, describe, expect, it } from "vitest";
+import { user } from '../../../../__tests__/setup'
 
-describe.skip("Dashboard Controller", () => {
+describe("Dashboard Controller", () => {
 	const operacaoRepository = new InMemoryRepository<Operacao>();
 
 	beforeAll(() => {
+		const regraEntrada: RegraEntrada = {
+			id: "sdf",
+			tradingPlan: {
+				id: "sdfs",
+				usuario: user,
+				nome: "Teste"
+			},
+			nome: "Teste"
+		}
+
 		const operacoes: Operacao[] = [
 			{
 				id: "01917ba5-42f3-7379-8391-4bdbb1cea814",
@@ -33,6 +43,7 @@ describe.skip("Dashboard Controller", () => {
 					saldo: 3073,
 					saldoInicial: 0,
 				},
+				regraEntrada,
 				quantidade: 1,
 				tipo: "compra",
 				precoEntrada: 10,
@@ -41,7 +52,6 @@ describe.skip("Dashboard Controller", () => {
 				precoSaida: 20,
 				dataEntrada: new Date( "2024-08-22 14:50"),
 				dataSaida: new Date("2024-08-22 15:50"),
-				margem: 20,
 				operacaoPerdida: false,
 				operacaoErrada: false,
 			},
@@ -69,6 +79,7 @@ describe.skip("Dashboard Controller", () => {
 					saldo: 3073,
 					saldoInicial: 0,
 				},
+				regraEntrada,
 				quantidade: 1,
 				tipo: "compra",
 				precoEntrada: 10,
@@ -77,7 +88,6 @@ describe.skip("Dashboard Controller", () => {
 				precoSaida: 30,
 				dataEntrada: new Date("2024-08-24 16:40"),
 				dataSaida: new Date("2024-08-24 16:45"),
-				margem: 20,
 				operacaoPerdida: false,
 				operacaoErrada: false,
 			},
@@ -105,6 +115,7 @@ describe.skip("Dashboard Controller", () => {
 					saldo: 3073,
 					saldoInicial: 0,
 				},
+				regraEntrada,
 				quantidade: 1,
 				tipo: "compra",
 				precoEntrada: 5,
@@ -113,7 +124,6 @@ describe.skip("Dashboard Controller", () => {
 				precoSaida: 5,
 				dataEntrada: new Date("2024-08-23 09:00"),
 				dataSaida: new Date("2024-08-23 14:00"),
-				margem: 10,
 				operacaoPerdida: false,
 				operacaoErrada: false,
 			},
@@ -142,13 +152,13 @@ describe.skip("Dashboard Controller", () => {
 					saldo: 3073,
 					saldoInicial: 0,
 				},
+				regraEntrada,
 				quantidade: 1,
 				tipo: "compra",
 				precoEntrada: 10,
 				stopLoss: 5,
 				alvo: 20,
 				dataEntrada: new Date("2024-08-19 12:40"),
-				margem: 20,
 				operacaoPerdida: false,
 				operacaoErrada: false,
 			},
@@ -177,6 +187,7 @@ describe.skip("Dashboard Controller", () => {
 					saldo: 3073,
 					saldoInicial: 0,
 				},
+				regraEntrada,
 				quantidade: 1,
 				tipo: "compra",
 				precoEntrada: 10,
@@ -185,7 +196,6 @@ describe.skip("Dashboard Controller", () => {
 				precoSaida: 5,
 				dataEntrada: new Date("2024-08-19 12:40"),
 				dataSaida: new Date("2024-08-19 14:40"),
-				margem: 20,
 				operacaoPerdida: false,
 				operacaoErrada: false,
 			},
@@ -214,6 +224,7 @@ describe.skip("Dashboard Controller", () => {
 					saldo: 3073,
 					saldoInicial: 0,
 				},
+				regraEntrada,
 				quantidade: 1,
 				tipo: "compra",
 				precoEntrada: 30,
@@ -222,7 +233,6 @@ describe.skip("Dashboard Controller", () => {
 				precoSaida: 15,
 				dataEntrada: new Date("2024-08-19 12:40"),
 				dataSaida: new Date("2024-08-19 16:40"),
-				margem: 20,
 				operacaoPerdida: false,
 				operacaoErrada: false,
 			},

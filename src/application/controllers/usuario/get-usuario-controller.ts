@@ -18,8 +18,7 @@ export const getUsuarioController = async (params: GetUsuarioControllerParams): 
 		}
 		return success({usuario});
 	} catch (error) {
-		console.log(error);
-
+		console.error(error);
 		return serverError(error);
 	}
 }

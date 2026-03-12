@@ -30,7 +30,7 @@ export const editOperacaoController = async (params: EditOperacaoControllerParam
 			return notFound('Conta não encontrada.');
 		}
 
-		if(ativo.dataVencimento && (input.dataEntrada > ativo.dataVencimento)) {
+		if(ativo.dataVencimento && (new Date(input.dataEntrada).getTime() > new Date(ativo.dataVencimento).getTime())) {
 			return unprocessableEntity('Data e horário de entrada fora da validade do ativo.')
 		}
 
@@ -42,12 +42,14 @@ export const editOperacaoController = async (params: EditOperacaoControllerParam
 			return notFound();
 		}
 
-		const editedOperacao = await operacaoRepository.edit({
+		const editedOperacao = {
 			...input,
 			dataEntrada: new Date(input.dataEntrada),
 			dataSaida: input.dataSaida ? new Date(input.dataSaida) : undefined,
 			precoSaida: input.precoSaida || null
-		});
+		}
+
+		await operacaoRepository.edit(editedOperacao);
 
 		if(editedOperacao && editedOperacao.precoSaida){
 			const saldo = calculateSaldo({

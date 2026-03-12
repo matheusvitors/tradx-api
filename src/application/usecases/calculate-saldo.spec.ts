@@ -1,7 +1,7 @@
 import { calculateSaldo } from "@/application/usecases/calculate-saldo";
 import { describe, expect, it } from "vitest";
 
-describe.skip('Calculate Saldo', () => {
+describe('Calculate Saldo', () => {
 	it('should calculate saldo of success operacao with type compra', () => {
 		const saldo = calculateSaldo({
 			tipo: 'compra',
