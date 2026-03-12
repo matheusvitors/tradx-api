@@ -5,7 +5,7 @@ import { InMemoryRepository } from "@/infra/database/InMemoryRepository";
 import { format } from "date-fns";
 import { beforeAll, describe, expect, it } from "vitest";
 
-describe.skip('Edit Operacao Controller', () => {
+describe('Edit Operacao Controller', () => {
 	const operacaoRepository = new InMemoryRepository<Operacao>();
 	const ativoRepository = new InMemoryRepository<Ativo>();
 	const contaRepository = new InMemoryRepository<Conta>();
@@ -42,6 +42,7 @@ describe.skip('Edit Operacao Controller', () => {
 			id: "012",
 			ativoId: 'abc',
 			contaId: '123',
+			regraEntradaId: 'xyz',
 			quantidade: 1,
 			tipo: "compra",
 			precoEntrada: 10,
@@ -57,6 +58,7 @@ describe.skip('Edit Operacao Controller', () => {
 			id: "654",
 			ativoId: 'abc',
 			contaId: '123',
+			regraEntradaId: 'xyz',
 			quantidade: 1,
 			tipo: "compra",
 			precoEntrada: 10,
@@ -74,13 +76,13 @@ describe.skip('Edit Operacao Controller', () => {
 			id: '012',
 			ativoId: 'abc',
 			contaId: '123',
+			regraEntradaId: 'xyz',
 			quantidade: 1,
 			tipo: "venda",
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: new Date('05/01/2024 15:00'),
-			margem: 10,
+			dataEntrada: '05/01/2024 15:00',
 			operacaoPerdida: false,
 			operacaoErrada: false
 		}
@@ -97,15 +99,15 @@ describe.skip('Edit Operacao Controller', () => {
 			id: '012',
 			ativoId: 'abc',
 			contaId: '123',
+			regraEntradaId: 'xyz',
 			quantidade: 1,
 			tipo: "compra",
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
 			precoSaida: 20,
-			dataEntrada: new Date('05/01/2024 15:00'),
-			dataSaida: new Date('05/01/2024 16:00'),
-			margem: 10,
+			dataEntrada: '05/01/2024 15:00',
+			dataSaida: '05/01/2024 16:00',
 			operacaoPerdida: false,
 			operacaoErrada: false,
 			comentarios: 'Teste'
@@ -113,7 +115,11 @@ describe.skip('Edit Operacao Controller', () => {
 
 		const response = await editOperacaoController({input, operacaoRepository, ativoRepository, contaRepository});
 		expect(response.status).toEqual(200);
-		expect(operacaoRepository.data[0]).toEqual(input);
+		expect(operacaoRepository.data[0]).toEqual({
+			...input,
+			dataEntrada: new Date('05/01/2024 15:00'),
+			dataSaida: new Date('05/01/2024 16:00'),
+		});
 		expect(contaRepository.data[0].saldo).toEqual(30);
 	});
 
@@ -122,13 +128,13 @@ describe.skip('Edit Operacao Controller', () => {
 			id: 'zzzz',
 			ativoId: 'abc',
 			contaId: '123',
+			regraEntradaId: 'xyz',
 			quantidade: 1,
 			tipo: "compra",
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: new Date('05/01/2024 15:00'),
-			margem: 10,
+			dataEntrada: '05/01/2024 15:00',
 			operacaoPerdida: false,
 			operacaoErrada: false
 		}
@@ -142,13 +148,13 @@ describe.skip('Edit Operacao Controller', () => {
 			id: 'zzz',
 			ativoId: 'abc',
 			contaId: '123',
+			regraEntradaId: 'xyz',
 			quantidade: 1,
 			tipo: "teste",
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: new Date('05/01/2024 15:00'),
-			margem: 10,
+			dataEntrada: '05/01/2024 15:00',
 			operacaoPerdida: false,
 			operacaoErrada: false
 		}
@@ -162,13 +168,13 @@ describe.skip('Edit Operacao Controller', () => {
 			id: 'aaaaaaaaa',
 			ativoId: "abc",
 			contaId: "zzz",
+			regraEntradaId: 'xyz',
 			quantidade: 1,
 			tipo: "compra",
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: new Date('05/01/2024 15:00'),
-			margem: 10,
+			dataEntrada: '05/01/2024 15:00',
 			operacaoPerdida: false,
 			operacaoErrada: false
 		}
@@ -182,13 +188,13 @@ describe.skip('Edit Operacao Controller', () => {
 			id: 'aaaaaaaaa',
 			ativoId: "zzz",
 			contaId: "123",
+			regraEntradaId: 'xyz',
 			quantidade: 1,
 			tipo: "compra",
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: new Date('05/01/2024 15:00'),
-			margem: 10,
+			dataEntrada: '05/01/2024 15:00',
 			operacaoPerdida: false,
 			operacaoErrada: false
 		}
@@ -202,13 +208,13 @@ describe.skip('Edit Operacao Controller', () => {
 			id: '654',
 			ativoId: "cde",
 			contaId: "123",
+			regraEntradaId: 'xyz',
 			quantidade: 1,
 			tipo: "compra",
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: new Date('05/01/2024 15:00'),
-			margem: 10,
+			dataEntrada: '05/03/2025 15:00',
 			operacaoPerdida: false,
 			operacaoErrada: false
 		}
@@ -222,14 +228,14 @@ describe.skip('Edit Operacao Controller', () => {
 			id: '012',
 			ativoId: "abc",
 			contaId: "123",
+			regraEntradaId: 'xyz',
 			quantidade: 1,
 			tipo: "compra",
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
-			dataEntrada: new Date('2024-01-23 15:45'),
-			dataSaida: new Date('2024-01-22 15:45'),
-			margem: 10,
+			dataEntrada: '2024-01-23 15:45',
+			dataSaida: '2024-01-22 15:45',
 			operacaoPerdida: false,
 			operacaoErrada: false
 		}

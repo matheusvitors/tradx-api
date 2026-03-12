@@ -1,16 +1,15 @@
 import { createReadStream, existsSync, unlinkSync } from "fs";
 import { OperacaoDTO } from "@/application/dto";
 import { Repository, ResponseData } from "@/application/interfaces";
-import { validateOperacoesCsv } from "@/application/usecases/operacao";
 import { Ativo, Conta, Operacao } from "@/core/models";
 import { csv } from "@/infra/adapters/csv";
 import { unprocessableEntity, serverError, notFound, success } from "@/infra/adapters/response-wrapper";
 import { validateOperacao } from "@/core/validators";
 import { newID } from "@/infra/adapters/newID";
-import { toValidDate } from "@/utils/to-valid-date";
 import { NODE_ENV } from "@/infra/config/environment";
 import { ValidationError } from "@/application/errors";
 import { calculateSaldo } from "@/application/usecases";
+import { regraEntradaRepository } from "@/infra/database/repositories";
 
 interface importOperacoesByCsvControllerParams {
 	operacaoRepository: Repository<Operacao>;
@@ -38,8 +37,8 @@ export const importOperacoesByCsvController = async (params: importOperacoesByCs
 		}
 
 		const ativos = await ativoRepository.list();
+		const regras = await regraEntradaRepository.list();
 		let newSaldo = conta.saldo;
-
 
 		const processRow = async (row: any, reject: (value: unknown) => void) => {
 			try {
@@ -47,6 +46,13 @@ export const importOperacoesByCsvController = async (params: importOperacoesByCs
 
 				if(!ativo) {
 					reject(unprocessableEntity('Ativo não encontrado.'));
+					return;
+				}
+
+				const regraEntrada = regras.find(regra => ativo.nome === row['Regra'])
+
+				if(!regraEntrada) {
+					reject(unprocessableEntity('Regra não encontrada.'));
 					return;
 				}
 
@@ -62,19 +68,19 @@ export const importOperacoesByCsvController = async (params: importOperacoesByCs
 				const horarioEntrada = `${splitDate[2]}-${splitDate[1]}-${splitDate[0]} ${splitHoraEntrada[0]}:${splitHoraEntrada[1]}`
 				const horarioSaida = `${splitDate[2]}-${splitDate[1]}-${splitDate[0]} ${splitHoraSaida[0]}:${splitHoraSaida[1]}`
 
-
 				const operacao: OperacaoDTO = {
 					id: newID(),
 					ativoId: ativo.id,
 					contaId: conta.id,
+					regraEntradaId: regraEntrada.id,
 					quantidade: parseInt(row['Contratos']),
 					tipo: row['Tipo'] === 'Compra' ? 'compra' : 'venda',
 					precoEntrada: parseInt(row['Entrada']),
 					stopLoss: parseInt(row['Stop Loss']),
 					alvo: parseInt(row['Alvo']),
 					precoSaida: parseInt(row['Saída']),
-					dataEntrada: new Date(horarioEntrada),
-					dataSaida: new Date(horarioSaida),
+					dataEntrada: horarioEntrada,
+					dataSaida: horarioSaida,
 					operacaoPerdida: row['Operação Perdida?'] === 'TRUE'? true : false,
 					operacaoErrada: row['Erro?'] === 'TRUE'? true : false,
 					comentarios: row['Comentário'] ?? ''
@@ -119,7 +125,6 @@ export const importOperacoesByCsvController = async (params: importOperacoesByCs
 
 		await operacaoRepository.batchCreation!(operacoesToSave);
 		await contaRepository.edit({...conta, saldo: newSaldo});
-
 
 		return success();
 	} catch (error: any) {

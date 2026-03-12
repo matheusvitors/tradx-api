@@ -1,9 +1,9 @@
-import { getOperacaoController, removeOperacaoController } from "@/application/controllers/operacao";
+import { removeOperacaoController } from "@/application/controllers/operacao";
 import { Ativo, Conta, Operacao } from "@/core/models";
 import { InMemoryRepository } from "@/infra/database/InMemoryRepository";
 import { beforeAll, describe, expect, it } from "vitest";
 
-describe.skip('Remove Operacao Controller', () => {
+describe('Remove Operacao Controller', () => {
 	const operacaoRepository = new InMemoryRepository<Operacao>();
 	const contaRepository = new InMemoryRepository<Conta>();
 	const ativoRepository = new InMemoryRepository<Ativo>();

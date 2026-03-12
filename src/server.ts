@@ -21,7 +21,11 @@ if(process.env.NODE_ENV !== "test") {
 
 export { app };
 
-//TODO: Trocar database para drizzle
-//TODO: Refatorar os testes
+//TODO: Ajustar testes unitários
+//TODO: Criar os controllers genericos
+//TODO: Criar as rotas e implementacoes das novas tabelas
+//TODO: Ajustar lógica das tabelas afetadas pelas atualizações
+//TODO: Revisão dos validators
+//TODO: Criar os testes e2e
 
 

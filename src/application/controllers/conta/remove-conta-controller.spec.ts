@@ -1,9 +1,10 @@
 import { removeContaController } from "@/application/controllers/conta/remove-conta-controller";
 import { Conta, Operacao } from "@/core/models";
 import { InMemoryRepository } from "@/infra/database/InMemoryRepository";
+import { user } from "../../../../__tests__/setup";
 import { beforeAll, describe, expect, it } from "vitest";
 
-describe.skip('Remove Operacao Controller', () => {
+describe('Remove Operacao Controller', () => {
 	const repository = new InMemoryRepository<Conta>();
 
 	beforeAll(() => {
@@ -30,13 +31,21 @@ describe.skip('Remove Operacao Controller', () => {
 					email: "teste@teste.com",
 				},
 			},
+			regraEntrada: {
+				id: "sdfd",
+				tradingPlan: {
+					id: "sadasd",
+					usuario: user,
+					nome: "Teste"
+				},
+				nome: "Teste"
+			},
 			quantidade: 1,
 			tipo: "compra",
 			precoEntrada: 10,
 			stopLoss: 5,
 			alvo: 20,
 			dataEntrada: new Date(),
-			margem: 10,
 			operacaoPerdida: false,
 			operacaoErrada: false,
 		};

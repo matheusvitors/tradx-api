@@ -4,7 +4,7 @@ import { validateOperacao } from '@/core/validators/operacao-validator';
 import { it, expect, describe } from 'vitest';
 
 
-describe.skip('Operacao Validator', () => {
+describe('Operacao Validator', () => {
 
 	it('should validate a operacao with full information', () => {
 		const input: OperacaoDTO = {
