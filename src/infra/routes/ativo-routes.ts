@@ -1,15 +1,17 @@
 import { Router, Request, Response} from 'express'
-import { createAtivoController, editAtivoController, getAtivoController, listAtivosController, removeAtivoController } from '@/application/controllers/ativo';
+import { createAtivoController, editAtivoController, getAtivoController, removeAtivoController } from '@/application/controllers/ativo';
 import { route } from '@/infra/adapters/route';
 import { ativoRepository } from '@/infra/database/repositories';
 import { RequestParams } from '@/application/interfaces';
+import { Ativo } from '@/core/models';
+import { listController } from '@/application/controllers/generic';
 
 const router = Router();
 const repository = ativoRepository;
 
 
 router.get('/ativos', async (request: Request, response: Response) => {
-	const responseData = await listAtivosController(repository);
+	const responseData = await listController<Ativo>(repository);
 	return route({ response, responseData });
 })
 

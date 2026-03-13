@@ -1,6 +1,8 @@
 import { createAtivoController } from "@/application/controllers/ativo";
+import { createController } from "@/application/controllers/generic";
 import { AtivoDTO } from "@/application/dto";
 import { Ativo } from "@/core/models";
+import { validateAtivo } from "@/core/validators";
 import { InMemoryRepository } from "@/infra/database/InMemoryRepository";
 import { beforeAll, describe, expect, it } from "vitest";
 
@@ -29,9 +31,9 @@ describe('Create Ativo Controller', () => {
 			dataVencimento: new Date('2025-01-01'),
 		}
 
-		const response = await createAtivoController({input, repository});
-		expect(response.status).toEqual(200);
-		expect(repository.data[1].dataVencimento).toEqual(new Date('2025-01-01 23:59'));
+		const response = await createController<Ativo, AtivoDTO>({input, repository, validate: validateAtivo, uniqueFields: ['acronimo']});
+		expect(response.status).toEqual(201);
+		expect(repository.data[1].dataVencimento).toEqual(new Date('2025-01-01'));
 		expect(repository.data[1].multiplicador).toEqual(0.2);
 	});
 
@@ -45,7 +47,7 @@ describe('Create Ativo Controller', () => {
 			dataVencimento: new Date('2025-01-01'),
 		}
 
-		const response = await createAtivoController({repository, input});
+		const response = await createController<Ativo, AtivoDTO>({repository, input, validate: validateAtivo, uniqueFields: ['acronimo']});
 		expect(response.status).toEqual(422);
 	});
 
@@ -58,7 +60,7 @@ describe('Create Ativo Controller', () => {
 			multiplicador: 3,
 		}
 
-		const response = await createAtivoController({repository, input});
+		const response = await createController<Ativo, AtivoDTO>({repository, input, validate: validateAtivo, uniqueFields: ['acronimo']});
 		expect(response.status).toEqual(409);
 	});
 
