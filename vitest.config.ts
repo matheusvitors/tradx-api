@@ -10,7 +10,6 @@ export default defineConfig({
 		clearMocks: true,
 		globals: true,
 		setupFiles: ["dotenv/config"],
-		reporters: ['html']
 	},
 	resolve: {
 		alias: [{ find: '@', replacement: path.resolve(__dirname, './src') }],

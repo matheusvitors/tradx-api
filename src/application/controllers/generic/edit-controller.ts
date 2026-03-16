@@ -1,15 +1,15 @@
 import { ValidationError } from "@/application/errors";
-import { Repository, ResponseData } from "@/application/interfaces";
+import { FilterParams, Repository, ResponseData } from "@/application/interfaces";
 import { success, unprocessableEntity, serverError, notFound, conflict } from "@/infra/adapters/response-wrapper";
 
-interface EditControllerParams<T, D> {
-	repository: Repository<T>;
+interface EditControllerParams<D> {
+	repository: Repository<D>;
 	input: D & {id: string};
 	uniqueFields?: Array<keyof Omit<D, 'id'>>
 	validate: <D>(input: D) => void;
 }
 
-export const editController = async <T, D>(params: EditControllerParams<T, D>): Promise<ResponseData> => {
+export const editController = async <D>(params: EditControllerParams<D>): Promise<ResponseData> => {
 
 	try {
 		const {input, repository, uniqueFields, validate} = params
@@ -21,21 +21,30 @@ export const editController = async <T, D>(params: EditControllerParams<T, D>): 
 			return notFound();
 		}
 
+
+		// const changedUniqueFields: Array<string | number | symbol> = [];
+		const changedUniqueFields: Array<keyof D> = [];
+
 		if(uniqueFields) {
 			uniqueFields.forEach(async (field: keyof D) => {
-				if(input[field] !== data[field]) {
-					// const ativoAcronimoVerification = await repository.find!('acronimo', input.acronimo);
-
-					// if(ativoAcronimoVerification && ativoAcronimoVerification.id !== input.id) {
-					// 	return conflict('Acronimo não pode ter duplicação');
-					// }
+				console.log(field, input[field], data[field]);
+				if(input[field] !== data[field]){
+					changedUniqueFields.push(field);
 				}
 			})
 		}
 
+		if(changedUniqueFields.length > 0){
+			const filterParams: FilterParams<D>[] = changedUniqueFields.map<FilterParams<D>>(field => ({ field, value: input[field]}))
 
+			const result = repository.filter && await repository.filter(filterParams);
+			if(result) {
+				return conflict()
+			}
+
+		}
 		await repository.edit(input)
-		return success(input);
+		return success();
 
 	} catch (error) {
 		if(error instanceof ValidationError) {

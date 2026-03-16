@@ -1,4 +1,3 @@
-import { createAtivoController } from "@/application/controllers/ativo";
 import { createController } from "@/application/controllers/generic";
 import { AtivoDTO } from "@/application/dto";
 import { Ativo } from "@/core/models";
@@ -31,7 +30,7 @@ describe('Create Ativo Controller', () => {
 			dataVencimento: new Date('2025-01-01'),
 		}
 
-		const response = await createController<Ativo, AtivoDTO>({input, repository, validate: validateAtivo, uniqueFields: ['acronimo']});
+		const response = await createController<Ativo, AtivoDTO>({input, repository, validate: () => validateAtivo(input), uniqueFields: ['acronimo']});
 		expect(response.status).toEqual(201);
 		expect(repository.data[1].dataVencimento).toEqual(new Date('2025-01-01'));
 		expect(repository.data[1].multiplicador).toEqual(0.2);
@@ -47,7 +46,7 @@ describe('Create Ativo Controller', () => {
 			dataVencimento: new Date('2025-01-01'),
 		}
 
-		const response = await createController<Ativo, AtivoDTO>({repository, input, validate: validateAtivo, uniqueFields: ['acronimo']});
+		const response = await createController<Ativo, AtivoDTO>({input, repository, validate: () => validateAtivo(input), uniqueFields: ['acronimo']});
 		expect(response.status).toEqual(422);
 	});
 
@@ -60,13 +59,13 @@ describe('Create Ativo Controller', () => {
 			multiplicador: 3,
 		}
 
-		const response = await createController<Ativo, AtivoDTO>({repository, input, validate: validateAtivo, uniqueFields: ['acronimo']});
+		const response = await createController<Ativo, AtivoDTO>({input, repository, validate: () => validateAtivo(input), uniqueFields: ['acronimo']});
 		expect(response.status).toEqual(409);
 	});
 
 	it('should return 500 if have error server', async () => {
 		//@ts-ignore
-		const response = await createAtivoController(null);
+		const response = await createController<Ativo, AtivoDTO>(null);
 		expect(response.status).toEqual(500)
 	});
 })

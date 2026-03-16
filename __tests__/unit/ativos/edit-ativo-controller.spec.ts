@@ -1,5 +1,7 @@
-import { editAtivoController } from "@/application/controllers/ativo";
+import { editController } from "@/application/controllers/generic/edit-controller";
+import { AtivoDTO } from "@/application/dto";
 import { Ativo } from "@/core/models";
+import { validateAtivo } from "@/core/validators";
 import { InMemoryRepository } from "@/infra/database/InMemoryRepository";
 import { beforeAll, describe, expect, it } from "vitest";
 
@@ -34,7 +36,7 @@ describe('Edit Ativo Controller', () => {
 			dataVencimento: new Date('2025-01-02'),
 		}
 
-		const response = await editAtivoController({input, repository});
+		const response = await editController<AtivoDTO>({input, repository, validate: () => validateAtivo(input), uniqueFields: ['acronimo']});
 		expect(response.status).toEqual(200);
 		expect(repository.data[0].tipo).toEqual('acao');
 		expect(repository.data[0].dataVencimento).toEqual(new Date('2025-01-02'));
@@ -49,7 +51,7 @@ describe('Edit Ativo Controller', () => {
 			multiplicador: 1,
 		}
 
-		const response = await editAtivoController({input, repository});
+		const response = await editController<AtivoDTO>({input, repository, validate: () => validateAtivo(input), uniqueFields: ['acronimo']});
 		expect(response.status).toEqual(404);
 	});
 
@@ -62,7 +64,7 @@ describe('Edit Ativo Controller', () => {
 			multiplicador: 1,
 		}
 
-		const response = await editAtivoController({input, repository});
+		const response = await editController<AtivoDTO>({input, repository, validate: () => validateAtivo(input), uniqueFields: ['acronimo']});
 		expect(response.status).toEqual(422);
 	});
 
@@ -75,14 +77,14 @@ describe('Edit Ativo Controller', () => {
 			multiplicador: 1,
 		}
 
-		const response = await editAtivoController({repository, input});
+		const response = await editController<AtivoDTO>({input, repository, validate: () => validateAtivo(input), uniqueFields: ['acronimo']});
 		expect(response.status).toEqual(409);
 	});
 
 
 	it('should return 500 if have error server', async () => {
 		//@ts-ignore
-		const response = await editAtivoController(null);
+		const response = await editController<AtivoDTO>(null);
 		expect(response.status).toEqual(500);
 	});
 
