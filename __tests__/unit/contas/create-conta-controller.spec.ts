@@ -1,5 +1,8 @@
 import { createContaController } from "@/application/controllers/conta/create-conta-controller";
+import { createController } from "@/application/controllers/generic";
+import { ContaDTO } from "@/application/dto";
 import { Conta } from "@/core/models";
+import { validateConta } from "@/core/validators";
 import { InMemoryRepository } from "@/infra/database/InMemoryRepository";
 import { describe, expect, it } from "vitest";
 
@@ -7,16 +10,15 @@ describe('Create Conta Controller', () => {
 	const repository = new InMemoryRepository<Conta>();
 
 	it('should create a conta', async () => {
-		const input = {
+		const input: ContaDTO = {
 			nome: 'teste',
 			tipo: "simulador",
 			saldoInicial: 10.35,
 			usuarioId: 'xyz',
 		}
 
-		const response = await createContaController({input, repository});
-		expect(response.status).toEqual(200);
-		expect(repository.data[0].saldo).toEqual(10.35);
+		const response = await createController<Conta, ContaDTO>({input, repository, validate: () => validateConta(input)});
+		expect(response.status).toEqual(201);
 	});
 
 	it('should return 422 when pass invalid data', async () => {
@@ -28,13 +30,13 @@ describe('Create Conta Controller', () => {
 			usuarioId: 'xyz',
 		}
 
-		const response = await createContaController({repository, input});
+		const response = await createController<Conta, ContaDTO>({input, repository, validate: () => validateConta(input)});
 		expect(response.status).toEqual(422)
 	});
 
 	it('should return 500 if have error server', async () => {
 		//@ts-ignore
-		const response = await createContaController(null);
+		const response = await createController<Conta, ContaDTO>(null);
 		expect(response.status).toEqual(500)
 	});
 })

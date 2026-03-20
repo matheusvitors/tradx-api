@@ -12,7 +12,12 @@ interface EditControllerParams<D> {
 export const editController = async <D>(params: EditControllerParams<D>): Promise<ResponseData> => {
 
 	try {
-		const {input, repository, uniqueFields, validate} = params
+		const {input, repository, uniqueFields, validate} = params;
+
+		if(!input.id) {
+			return unprocessableEntity('O id da conta é obrigatório.')
+		}
+
 		validate(input);
 
 		const data = await repository.get(input.id);
