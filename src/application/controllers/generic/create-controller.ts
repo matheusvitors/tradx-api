@@ -1,8 +1,6 @@
 import { ValidationError } from "@/application/errors";
-import { FilterParams, Repository } from "@/application/interfaces"
-import { validateConta } from "@/core/validators";
-import { newID } from "@/infra/adapters/newID";
-import { conflict, created, serverError, success, unprocessableEntity } from "@/infra/adapters/response-wrapper";
+import { FilterParams, Repository, ResourceRelation } from "@/application/interfaces"
+import { conflict, created, notFound, serverError, success, unprocessableEntity } from "@/infra/adapters/response-wrapper";
 
 
 interface CreateControllerParams<T, D> {
@@ -10,12 +8,13 @@ interface CreateControllerParams<T, D> {
 	input: Omit<D, 'id'>;
 	uniqueFields?: Array<keyof Omit<D, 'id'>>
 	validate: <D>(input: Omit<D, 'id'>) => void;
+	relations?: ResourceRelation<D>[];
 }
 
 export const createController = async <T, D>(params: CreateControllerParams<T, D>) => {
 	try {
 
-		const { input, repository, validate, uniqueFields } = params;
+		const { input, repository, validate, uniqueFields, relations } = params;
 
 		if(uniqueFields) {
 			const filterParams: FilterParams<D>[] = uniqueFields.map<FilterParams<D>>(field => ({ field, value: input[field]}))
@@ -24,6 +23,16 @@ export const createController = async <T, D>(params: CreateControllerParams<T, D
 			if(result) {
 				return conflict()
 			}
+		}
+
+		if(relations){
+			relations.forEach(async relation => {
+				const savedItem = await relation.repository.get(relation.id);
+
+				if(!savedItem){
+					return notFound();
+				}
+			})
 		}
 
 		validate<D>(input);

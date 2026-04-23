@@ -1,7 +1,7 @@
 import { beforeAll, describe, expect, it } from "vitest";
 import { InMemoryRepository } from "@/infra/database/InMemoryRepository";
-import { getUsuarioController } from "@/application/controllers/usuario";
 import { Usuario } from "@/core/models";
+import { getController } from "@/application/controllers/generic";
 
 describe('Usuario Get Controller', () => {
 	const repository = new InMemoryRepository<Usuario>();
@@ -17,18 +17,18 @@ describe('Usuario Get Controller', () => {
 	})
 
 	it('should get the user', async () => {
-		const response = await getUsuarioController({repository, id: 'abc'});
+		const response = await getController<Usuario>({repository, id: 'abc'});
 		expect(response.status).toEqual(200)
 	});
 
 	it('should not found the user', async () => {
-		const response = await getUsuarioController({repository, id: ''});
+		const response = await getController<Usuario>({repository, id: ''});
 		expect(response.status).toEqual(404)
 	});
 
 	it('should return 500 if have error server', async () => {
 		//@ts-ignore
-		const response = await getUsuarioController(null);
+		const response = await getController<Usuario>(null);
 		expect(response.status).toEqual(500);
 	});
 });

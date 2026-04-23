@@ -1,8 +1,8 @@
-import { removeContaController } from "@/application/controllers/conta/remove-conta-controller";
 import { Conta, Operacao } from "@/core/models";
 import { InMemoryRepository } from "@/infra/database/InMemoryRepository";
-import { user } from "../../../../__tests__/setup";
+import { user } from "../../../__tests__/artifacts";
 import { beforeAll, describe, expect, it } from "vitest";
+import { removeController } from "@/application/controllers/generic";
 
 describe('Remove Operacao Controller', () => {
 	const repository = new InMemoryRepository<Conta>();
@@ -54,19 +54,19 @@ describe('Remove Operacao Controller', () => {
 
 
 	it('should remove conta', async () => {
-		const response = await removeContaController({id: 'abc', repository});
+		const response = await removeController<Conta>({id: 'abc', repository});
 		expect(response.status).toEqual(200);
 		expect(repository.data.length).toEqual(0);
 	});
 
 	it('should return 404 if conta not found', async () => {
-		const response = await removeContaController({id: 'eee', repository});
+		const response = await  removeController<Conta>({id: 'eee', repository});
 		expect(response.status).toEqual(404)
 	});
 
 	it('should return 500 if have error server', async () => {
 		//@ts-ignore
-		const response = await removeContaController(null);
+		const response = await  removeController<Conta>(null);
 		expect(response.status).toEqual(500);
 	});
 });

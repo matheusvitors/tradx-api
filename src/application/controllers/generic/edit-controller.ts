@@ -1,18 +1,13 @@
 import { ValidationError } from "@/application/errors";
-import { FilterParams, Repository, ResponseData } from "@/application/interfaces";
+import { FilterParams, Repository, ResourceRelation, ResponseData } from "@/application/interfaces";
 import { success, unprocessableEntity, serverError, notFound, conflict } from "@/infra/adapters/response-wrapper";
-
-interface ResourseRelation <D> {
-	id: string;
-	keyRepository: Repository<D>;
-}
 
 interface EditControllerParams<D> {
 	repository: Repository<D>;
 	input: D & {id: string};
 	uniqueFields?: Array<keyof Omit<D, 'id'>>
 	validate: <D>(input: D) => void;
-	relations?: ResourseRelation<D>[];
+	relations?: ResourceRelation<D>[];
 }
 
 export const editController = async <D>(params: EditControllerParams<D>): Promise<ResponseData> => {
@@ -34,7 +29,7 @@ export const editController = async <D>(params: EditControllerParams<D>): Promis
 
 		if(relations){
 			relations.forEach(async relation => {
-				const savedItem = await relation.keyRepository.get(relation.id);
+				const savedItem = await relation.repository.get(relation.id);
 
 				if(!savedItem){
 					return notFound();

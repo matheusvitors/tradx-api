@@ -1,4 +1,5 @@
 export * from './filter-params'
 export * from './repository'
 export * from './request-params'
+export * from './resource-relations'
 export * from './response-data'

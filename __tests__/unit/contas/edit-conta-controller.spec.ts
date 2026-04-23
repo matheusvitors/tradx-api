@@ -35,10 +35,10 @@ describe('Edit Conta Controller', () => {
 	it('should return 404 if user not found', async () => {
 		const input: ContaDTO & {id: string} = {
 			id: '123',
-			nome: 'j',
+			nome: 'joao',
 			tipo: "real",
 			saldoInicial: 25.10,
-			usuarioId: 'xyz',
+			usuarioId: 'abc',
 		}
 
 		const response = await editController<ContaDTO>({input, repository, validate: () => validateConta(input)});
