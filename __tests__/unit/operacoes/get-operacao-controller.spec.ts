@@ -1,8 +1,8 @@
-import { getOperacaoController } from "@/application/controllers/operacao";
 import { Operacao } from "@/core/models";
 import { InMemoryRepository } from "@/infra/database/InMemoryRepository";
+import { user } from "../../../__tests__/artifacts";
 import { beforeAll, describe, expect, it } from "vitest";
-import { user } from '../../../../__tests__/setup'
+import { getController } from "@/application/controllers/generic";
 
 describe("Get Operacao Controller", () => {
 	const repository = new InMemoryRepository<Operacao>();
@@ -53,20 +53,20 @@ describe("Get Operacao Controller", () => {
 	});
 
 	it("should get operacao", async () => {
-		const response = await getOperacaoController({ id: "abc", repository });
+		const response = await getController<Operacao>({ id: "abc", repository });
 
 		expect(response.status).toEqual(200);
 		expect(response.body.content.tipo).toEqual("compra");
 	});
 
 	it("should return 404 if operacao not found", async () => {
-		const response = await getOperacaoController({ id: "eee", repository });
+		const response = await getController<Operacao>({ id: "eee", repository });
 		expect(response.status).toEqual(404);
 	});
 
 	it("should return 500 if have error server", async () => {
 		//@ts-ignore
-		const response = await getOperacaoController(null);
+		const response = await getController<Operacao>(null);
 		expect(response.status).toEqual(500);
 	});
 });

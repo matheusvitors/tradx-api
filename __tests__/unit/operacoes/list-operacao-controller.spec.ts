@@ -1,4 +1,4 @@
-import { listOperacaoController } from "@/application/controllers/operacao/list-operacao-controller";
+import { listController } from "@/application/controllers/generic";
 import { Operacao } from "@/core/models";
 import { InMemoryRepository } from "@/infra/database/InMemoryRepository";
 import { beforeAll, describe, expect, it } from "vitest";
@@ -75,14 +75,14 @@ describe("Operacao List Controller", () => {
 	});
 
 	it("should list operacaos", async () => {
-		const response = await listOperacaoController(repository);
+		const response = await listController<Operacao>(repository);
 		expect(response.status).toEqual(200);
 		expect(response.body.content[0].id).toEqual("abc");
 	});
 
 	it("should return 500 if have error server", async () => {
 		//@ts-ignore
-		const response = await listOperacaoController(null);
+		const response = await listController<Operacao>(null);
 		expect(response.status).toEqual(500);
 	});
 });

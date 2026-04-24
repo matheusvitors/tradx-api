@@ -1,4 +1,4 @@
-import { getContaController } from "@/application/controllers/conta/get-conta-controller";
+import { getController } from "@/application/controllers/generic";
 import { Conta } from "@/core/models";
 import { InMemoryRepository } from "@/infra/database/InMemoryRepository";
 import { beforeAll, describe, expect, it } from "vitest";
@@ -25,20 +25,20 @@ describe('Get Conta Controller', () => {
 	})
 
 	it('should get conta', async () => {
-		const response = await getContaController({id: 'abc', repository});
+		const response = await getController<Conta>({id: 'abc', repository});
 		expect(response.status).toEqual(200);
 		expect(repository.data[0].saldo).toEqual(30.15);
 
 	});
 
 	it('should return 404 if conta not found', async () => {
-		const response = await getContaController({id: 'eee', repository});
+		const response = await getController<Conta>({id: 'eee', repository});
 		expect(response.status).toEqual(404)
 	});
 
 	it('should return 500 if have error server', async () => {
 		//@ts-ignore
-		const response = await getContaController(null);
+		const response = await getController<Conta>(null);
 		expect(response.status).toEqual(500);
 	});
 });

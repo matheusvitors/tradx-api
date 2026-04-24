@@ -1,14 +1,15 @@
 import { describe, expect, it } from "vitest";
 import path from "path";
 import { InMemoryRepository } from "@/infra/database/InMemoryRepository";
-import { Ativo, Conta, Operacao } from "@/core/models";
+import { Ativo, Conta, Operacao, RegraEntrada } from "@/core/models";
 import { importOperacoesByXlsController } from "@/application/controllers/operacao/import-operacoes-xls-controller";
 
 describe('Import operacoes by xls', () => {
 	const operacaoRepository = new InMemoryRepository<Operacao>();
 	const ativoRepository = new InMemoryRepository<Ativo>();
 	const contaRepository = new InMemoryRepository<Conta>();
-	const xlsFile = path.resolve(__dirname, '../', '../', '../', '../', 'tests', 'assets', 'operacoes-teste.xlsx');
+	const regraEntradaRepository = new InMemoryRepository<RegraEntrada>();
+	const xlsFile = path.resolve(__dirname, '../', '../', 'assets', 'operacoes-teste.xlsx');
 
 	contaRepository.create({
 		id: 'xyz',
@@ -37,33 +38,46 @@ describe('Import operacoes by xls', () => {
 		multiplicador: 10
 	})
 
+	regraEntradaRepository.create({
+		id: 'kdjf',
+		tradingPlanId: 'aaa',
+		nome: 'Regra Teste'
+	})
+
+	regraEntradaRepository.create({
+		id: 'skfh',
+		tradingPlanId: 'bbb',
+		nome: 'Novo Teste'
+	})
+
+
 	it('should import operacoes from xls file', async () => {
-		const response = await importOperacoesByXlsController({ operacaoRepository, ativoRepository, contaRepository, contaId: 'xyz', file: xlsFile});
+		const response = await importOperacoesByXlsController({ operacaoRepository, ativoRepository, contaRepository, regraEntradaRepository, contaId: 'xyz', file: xlsFile});
 		expect(response.status).toEqual(200);
 		expect(operacaoRepository.data.length).toEqual(6);
 		expect(contaRepository.data[0].saldo).toEqual(476)
 	});
 
 	it('should return 404 if not send file', async () => {
-		const response = await importOperacoesByXlsController({ operacaoRepository, ativoRepository, contaRepository, contaId: 'xyz', file: ''});
+		const response = await importOperacoesByXlsController({ operacaoRepository, ativoRepository, contaRepository, regraEntradaRepository, contaId: 'xyz', file: ''});
 		expect(response.status).toEqual(404);
 	});
 
 	it('should return 422 if a field is invalid from xls file', async () => {
-		const invalidXlsFile = path.resolve(__dirname, '../', '../', '../', '../', 'tests', 'assets', 'operacoes-teste-invalid.xlsx');
-		const response = await importOperacoesByXlsController({ operacaoRepository, ativoRepository, contaRepository, contaId: 'xyz', file: invalidXlsFile});
+		const invalidXlsFile = path.resolve(__dirname, '../', '../', 'assets', 'operacoes-teste-invalid.xlsx');
+		const response = await importOperacoesByXlsController({ operacaoRepository, ativoRepository, contaRepository, regraEntradaRepository, contaId: 'xyz', file: invalidXlsFile});
 		expect(response.status).toEqual(422);
 	});
 
 	it('should return 422 if a ativo is invalid from xls file', async () => {
-		const invalidXlsFile = path.resolve(__dirname, '../', '../', '../', '../', 'tests', 'assets', 'operacoes-teste-invalid-ativo.xlsx');
-		const response = await importOperacoesByXlsController({ operacaoRepository, ativoRepository, contaRepository, contaId: 'xyz', file: invalidXlsFile});
+		const invalidXlsFile = path.resolve(__dirname, '../', '../', 'assets', 'operacoes-teste-invalid-ativo.xlsx');
+		const response = await importOperacoesByXlsController({ operacaoRepository, ativoRepository, contaRepository, regraEntradaRepository, contaId: 'xyz', file: invalidXlsFile});
 		expect(response.status).toEqual(422);
 		expect(response.body.message).toEqual('Há ativos inexistentes no arquivo enviado.');
 	});
 
 	it('should return 404 if a conta is invalid ', async () => {
-		const response = await importOperacoesByXlsController({ operacaoRepository, ativoRepository, contaRepository, contaId: '', file: xlsFile});
+		const response = await importOperacoesByXlsController({ operacaoRepository, ativoRepository, contaRepository, regraEntradaRepository, contaId: '', file: xlsFile});
 
 		expect(response.status).toEqual(404);
 		expect(response.body.message).toEqual('Conta não encontrada.');
