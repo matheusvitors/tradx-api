@@ -22,7 +22,7 @@ export const validateOperacao = (operacao: Operacao | OperacaoDTO) => {
 		throw new ValidationError("Preço não pode ter valor negativo.");
 	}
 
-	if(operacao.dataSaida && operacao.dataSaida < operacao.dataEntrada){
+	if(operacao.dataSaida && new Date(operacao.dataSaida) < new Date(operacao.dataEntrada)){
 		throw new ValidationError("Data de saída não pode ser anterior a data de entrada");
 	}
 }

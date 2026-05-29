@@ -36,7 +36,7 @@ describe('Edit Ativo Controller', () => {
 			dataVencimento: new Date('2025-01-02'),
 		}
 
-		const response = await editController<AtivoDTO>({input, repository, validate: () => validateAtivo(input), uniqueFields: ['acronimo']});
+		const response = await editController<Ativo, AtivoDTO>({input, repository, validate: () => validateAtivo(input), uniqueFields: ['acronimo']});
 		expect(response.status).toEqual(200);
 		expect(repository.data[0].tipo).toEqual('acao');
 		expect(repository.data[0].dataVencimento).toEqual(new Date('2025-01-02'));
@@ -51,7 +51,7 @@ describe('Edit Ativo Controller', () => {
 			multiplicador: 1,
 		}
 
-		const response = await editController<AtivoDTO>({input, repository, validate: () => validateAtivo(input), uniqueFields: ['acronimo']});
+		const response = await editController<Ativo, AtivoDTO>({input, repository, validate: () => validateAtivo(input), uniqueFields: ['acronimo']});
 		expect(response.status).toEqual(404);
 	});
 
@@ -64,7 +64,7 @@ describe('Edit Ativo Controller', () => {
 			multiplicador: 1,
 		}
 
-		const response = await editController<AtivoDTO>({input, repository, validate: () => validateAtivo(input), uniqueFields: ['acronimo']});
+		const response = await editController<Ativo, AtivoDTO>({input, repository, validate: () => validateAtivo(input), uniqueFields: ['acronimo']});
 		expect(response.status).toEqual(422);
 	});
 
@@ -77,7 +77,7 @@ describe('Edit Ativo Controller', () => {
 			multiplicador: 1,
 		}
 
-		const response = await editController<AtivoDTO>({input, repository, validate: () => validateAtivo(input), uniqueFields: ['acronimo']});
+		const response = await editController<Ativo, AtivoDTO>({input, repository, validate: () => validateAtivo(input), uniqueFields: ['acronimo']});
 		expect(response.status).toEqual(409);
 	});
 

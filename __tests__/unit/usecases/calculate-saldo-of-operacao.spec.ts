@@ -1,6 +1,6 @@
+import { describe, expect, it } from "vitest";
 import { calculateSaldoOfOperacao } from "@/application/usecases/calculate-saldo-of-operacao";
 import { Operacao } from "@/core/models";
-import { describe, expect, it } from "vitest";
 
 describe('Calculate saldo of operacao', () => {
 	const operacao: Operacao = {

@@ -1,4 +1,3 @@
-import { createContaController } from "@/application/controllers/conta/create-conta-controller";
 import { createController } from "@/application/controllers/generic";
 import { ContaDTO } from "@/application/dto";
 import { Conta } from "@/core/models";

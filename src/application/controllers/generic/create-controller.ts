@@ -1,14 +1,15 @@
 import { ValidationError } from "@/application/errors";
 import { FilterParams, Repository, ResourceRelation } from "@/application/interfaces"
+import { newID } from "@/infra/adapters/newID";
 import { conflict, created, notFound, serverError, success, unprocessableEntity } from "@/infra/adapters/response-wrapper";
 
 
 interface CreateControllerParams<T, D> {
-	repository: Repository<T>;
-	input: Omit<D, 'id'>;
-	uniqueFields?: Array<keyof Omit<D, 'id'>>
-	validate: <D>(input: Omit<D, 'id'>) => void;
-	relations?: ResourceRelation<D>[];
+	repository: Repository<T, D>;
+	input: D;
+	uniqueFields?: Array<keyof D>
+	validate: (input: D) => void;
+	relations?: ResourceRelation<any, any>[];
 }
 
 export const createController = async <T, D>(params: CreateControllerParams<T, D>) => {
@@ -16,18 +17,25 @@ export const createController = async <T, D>(params: CreateControllerParams<T, D
 
 		const { input, repository, validate, uniqueFields, relations } = params;
 
+		const finalInput = {...input, id: newID()}
+
 		if(uniqueFields) {
-			const filterParams: FilterParams<D>[] = uniqueFields.map<FilterParams<D>>(field => ({ field, value: input[field]}))
+			const filterParams: FilterParams<D>[] = uniqueFields.map<FilterParams<D>>(field => ({ field, value: finalInput[field]}))
 
 			const result = repository.filter && await repository.filter(filterParams);
-			if(result) {
+
+			if(result && result.length > 0) {
 				return conflict()
 			}
 		}
 
 		if(relations){
 			relations.forEach(async relation => {
+				console.log({relationID: relation.id});
+
 				const savedItem = await relation.repository.get(relation.id);
+				console.log({savedItem});
+
 
 				if(!savedItem){
 					return notFound();
@@ -35,8 +43,8 @@ export const createController = async <T, D>(params: CreateControllerParams<T, D
 			})
 		}
 
-		validate<D>(input);
-		await repository.create(input);
+		validate(finalInput);
+		await repository.create(finalInput);
 
 		return created();
 	} catch (error: any) {

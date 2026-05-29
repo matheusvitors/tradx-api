@@ -4,8 +4,8 @@ import { newID } from "@/infra/adapters/newID";
 
 export const user: Usuario = {
 	id: newID(),
-	nome: 'Tester',
+	nome: faker.person.fullName(),
 	username: faker.internet.username(),
 	password: "123",
-	email: faker.internet.email()
+	email: faker.internet.email(),
 }

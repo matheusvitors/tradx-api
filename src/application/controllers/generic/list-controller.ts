@@ -1,7 +1,7 @@
 import { Repository, ResponseData } from "@/application/interfaces";
 import { serverError, success } from "@/infra/adapters/response-wrapper";
 
-export const listController = async <T>(repository: Repository<T>): Promise<ResponseData> => {
+export const listController = async <T, D>(repository: Repository<T, D>): Promise<ResponseData> => {
 	try {
 		const data = await repository.list();
 		return success(data);

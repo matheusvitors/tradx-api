@@ -2,15 +2,15 @@ import { ValidationError } from "@/application/errors";
 import { FilterParams, Repository, ResourceRelation, ResponseData } from "@/application/interfaces";
 import { success, unprocessableEntity, serverError, notFound, conflict } from "@/infra/adapters/response-wrapper";
 
-interface EditControllerParams<D> {
-	repository: Repository<D>;
+interface EditControllerParams<T, D> {
+	repository: Repository<T, D>;
 	input: D & {id: string};
 	uniqueFields?: Array<keyof Omit<D, 'id'>>
-	validate: <D>(input: D) => void;
+	validate: (input: D) => void;
 	relations?: ResourceRelation<D>[];
 }
 
-export const editController = async <D>(params: EditControllerParams<D>): Promise<ResponseData> => {
+export const editController = async <T, D>(params: EditControllerParams<T, D>): Promise<ResponseData> => {
 
 	try {
 		const {input, repository, uniqueFields, validate, relations} = params;
@@ -40,18 +40,18 @@ export const editController = async <D>(params: EditControllerParams<D>): Promis
 		const changedUniqueFields: Array<keyof D> = [];
 
 		if(uniqueFields) {
-			uniqueFields.forEach(async (field: keyof D) => {
-				console.log(field, input[field], data[field]);
-				if(input[field] !== data[field]){
+			const dataAsD = data as D;
+			for (const field of uniqueFields) {
+				if(input[field] !== dataAsD[field]){
 					changedUniqueFields.push(field);
 				}
-			})
+			}
 		}
 
 		if(changedUniqueFields.length > 0){
 			const filterParams: FilterParams<D>[] = changedUniqueFields.map<FilterParams<D>>(field => ({ field, value: input[field]}))
 
-			const result = repository.filter && await repository.filter(filterParams);
+			const result = await repository.filter!(filterParams);
 			if(result) {
 				return conflict()
 			}

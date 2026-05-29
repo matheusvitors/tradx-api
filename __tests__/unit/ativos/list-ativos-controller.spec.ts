@@ -7,7 +7,7 @@ describe('Conta List Controller', () => {
 	const repository = new InMemoryRepository<Ativo>();
 
 	it('should list contas', async () => {
-		const response = await listController<Ativo>(repository);
+		const response = await listController<Ativo, Ativo>(repository);
 
 		expect(response.status).toEqual(200);
 		expect(response.body.content.length).toEqual(0);

@@ -44,8 +44,6 @@ describe('Import operacoes', () => {
 	it('should import operacoes from csv file', async () => {
 		const response = await importOperacoesByCsvController({ operacaoRepository, ativoRepository, contaRepository, regraEntradaRepository, contaId: 'abc', file: csvFile});
 
-		console.log(response.body);
-
 		expect(response.status).toEqual(200);
 		expect(operacaoRepository.data.length).toEqual(6);
 		expect(contaRepository.data[0].saldo).toEqual(476)

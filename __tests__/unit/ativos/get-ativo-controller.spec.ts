@@ -19,13 +19,13 @@ describe('Get Conta Controller', () => {
 	})
 
 	it('should get ativo', async () => {
-		const response = await getController<Ativo>({id: 'abc', repository});
+		const response = await getController<Ativo, Ativo>({id: 'abc', repository});
 		expect(response.status).toEqual(200)
 		expect(response.body.content.id).toEqual('abc')
 	});
 
 	it('should return 404 if conta not found', async () => {
-		const response = await getController<Ativo>({id: 'eee', repository});
+		const response = await getController<Ativo, Ativo>({id: 'eee', repository});
 		expect(response.status).toEqual(404)
 	});
 

@@ -1,5 +1,5 @@
-import { calculateSaldo } from "@/application/usecases/calculate-saldo";
 import { describe, expect, it } from "vitest";
+import { calculateSaldo } from "@/application/usecases/calculate-saldo";
 
 describe('Calculate Saldo', () => {
 	it('should calculate saldo of success operacao with type compra', () => {

@@ -5,8 +5,9 @@ import { database } from "@/infra/database";
 import { contaTable } from "@/infra/database/schema";
 import { toConta } from "@/utils/transforms";
 import { ContaDTO } from "@/application/dto";
+import { newID } from "@/infra/adapters/newID";
 
-export const contaRepository: Repository<Conta> = {
+export const contaRepository: Repository<Conta, ContaDTO> = {
 	list: async (): Promise<Conta[]> => {
 		try {
 			const data = await database.select().from(contaTable);
@@ -65,10 +66,10 @@ export const contaRepository: Repository<Conta> = {
 	},
 
 
-	create: async (input: Conta | any): Promise<void> => {
+	create: async (input: ContaDTO): Promise<void> => {
 		try {
 			await database.insert(contaTable).values({
-				id: input.id,
+				id: input.id || newID(),
 				nome: input.nome,
 				tipo: input.tipo,
 				usuarioId: input.usuarioId,
@@ -82,7 +83,7 @@ export const contaRepository: Repository<Conta> = {
 		}
 	},
 
-	edit: async (input: Conta | any): Promise<void> => {
+	edit: async (input: ContaDTO): Promise<void> => {
 		try {
 			await database.update(contaTable).set({
 				id: input.id,

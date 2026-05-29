@@ -55,9 +55,6 @@ export const importOperacoesByXlsController = async (params: ImportOperacoesByCs
 				const horarioEntrada = `${splitDate[2]}-${splitDate[1]}-${splitDate[0]} ${splitHoraEntrada[0]}:${splitHoraEntrada[1]}`
 				const horarioSaida = `${splitDate[2]}-${splitDate[1]}-${splitDate[0]} ${splitHoraSaida[0]}:${splitHoraSaida[1]}`
 
-				console.log({horarioEntrada, horarioSaida});
-
-
 				const regraEntrada = regras.find(regra => regra.id === x['Regra'])
 
 				if(!regraEntrada) {

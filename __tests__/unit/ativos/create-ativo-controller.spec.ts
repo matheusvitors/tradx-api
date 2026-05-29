@@ -20,6 +20,7 @@ describe('Create Ativo Controller', () => {
 
 		repository.create(input)
 	})
+
 	it('should create ativo', async () => {
 		const input: AtivoDTO = {
 			id: 'abc',

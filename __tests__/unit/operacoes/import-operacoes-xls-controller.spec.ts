@@ -83,6 +83,16 @@ describe('Import operacoes by xls', () => {
 		expect(response.body.message).toEqual('Conta não encontrada.');
 	});
 
+	it('should return 422 if a regra is invalid from csv file', async () => {
+		const invalidRegraCsvFile = path.resolve(__dirname, '../', '../', 'assets', 'operacoes-teste-invalid-regra.xlsx');
+
+		const response = await importOperacoesByXlsController({ operacaoRepository, ativoRepository, contaRepository, regraEntradaRepository, contaId: 'xyz', file: invalidRegraCsvFile});
+
+		expect(response.status).toEqual(422);
+		expect(response.body.message).toEqual('Regra não encontrada.');
+	});
+
+
 	it('should return 500 if throw a error', async () => {
 		//@ts-ignore
 		const response = await importOperacoesByXlsController({ operacaoRepository, contaId: 'xyz', file: xlsFile});

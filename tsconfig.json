@@ -17,7 +17,8 @@
 		"strictPropertyInitialization": false,
 		"baseUrl": ".",
 		"paths": {
-			"@/*": ["./src/*"]
+			"@/*": ["./src/*"],
+			"__tests__/*": ["./__tests__/*"]
 		},
 	},
 	"tsx": {
