@@ -1,5 +1,5 @@
 import { ValidationError } from "@/application/errors";
-import { FilterParams, Repository, ResourceRelation, ResponseData } from "@/application/interfaces";
+import { FilterParams, Repository, Relation, ResponseData } from "@/application/interfaces";
 import { success, unprocessableEntity, serverError, notFound, conflict } from "@/infra/adapters/response-wrapper";
 
 interface EditControllerParams<T, D> {
@@ -7,7 +7,7 @@ interface EditControllerParams<T, D> {
 	input: D & {id: string};
 	uniqueFields?: Array<keyof Omit<D, 'id'>>
 	validate: (input: D) => void;
-	relations?: ResourceRelation<D>[];
+	relations?: Relation<D>[];
 }
 
 export const editController = async <T, D>(params: EditControllerParams<T, D>): Promise<ResponseData> => {

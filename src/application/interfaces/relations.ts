@@ -1,7 +1,7 @@
 import { Repository } from "@/application/interfaces/repository";
 
-export interface ResourceRelation <T, D> {
+export interface Relation <T, D> {
 	id: string;
 	repository: Repository<T, D>;
-	notFoundMessage?: string;
+	errorMessage?: string;
 }

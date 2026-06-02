@@ -21,6 +21,6 @@ beforeAll(async () => {
 	}
 })
 
-afterAll( () => {
-	clearDatabase();
-});
+// afterAll(async () => {
+// 	await clearDatabase();
+// });

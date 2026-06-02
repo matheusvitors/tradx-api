@@ -1,13 +1,13 @@
+import { user } from "../../artifacts";
+import { beforeAll, describe, expect, it } from "vitest";
 import { jwt } from "@/infra/adapters/jwt";
 import { app } from "@/server";
-import { user } from "../../artifacts";
 import supertest from "supertest";
-import { beforeAll, describe, expect, it } from "vitest";
 import { ContaDTO } from "@/application/dto";
-import { contaRepository } from "@/infra/database/repositories";
 import { newID } from "@/infra/adapters/newID";
+import { contaRepository } from "@/infra/database/repositories";
 
-describe('List Contas - Integration Test', () => {
+describe('Remove Operacao - Integration Test', () => {
 	const input: ContaDTO = {
 		id: newID(),
 		nome: "Teste",
@@ -20,14 +20,23 @@ describe('List Contas - Integration Test', () => {
 		contaRepository.create(input)
 	})
 
-	it('should list contas', async () => {
+
+	it('should remove conta', async () => {
 		const token = jwt.encode({payload: {auth: true, id: user.id}})
 		const response = await supertest(app)
-		.get('/contas')
+		.get(`/contas/${input.id}`)
 		.set({ authorization: `Bearer ${token}` });
 
 		expect(response.status).toEqual(200);
-		expect(response.body.response.content.length).toBeGreaterThan(0);
+	});
+
+	it('should return 404 if conta not found', async () => {
+		const token = jwt.encode({payload: {auth: true, id: user.id}})
+		const response = await supertest(app)
+		.get(`/contas/${newID()}`)
+		.set({ authorization: `Bearer ${token}` });
+
+		expect(response.status).toEqual(404)
 	});
 
 });

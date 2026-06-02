@@ -1,5 +1,5 @@
 import { ValidationError } from "@/application/errors";
-import { FilterParams, Repository, ResourceRelation } from "@/application/interfaces"
+import { FilterParams, Repository, Relation } from "@/application/interfaces"
 import { newID } from "@/infra/adapters/newID";
 import { conflict, created, notFound, serverError, success, unprocessableEntity } from "@/infra/adapters/response-wrapper";
 
@@ -9,7 +9,7 @@ interface CreateControllerParams<T, D> {
 	input: D;
 	uniqueFields?: Array<keyof D>
 	validate: (input: D) => void;
-	relations?: ResourceRelation<any, any>[];
+	relations?: Relation<any, any>[];
 }
 
 export const createController = async <T, D>(params: CreateControllerParams<T, D>) => {
@@ -30,17 +30,14 @@ export const createController = async <T, D>(params: CreateControllerParams<T, D
 		}
 
 		if(relations){
-			relations.forEach(async relation => {
-				console.log({relationID: relation.id});
+			for(const relation of relations) {
 
 				const savedItem = await relation.repository.get(relation.id);
-				console.log({savedItem});
-
 
 				if(!savedItem){
-					return notFound();
+					return notFound(relation.errorMessage)
 				}
-			})
+			}
 		}
 
 		validate(finalInput);

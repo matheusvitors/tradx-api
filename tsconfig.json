@@ -20,6 +20,7 @@
 			"@/*": ["./src/*"],
 			"__tests__/*": ["./__tests__/*"]
 		},
+		"types": ["node"],
 	},
 	"tsx": {
 		"require": ["tsconfig-paths/register"]
@@ -28,8 +29,9 @@
 		"require": ["tsconfig-paths/register"]
 	},
 	"include": [
+		"./",
 		"src/**/*.ts",
-		"__tests__"
+		"__tests__/**/*.ts"
 	],
 	"exclude": ["node_modules", "dist"]
 }

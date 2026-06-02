@@ -18,7 +18,8 @@
 		"fix-ssl": "set NODE_TLS_REJECT_UNAUTHORIZED=0",
 		"db:push": "npx drizzle-kit push",
 		"db:generate": "npx drizzle-kit generate",
-		"db:migrate": "npx drizzle-kit migrate"
+		"db:migrate": "npx drizzle-kit migrate",
+		"db:reset": "dotenv -e .env.e2e -- npx tsx ./__tests__/reset.ts"
 	},
 	"dependencies": {
 		"bcrypt": "^6.0.0",

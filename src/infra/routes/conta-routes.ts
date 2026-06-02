@@ -18,7 +18,14 @@ router.get(`${path}`, async (request: Request, response: Response) => {
 });
 
 router.get(`${path}/:id`, async (request: Request<RequestParams>, response: Response) => {
-	const responseData = await getController<Conta, ContaDTO>({repository, id: request.params.id});
+	const responseData = await getController<Conta, ContaDTO>({
+		repository,
+		id: request.params.id,
+		parent:{
+			field: 'usuarioId',
+			id: extractUserId(request.headers['authorization']?.split(' ')[1])
+		}
+	});
 	return route({ response, responseData });
 });
 
@@ -37,7 +44,7 @@ router.post(`${path}`, async (request: Request, response: Response) => {
 		relations:[{
 			id: input.usuarioId,
 			repository: usuarioRepository,
-			notFoundMessage: "Usuário não encontrado!"
+			errorMessage: "Usuário não encontrado!"
 		}]
 	});
 
@@ -60,7 +67,7 @@ router.put(`${path}`, async (request: Request, response: Response) => {
 		relations:[{
 			id: input.usuarioId,
 			repository: usuarioRepository,
-			notFoundMessage: "Usuário não encontrado!"
+			errorMessage: "Usuário não encontrado!"
 		}]
 
 	});
