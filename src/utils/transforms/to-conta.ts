@@ -8,7 +8,7 @@ export const toConta = (input: any): Conta => {
 		usuario: input.usuario,
 		saldo: input.saldo / 100,
 		saldoInicial: input.saldoInicial / 100,
-		usuarioId: input.usuario.id
+		usuarioId: input.usuarioId
 	}
 
 }

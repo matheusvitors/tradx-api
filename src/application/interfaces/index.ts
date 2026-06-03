@@ -1,6 +1,6 @@
 export * from './filter-params'
 export * from './repository'
 export * from './request-params'
-export * from './parent-relation'
+export * from './owner-relation'
 export * from './relations'
 export * from './response-data'

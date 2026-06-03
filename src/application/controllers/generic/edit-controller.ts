@@ -1,19 +1,20 @@
 import { ValidationError } from "@/application/errors";
-import { FilterParams, Repository, Relation, ResponseData } from "@/application/interfaces";
-import { success, unprocessableEntity, serverError, notFound, conflict } from "@/infra/adapters/response-wrapper";
+import { FilterParams, Repository, Relation, ResponseData, OwnerRelation } from "@/application/interfaces";
+import { success, unprocessableEntity, serverError, notFound, conflict, forbbiden } from "@/infra/adapters/response-wrapper";
 
 interface EditControllerParams<T, D> {
 	repository: Repository<T, D>;
 	input: D & {id: string};
 	uniqueFields?: Array<keyof Omit<D, 'id'>>
 	validate: (input: D) => void;
-	relations?: Relation<D>[];
+	relations?: Relation<any, any>[];
+	owner?: OwnerRelation<T>;
 }
 
 export const editController = async <T, D>(params: EditControllerParams<T, D>): Promise<ResponseData> => {
 
 	try {
-		const {input, repository, uniqueFields, validate, relations} = params;
+		const {input, repository, uniqueFields, validate, relations, owner} = params;
 
 		if(!input.id) {
 			return unprocessableEntity('O id da conta é obrigatório.')
@@ -27,9 +28,16 @@ export const editController = async <T, D>(params: EditControllerParams<T, D>): 
 			return notFound();
 		}
 
+		if(owner){
+			if(data[owner.field as keyof T] !== owner.id){
+				return forbbiden()
+			}
+		}
+
 		if(relations){
 			relations.forEach(async relation => {
 				const savedItem = await relation.repository.get(relation.id);
+				console.log(relation.id, savedItem);
 
 				if(!savedItem){
 					return notFound();

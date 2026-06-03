@@ -4,5 +4,5 @@ export interface ContaDTO {
 	tipo: string;
 	saldoInicial: number;
 	saldo?: number;
-	usuarioId: string;
+	usuarioId?: string;
 }

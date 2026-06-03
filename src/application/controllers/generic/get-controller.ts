@@ -1,15 +1,15 @@
-import { Repository, ParentRelation } from "@/application/interfaces";
+import { Repository, OwnerRelation } from "@/application/interfaces";
 import { forbbiden, notFound, serverError, success } from "@/infra/adapters/response-wrapper";
 
 interface GetControllerParams<T, D> {
 	repository: Repository<T, D>
 	id: string;
-	parent?: ParentRelation<T>;
+	owner?: OwnerRelation<T>;
 }
 
 export const getController = async <T, D>(params: GetControllerParams<T, D>) => {
 	try {
-		const { repository, id, parent } = params;
+		const { repository, id, owner } = params;
 
 		const data = await repository.get(id);
 
@@ -17,10 +17,8 @@ export const getController = async <T, D>(params: GetControllerParams<T, D>) => 
 			return notFound();
 		}
 
-		if(parent){
-			console.log(data, [parent.field as keyof T]  , parent.id);
-
-			if(data[parent.field as keyof T] !== parent.id){
+		if(owner){
+			if(data[owner.field as keyof T] !== owner.id){
 				return forbbiden()
 			}
 		}

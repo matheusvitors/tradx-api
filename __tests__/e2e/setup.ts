@@ -1,4 +1,4 @@
-import { afterAll, beforeAll } from "vitest";
+import { afterAll, aroundAll, beforeAll } from "vitest";
 import { usuarioRepository } from "@/infra/database/repositories/usuario-repository";
 import { reset } from "drizzle-seed";
 import { database } from "@/infra/database";
@@ -24,3 +24,4 @@ beforeAll(async () => {
 // afterAll(async () => {
 // 	await clearDatabase();
 // });
+

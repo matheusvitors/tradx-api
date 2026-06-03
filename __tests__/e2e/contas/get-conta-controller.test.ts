@@ -6,7 +6,7 @@ import { beforeAll, describe, expect, it } from "vitest";
 import { contaRepository } from "@/infra/database/repositories";
 import { newID } from "@/infra/adapters/newID";
 
-describe('Get Conta Controller', () => {
+describe('Get Conta - Integration Test', () => {
 
 	const input = {
 		id: newID(),
@@ -40,7 +40,7 @@ describe('Get Conta Controller', () => {
 		expect(response.status).toEqual(404)
 	});
 
-	it('should return 401 if try to get conta from another user', async () => {
+	it('should return 403 if try to get conta from another user', async () => {
 		const token = jwt.encode({payload: {auth: true, id: newID()}})
 		const response = await supertest(app)
 		.get(`/contas/${input.id}`)

@@ -21,7 +21,7 @@ router.get(`${path}/:id`, async (request: Request<RequestParams>, response: Resp
 	const responseData = await getController<Conta, ContaDTO>({
 		repository,
 		id: request.params.id,
-		parent:{
+		owner:{
 			field: 'usuarioId',
 			id: extractUserId(request.headers['authorization']?.split(' ')[1])
 		}
@@ -65,17 +65,27 @@ router.put(`${path}`, async (request: Request, response: Response) => {
 		repository,
 		validate: validateConta,
 		relations:[{
-			id: input.usuarioId,
+			id: input.usuarioId!,
 			repository: usuarioRepository,
 			errorMessage: "Usuário não encontrado!"
-		}]
-
+		}],
+		owner:{
+			field: 'usuarioId',
+			id: extractUserId(request.headers['authorization']?.split(' ')[1])
+		}
 	});
 	return route({ response, responseData });
 })
 
 router.delete(`${path}/:id`, async (request: Request<RequestParams>, response: Response) => {
-	const responseData = await removeController<Conta>({repository, id: request.params.id});
+	const responseData = await removeController<Conta, ContaDTO>({
+		repository,
+		id: request.params.id,
+		owner:{
+			field: 'usuarioId',
+			id: extractUserId(request.headers['authorization']?.split(' ')[1])
+		}
+	});
 	return route({ response, responseData });
 })
 

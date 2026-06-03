@@ -16,15 +16,25 @@ describe('Remove Operacao - Integration Test', () => {
 		usuarioId: user.id
 	}
 
+	const input2: ContaDTO = {
+		id: newID(),
+		nome: "Teste",
+		tipo: "simulador",
+		saldoInicial: 0,
+		usuarioId: user.id
+	}
+
+
 	beforeAll(() => {
 		contaRepository.create(input)
+		contaRepository.create(input2)
 	})
 
 
 	it('should remove conta', async () => {
 		const token = jwt.encode({payload: {auth: true, id: user.id}})
 		const response = await supertest(app)
-		.get(`/contas/${input.id}`)
+		.delete(`/contas/${input.id}`)
 		.set({ authorization: `Bearer ${token}` });
 
 		expect(response.status).toEqual(200);
@@ -33,10 +43,19 @@ describe('Remove Operacao - Integration Test', () => {
 	it('should return 404 if conta not found', async () => {
 		const token = jwt.encode({payload: {auth: true, id: user.id}})
 		const response = await supertest(app)
-		.get(`/contas/${newID()}`)
+		.delete(`/contas/${newID()}`)
 		.set({ authorization: `Bearer ${token}` });
 
 		expect(response.status).toEqual(404)
+	});
+
+	it('should return 403 if try to get conta from another user', async () => {
+		const token = jwt.encode({payload: {auth: true, id: newID()}})
+		const response = await supertest(app)
+		.delete(`/contas/${input2.id}`)
+		.set({ authorization: `Bearer ${token}`});
+
+		expect(response.status).toEqual(403);
 	});
 
 });

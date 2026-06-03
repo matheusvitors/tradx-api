@@ -12,7 +12,6 @@ export const contaRepository: Repository<Conta, ContaDTO> = {
 		try {
 			const data = await database.select()
 			.from(contaTable)
-			.leftJoin(usuarioTable, eq(usuarioTable.id, contaTable.usuarioId));
 
 			return data.map<Conta>(conta => toConta(conta));
 		} catch (error) {
@@ -26,7 +25,6 @@ export const contaRepository: Repository<Conta, ContaDTO> = {
 			const [data] = await database.select()
 				.from(contaTable)
 				.where(eq(contaTable.id, id))
-				.leftJoin(usuarioTable, eq(usuarioTable.id, contaTable.usuarioId));
 
 			if (!data) {
 				return null;
@@ -92,10 +90,8 @@ export const contaRepository: Repository<Conta, ContaDTO> = {
 	edit: async (input: ContaDTO): Promise<void> => {
 		try {
 			await database.update(contaTable).set({
-				id: input.id,
 				nome: input.nome,
 				tipo: input.tipo,
-				usuarioId: input.usuarioId,
 				saldo: input.saldo ? input.saldo * 100 : 0 ,
 				saldoInicial: input.saldoInicial * 100
 			})
