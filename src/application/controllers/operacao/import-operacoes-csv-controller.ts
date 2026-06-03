@@ -1,7 +1,7 @@
 import { createReadStream, existsSync, unlinkSync } from "fs";
 import { OperacaoDTO } from "@/application/dto";
 import { Repository, ResponseData } from "@/application/interfaces";
-import { Ativo, Conta, Operacao } from "@/core/models";
+import { Ativo, Conta, Operacao, RegraEntrada } from "@/core/models";
 import { csv } from "@/infra/adapters/csv";
 import { unprocessableEntity, serverError, notFound, success } from "@/infra/adapters/response-wrapper";
 import { validateOperacao } from "@/core/validators";
@@ -9,12 +9,12 @@ import { newID } from "@/infra/adapters/newID";
 import { NODE_ENV } from "@/infra/config/environment";
 import { ValidationError } from "@/application/errors";
 import { calculateSaldo } from "@/application/usecases";
-import { regraEntradaRepository } from "@/infra/database/repositories";
 
 interface importOperacoesByCsvControllerParams {
 	operacaoRepository: Repository<Operacao>;
 	ativoRepository: Repository<Ativo>;
 	contaRepository: Repository<Conta>;
+	regraEntradaRepository: Repository<RegraEntrada>;
 	contaId: string;
 	file: string;
 }
@@ -22,7 +22,7 @@ interface importOperacoesByCsvControllerParams {
 //TODO: Fazer o rollback caso haja algum erro de ativo ou conta invalida
 
 export const importOperacoesByCsvController = async (params: importOperacoesByCsvControllerParams): Promise<ResponseData> => {
-	const { operacaoRepository, ativoRepository, contaRepository, contaId, file } = params;
+	const { operacaoRepository, ativoRepository, contaRepository, regraEntradaRepository, contaId, file } = params;
 	try {
 		const operacoesToSave: OperacaoDTO[] = [];
 
@@ -49,7 +49,7 @@ export const importOperacoesByCsvController = async (params: importOperacoesByCs
 					return;
 				}
 
-				const regraEntrada = regras.find(regra => ativo.nome === row['Regra'])
+				const regraEntrada = regras.find(regra => regra.id === row['Regra'])
 
 				if(!regraEntrada) {
 					reject(unprocessableEntity('Regra não encontrada.'));

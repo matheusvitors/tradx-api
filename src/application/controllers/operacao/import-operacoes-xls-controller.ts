@@ -1,6 +1,6 @@
 import { existsSync, unlinkSync } from "fs";
 import { Repository, ResponseData } from "@/application/interfaces";
-import { Ativo, Conta, Operacao } from "@/core/models";
+import { Ativo, Conta, Operacao, RegraEntrada } from "@/core/models";
 import { notFound, serverError, success, unprocessableEntity } from "@/infra/adapters/response-wrapper"
 import { xls } from "@/infra/adapters/xlsx";
 import { OperacaoDTO } from "@/application/dto";
@@ -15,12 +15,13 @@ interface ImportOperacoesByCsvControllerParams {
 	operacaoRepository: Repository<Operacao>;
 	ativoRepository: Repository<Ativo>;
 	contaRepository: Repository<Conta>;
+	regraEntradaRepository: Repository<RegraEntrada>;
 	contaId: string;
 	file: string;
 }
 
 export const importOperacoesByXlsController = async (params: ImportOperacoesByCsvControllerParams): Promise<ResponseData> => {
-	const { operacaoRepository, ativoRepository, contaRepository, contaId, file } = params;
+	const { operacaoRepository, ativoRepository, contaRepository, regraEntradaRepository, contaId, file } = params;
 	try {
 
 		if(!existsSync(file)) {
@@ -37,6 +38,7 @@ export const importOperacoesByXlsController = async (params: ImportOperacoesByCs
 		const sheets = contentFile.SheetNames;
 
 		const ativos = await ativoRepository.list();
+		const regras = await regraEntradaRepository.list();
 		let data: OperacaoDTO[] = [];
 		let newSaldo = conta.saldo;
 
@@ -53,12 +55,17 @@ export const importOperacoesByXlsController = async (params: ImportOperacoesByCs
 				const horarioEntrada = `${splitDate[2]}-${splitDate[1]}-${splitDate[0]} ${splitHoraEntrada[0]}:${splitHoraEntrada[1]}`
 				const horarioSaida = `${splitDate[2]}-${splitDate[1]}-${splitDate[0]} ${splitHoraSaida[0]}:${splitHoraSaida[1]}`
 
+				const regraEntrada = regras.find(regra => regra.id === x['Regra'])
+
+				if(!regraEntrada) {
+					throw unprocessableEntity('Regra não encontrada.');
+				}
+
 				const ativo = ativos.find(ativo => ativo.acronimo === x['Ativo']);
 
 				if(!ativo) {
 					throw unprocessableEntity('Há ativos inexistentes no arquivo enviado.')
 				}
-
 
 				const operacao: OperacaoDTO = {
 					id: newID(),
@@ -66,15 +73,16 @@ export const importOperacoesByXlsController = async (params: ImportOperacoesByCs
 					contaId,
 					quantidade: parseInt(x['Contratos']),
 					tipo: x['Tipo'] === 'Compra' ? 'compra' : 'venda',
+					regraEntradaId: x['Regra'],
 					precoEntrada: parseInt(x['Entrada']),
 					stopLoss: parseInt(x['Stop Loss']),
 					alvo: parseInt(x['Alvo']),
 					precoSaida: parseInt(x['Saída']),
-					dataEntrada: new Date(horarioEntrada),
-					dataSaida: new Date(horarioSaida),
+					dataEntrada: horarioEntrada,
+					dataSaida: horarioSaida,
 					operacaoPerdida: x['Operação Perdida?'] === 'TRUE'? true : false,
 					operacaoErrada: x['Erro?'] === 'TRUE'? true : false,
-					comentarios: x['Comentário'] ?? ''
+					comentarios: x['Comentário'] ?? '',
 				}
 
 				validateOperacao(operacao);

@@ -5,7 +5,6 @@ import { calculateSaldo } from "@/application/usecases/calculate-saldo";
 import { Ativo, Conta, Operacao } from "@/core/models";
 import { validateOperacao } from "@/core/validators";
 import { notFound, success, unprocessableEntity, serverError } from "@/infra/adapters/response-wrapper";
-import { format } from "date-fns";
 
 interface EditOperacaoControllerParams {
 	operacaoRepository: Repository<Operacao>;

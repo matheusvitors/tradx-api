@@ -6,8 +6,9 @@ export const toConta = (input: any): Conta => {
 		nome: input.nome,
 		tipo: input.tipo === 'real' ? 'real' : 'simulador',
 		usuario: input.usuario,
-		saldo: input.saldo,
-		saldoInicial: input.saldoInicial
+		saldo: input.saldo / 100,
+		saldoInicial: input.saldoInicial / 100,
+		usuarioId: input.usuarioId
 	}
 
 }

@@ -5,7 +5,7 @@ import { usuarioTable } from "@/infra/database/schema";
 import { toUsuario } from "@/utils/transforms";
 import { eq } from "drizzle-orm";
 
-export const usuarioRepository: Repository<Usuario> = {
+export const usuarioRepository: Repository<Usuario, Usuario> = {
 	list: async (): Promise<Usuario[]> => {
 		throw new Error("Function not implemented.");
 
@@ -13,6 +13,7 @@ export const usuarioRepository: Repository<Usuario> = {
 
 	get: async (id: string): Promise<Usuario | null> => {
 		try {
+
 			const [data] = await database.select().from(usuarioTable).where(eq(usuarioTable.id, id));
 
 			if(!data) {

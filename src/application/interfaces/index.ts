@@ -1,4 +1,6 @@
 export * from './filter-params'
 export * from './repository'
 export * from './request-params'
+export * from './owner-relation'
+export * from './relations'
 export * from './response-data'

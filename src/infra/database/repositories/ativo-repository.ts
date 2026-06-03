@@ -4,8 +4,10 @@ import { Ativo } from "@/core/models";
 import { database } from "@/infra/database";
 import { ativoTable } from "@/infra/database/schema";
 import { toAtivo } from "@/utils/transforms";
+import { AtivoDTO } from "@/application/dto";
+import { newID } from "@/infra/adapters/newID";
 
-export const ativoRepository: Repository<Ativo> = {
+export const ativoRepository: Repository<Ativo, AtivoDTO> = {
 	list: async (): Promise<Ativo[]> => {
 		try {
 			const data = await database.select().from(ativoTable);
@@ -31,7 +33,7 @@ export const ativoRepository: Repository<Ativo> = {
 		}
 	},
 
-	find: async (field: keyof Ativo, value: any): Promise<Ativo | null> => {
+	find: async (field: keyof AtivoDTO, value: any): Promise<Ativo | null> => {
 		try {
 			const [data] = await database.select().from(ativoTable).where(eq(ativoTable[field], value));
 
@@ -46,7 +48,7 @@ export const ativoRepository: Repository<Ativo> = {
 		}
 	},
 
-	filter: async (params: FilterParams<Ativo>[]): Promise<Ativo[] | null> => {
+	filter: async (params: FilterParams<AtivoDTO>[]): Promise<Ativo[] | null> => {
 
 		const filters: SQL[] = [];
 
@@ -64,10 +66,10 @@ export const ativoRepository: Repository<Ativo> = {
 	},
 
 
-	create: async (input: Ativo | any): Promise<void> => {
+	create: async (input: AtivoDTO): Promise<void> => {
 		try {
 			await database.insert(ativoTable).values({
-				id: input.id,
+				id: input.id || newID(),
 				nome: input.nome,
 				acronimo: input.acronimo,
 				tipo: input.tipo,
@@ -81,16 +83,17 @@ export const ativoRepository: Repository<Ativo> = {
 		}
 	},
 
-	edit: async (input: Ativo | any): Promise<void> => {
+	edit: async (input: AtivoDTO): Promise<void> => {
 		try {
-			await database.update(ativoTable).set({
-				id: input.id,
-				nome: input.nome,
-				acronimo: input.acronimo,
-				tipo: input.tipo,
-				multiplicador: input.multiplicador,
-				dataVencimento: input.dataVencimento
-			})
+			await database.update(ativoTable)
+				.set({
+					nome: input.nome,
+					acronimo: input.acronimo,
+					tipo: input.tipo,
+					multiplicador: input.multiplicador,
+					dataVencimento: input.dataVencimento
+				})
+				.where(eq(ativoTable.id, input.id!))
 		} catch (error) {
 			console.error(error);
 			throw error;

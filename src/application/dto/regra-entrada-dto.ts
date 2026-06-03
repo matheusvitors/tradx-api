@@ -1,6 +1,6 @@
 
 export interface RegraEntradaDTO {
 	id: string;
-	tradingPlanId?: string;
+	tradingPlanId: string;
 	nome: string;
 }

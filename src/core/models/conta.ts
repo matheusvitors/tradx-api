@@ -4,7 +4,8 @@ export interface Conta {
     id: string;
 	nome: string;
 	tipo: ContaType;
-	usuario: Usuario;
+	usuarioId?: string;
+	usuario?: Usuario;
 	saldo: number;
 	saldoInicial: number;
 }
