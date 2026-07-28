@@ -16,8 +16,8 @@ describe('Get Conta - Integration Test', () => {
 		saldoInicial: 2.50,
 		usuarioId: user.id,
 	}
-	beforeAll(() => {
-		contaRepository.create(input)
+	beforeAll(async() => {
+		await contaRepository.create(input)
 	})
 
 	it('should get conta', async () => {

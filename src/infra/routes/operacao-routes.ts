@@ -1,11 +1,15 @@
 import { Router, Request, Response} from 'express'
 import multer, { MulterError } from 'multer';
 import { route } from '@/infra/adapters/route';
-import { createOperacaoController, editOperacaoController, getOperacaoController, importOperacoesByCsvController, importOperacoesByXlsController, listOperacaoByContaController, listOperacaoController, removeOperacaoController } from '@/application/controllers/operacao';
+import {  importOperacoesByCsvController, importOperacoesByXlsController, listOperacaoByContaController } from '@/application/controllers/operacao';
 import { notFound } from '@/infra/adapters/response-wrapper';
 import path from 'path';
 import { RequestParams, ResponseData } from '@/application/interfaces';
-import { ativoRepository, contaRepository, operacaoRepository } from '@/infra/database/repositories';
+import { ativoRepository, contaRepository, operacaoRepository, regraEntradaRepository } from '@/infra/database/repositories';
+import { createController, editController, getController, listController, removeController } from '@/application/controllers/generic';
+import { Operacao } from '@/core/models';
+import { OperacaoDTO } from '@/application/dto';
+import { validateOperacao } from '@/core/validators';
 
 interface OperacaoRequestParams {
 	id: string;
@@ -30,7 +34,7 @@ const storage = multer.diskStorage({
 const upload = multer({storage});
 
 router.get(`${defaultPath}`, async (request: Request, response: Response) => {
-	const responseData = await listOperacaoController(repository);
+	const responseData = await listController<Operacao, OperacaoDTO>(repository);
 	return route({ response, responseData });
 })
 
@@ -40,15 +44,13 @@ router.get(`${defaultPath}/conta/:id/range/:init/:end`, async (request: Request<
 })
 
 router.get(`${defaultPath}/:id`, async (request: Request<RequestParams>, response: Response) => {
-	const responseData = await getOperacaoController({repository, id: request.params.id});
+	const responseData = await getController<Operacao, OperacaoDTO>({repository, id: request.params.id});
 	return route({ response, responseData });
 })
 
 router.post(`${defaultPath}`, async (request: Request, response: Response) => {
-	const responseData = await createOperacaoController({
-		operacaoRepository: repository,
-		contaRepository,
-		ativoRepository,
+	const responseData = await createController<Operacao, OperacaoDTO>({
+		repository,
 		input: {
 			ativoId: request.body.ativoId,
 			contaId: request.body.contaId,
@@ -63,7 +65,26 @@ router.post(`${defaultPath}`, async (request: Request, response: Response) => {
 			dataSaida: request.body.dataSaida,
 			operacaoPerdida: request.body.operacaoPerdida,
 			operacaoErrada: request.body.operacaoErrada
-	}});
+		},
+		validate: validateOperacao,
+		relations: [
+			{
+				id: request.body.ativoId,
+				repository: ativoRepository,
+				errorMessage: 'Ativo não encontrado.'
+			},
+			{
+				id: request.body.contaId,
+				repository: contaRepository,
+				errorMessage: 'Conta não encontrada.'
+			},
+			{
+				id: request.body.regraEntradaId,
+				repository: regraEntradaRepository,
+				errorMessage: 'Regra não encontrada.'
+			},
+		]
+	});
 	return route({ response, responseData });
 })
 
@@ -83,6 +104,7 @@ router.post(`${defaultPath}/:contaId/import`, upload.single('file'), async (requ
 				operacaoRepository: repository,
 				contaRepository,
 				ativoRepository,
+				regraEntradaRepository,
 				contaId: request.params.contaId,
 				file: path.resolve('.', 'temp', request.file.filename)
 			})
@@ -91,6 +113,7 @@ router.post(`${defaultPath}/:contaId/import`, upload.single('file'), async (requ
 				operacaoRepository: repository,
 				contaRepository,
 				ativoRepository,
+				regraEntradaRepository,
 				contaId: request.params.contaId,
 				file: path.resolve('.', 'temp', request.file.filename)
 			})
@@ -105,10 +128,8 @@ router.post(`${defaultPath}/:contaId/import`, upload.single('file'), async (requ
 })
 
 router.put(`${defaultPath}`, async (request: Request, response: Response) => {
-	const responseData = await editOperacaoController({
-		operacaoRepository: repository,
-		contaRepository,
-		ativoRepository,
+	const responseData = await editController<Operacao, OperacaoDTO>({
+		repository,
 		input: {
 			id: request.body.id,
 			ativoId: request.body.ativoId,
@@ -125,13 +146,32 @@ router.put(`${defaultPath}`, async (request: Request, response: Response) => {
 			operacaoPerdida: request.body.operacaoPerdida,
 			operacaoErrada: request.body.operacaoErrada,
 			comentarios: request.body.comentarios
-	}});
+		},
+		validate: validateOperacao,
+		relations: [
+			{
+				id: request.body.ativoId,
+				repository: ativoRepository,
+				errorMessage: 'Ativo não encontrado.'
+			},
+			{
+				id: request.body.contaId,
+				repository: contaRepository,
+				errorMessage: 'Conta não encontrada.'
+			},
+			{
+				id: request.body.regraEntradaId,
+				repository: regraEntradaRepository,
+				errorMessage: 'Regra não encontrada.'
+			},
+		]
+	});
 	return route({ response, responseData });
 })
 
 
 router.delete(`${defaultPath}/:id`, async (request: Request<RequestParams>, response: Response) => {
-	const responseData = await removeOperacaoController({ operacaoRepository: repository, contaRepository, id: request.params.id});
+	const responseData = await removeController<Operacao, OperacaoDTO>({ repository, id: request.params.id});
 	return route({ response, responseData });
 })
 

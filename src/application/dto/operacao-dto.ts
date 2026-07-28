@@ -1,5 +1,5 @@
 export interface OperacaoDTO {
-	id: string;
+	id?: string;
 	ativoId: string;
 	contaId: string;
 	regraEntradaId: string;

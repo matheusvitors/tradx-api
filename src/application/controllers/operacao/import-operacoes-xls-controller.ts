@@ -3,7 +3,7 @@ import { Repository, ResponseData } from "@/application/interfaces";
 import { Ativo, Conta, Operacao, RegraEntrada } from "@/core/models";
 import { notFound, serverError, success, unprocessableEntity } from "@/infra/adapters/response-wrapper"
 import { xls } from "@/infra/adapters/xlsx";
-import { OperacaoDTO } from "@/application/dto";
+import { AtivoDTO, ContaDTO, OperacaoDTO, RegraEntradaDTO } from "@/application/dto";
 import { newID } from "@/infra/adapters/newID";
 import { format } from "date-fns";
 import { validateOperacao } from "@/core/validators";
@@ -12,10 +12,10 @@ import { NODE_ENV } from "@/infra/config/environment";
 import { calculateSaldo } from "@/application/usecases";
 
 interface ImportOperacoesByCsvControllerParams {
-	operacaoRepository: Repository<Operacao>;
-	ativoRepository: Repository<Ativo>;
-	contaRepository: Repository<Conta>;
-	regraEntradaRepository: Repository<RegraEntrada>;
+	operacaoRepository: Repository<Operacao, OperacaoDTO>;
+	ativoRepository: Repository<Ativo, AtivoDTO>;
+	contaRepository: Repository<Conta, ContaDTO>;
+	regraEntradaRepository: Repository<RegraEntrada, RegraEntradaDTO>;
 	contaId: string;
 	file: string;
 }

@@ -29,8 +29,8 @@ describe('Edit Ativo - Integration Test', () => {
 	}
 
 	beforeAll(async () => {
-		ativoRepository.create(input1);
-		ativoRepository.create(input2);
+		await ativoRepository.create(input1);
+		await ativoRepository.create(input2);
 	})
 
 	it('should edit ativo', async () => {

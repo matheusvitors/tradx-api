@@ -25,9 +25,9 @@ describe('Remove Operacao - Integration Test', () => {
 	}
 
 
-	beforeAll(() => {
-		contaRepository.create(input)
-		contaRepository.create(input2)
+	beforeAll(async() => {
+		await contaRepository.create(input)
+		await contaRepository.create(input2)
 	})
 
 

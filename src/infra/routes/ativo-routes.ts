@@ -61,7 +61,7 @@ router.put('/ativos', async (request: Request, response: Response) => {
 })
 
 router.delete('/ativos/:id', async (request: Request<RequestParams>, response: Response) => {
-	const responseData = await removeController<Ativo>({repository, id: request.params.id});
+	const responseData = await removeController<Ativo, Ativo>({repository, id: request.params.id});
 	return route({ response, responseData });
 })
 

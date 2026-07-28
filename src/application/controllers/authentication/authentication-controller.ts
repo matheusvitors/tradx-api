@@ -2,10 +2,10 @@ import { Repository, ResponseData } from "@/application/interfaces";
 import { Usuario } from "@/core/models";
 import { verifyHash } from "@/infra/adapters/encryption";
 import { jwt } from "@/infra/adapters/jwt";
-import { notFound, serverError, success, unauthorized } from "@/infra/adapters/response-wrapper";
+import { serverError, success, unauthorized } from "@/infra/adapters/response-wrapper";
 
 interface AuthenticationControllerParams {
-	repository: Repository<Usuario>;
+	repository: Repository<Usuario, Usuario>;
 	username: string;
 	password: string;
 }
@@ -18,13 +18,13 @@ export const authenticationController = async (params: AuthenticationControllerP
 		const usuario = await repository.find!('username', username);
 
 		if(!usuario) {
-			return notFound('Usuário não encontrado.');
+			return unauthorized('Usuário ou senha incorreta.');
 		}
 
 		const isCorrectPassword = await verifyHash(password, usuario.password);
 
 		if(!isCorrectPassword) {
-			return unauthorized('Senha incorreta.')
+			return unauthorized('Usuário ou senha incorreta.');
 		}
 
 		const token = jwt.encode({payload: {auth: true, id: usuario.id}});

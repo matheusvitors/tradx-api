@@ -15,8 +15,8 @@ describe('Edit Conta - Integration Test', () => {
 		saldoInicial: 0.00,
 	}
 
-	beforeAll(() => {
-		contaRepository.create({...input, usuarioId: user.id,})
+	beforeAll(async () => {
+		await contaRepository.create({...input, usuarioId: user.id,})
 	})
 
 	it('should edit conta', async () => {

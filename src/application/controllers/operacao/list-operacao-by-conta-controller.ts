@@ -1,3 +1,4 @@
+import { OperacaoDTO } from "@/application/dto";
 import { Repository, ResponseData } from "@/application/interfaces";
 import { Operacao } from "@/core/models";
 import { success, serverError, notFound } from "@/infra/adapters/response-wrapper";
@@ -8,7 +9,7 @@ interface RangeData {
 }
 
 interface ListOperacaoByContaControllerParams {
-	repository: Repository<Operacao>;
+	repository: Repository<Operacao, OperacaoDTO>;
 	contaId: string;
 	range: RangeData;
 }

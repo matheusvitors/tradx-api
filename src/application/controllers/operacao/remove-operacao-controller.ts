@@ -1,3 +1,4 @@
+import { ContaDTO, OperacaoDTO } from "@/application/dto";
 import { Repository, ResponseData } from "@/application/interfaces";
 import { updateSaldo } from "@/application/usecases/operacao";
 import { Conta, Operacao } from "@/core/models";
@@ -5,8 +6,8 @@ import { notFound, success, serverError } from "@/infra/adapters/response-wrappe
 import { toOperacaoDto } from "@/utils/transforms";
 
 interface RemoveOperacaoControllerParams {
-	operacaoRepository: Repository<Operacao>;
-	contaRepository: Repository<Conta>;
+	operacaoRepository: Repository<Operacao, OperacaoDTO>;
+	contaRepository: Repository<Conta, ContaDTO>;
 	id: string;
 }
 

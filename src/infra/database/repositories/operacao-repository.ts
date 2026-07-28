@@ -5,8 +5,9 @@ import { Operacao } from "@/core/models";
 import { database } from "@/infra/database";
 import { operacaoTable } from "@/infra/database/schema";
 import { toOperacao } from "@/utils/transforms";
+import { newID } from "@/infra/adapters/newID";
 
-export const operacaoRepository: Repository<Operacao> = {
+export const operacaoRepository: Repository<Operacao, OperacaoDTO> = {
 		list: async (): Promise<Operacao[]> => {
 		try {
 			const data = await database.select().from(operacaoTable);
@@ -65,10 +66,10 @@ export const operacaoRepository: Repository<Operacao> = {
 	},
 
 
-	create: async (input: Operacao | any): Promise<void> => {
+	create: async (input: OperacaoDTO): Promise<void> => {
 		try {
 			await database.insert(operacaoTable).values({
-				id: input.id,
+				id: input.id || newID(),
 				ativoId: input.ativoId,
 				contaId: input.contaId,
 				regraEntradaId: input.regraEntradaId,
@@ -78,11 +79,11 @@ export const operacaoRepository: Repository<Operacao> = {
 				stopLoss: input.stopLoss,
 				alvo: input.alvo,
 				precoSaida: input.precoSaida,
-				dataEntrada: input.dataEntrada,
-				dataSaida: input.dataSaida,
+				dataEntrada: new Date(input.dataEntrada),
+				dataSaida: input.dataSaida ? new Date(input.dataSaida) : null,
 				operacaoPerdida: input.operacaoPerdida,
 				operacaoErrada: input.operacaoErrada,
-				comentarios: input.comentarios || undefined
+				comentarios: input.comentarios || null
 			});
 
 		} catch (error) {

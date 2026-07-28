@@ -16,8 +16,8 @@ describe('List Contas - Integration Test', () => {
 		usuarioId: user.id
 	}
 
-	beforeAll(() => {
-		contaRepository.create(input)
+	beforeAll(async () => {
+		await contaRepository.create(input)
 	})
 
 	it('should list contas', async () => {

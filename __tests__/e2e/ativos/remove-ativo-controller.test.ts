@@ -17,8 +17,8 @@ describe('Remove Ativo - Integration Test', () => {
 		tipo: "indice",
 		multiplicador: 1,
 	}
-	beforeAll(() => {
-		ativoRepository.create(input)
+	beforeAll(async() => {
+		await ativoRepository.create(input)
 	})
 
 	it('should remove ativo', async () => {

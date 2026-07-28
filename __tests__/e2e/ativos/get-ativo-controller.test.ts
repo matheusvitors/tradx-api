@@ -18,8 +18,8 @@ describe('Get Ativo - Integration Test', () => {
 		multiplicador: 1,
 	}
 
-	beforeAll(() => {
-		ativoRepository.create(input)
+	beforeAll(async () => {
+		await ativoRepository.create(input)
 	})
 
 	it('should get ativo', async () => {
